@@ -1,0 +1,25 @@
+name: '▶️ Prepare release'
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+  pull-requests: write
+
+jobs:
+  prepare_release:
+    runs-on: [self-hosted, linux, back]
+    name: '🥨 Prepare release'
+    steps:
+      - name: '⬇️ Checkout'
+        uses: actions/checkout@v4
+      - name: '🔊 Prepare changelog'
+        uses: e-mothep/shared-workflow-docker/.github/common/release@main
+        with:
+          release_system: release-please-action
+          release_type: "maven"
+          APP_ID: ${{ secrets.APP_ID }}
+          APP_PEM: ${{ secrets.APP_PEM }}
+          BRANCH: ${{ github.ref_name }}

@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/verseFactory_db
+    username: factory
+    password: factory
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    schemas: factory
+
+server:
+  port: 8081

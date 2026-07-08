@@ -1,0 +1,86 @@
+openapi: 3.0.3
+info:
+  title: Template Common API
+  version: 1.0.0
+  description: API pour les opérations publiques et schémas communs
+
+servers:
+  - url: /api/v1/common
+    description: Serveur local
+
+paths:
+  /healthz:
+    get:
+      tags:
+        - Healthz
+      summary: Health check endpoint
+      operationId: getHealthz
+      responses:
+        '200':
+          description: OK
+          headers:
+            Alive-Header:
+              $ref: '#/components/headers/Alive-Header'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheckResponse'
+
+components:
+  headers:
+    Alive-Header:
+      description: Header de santé de l'application
+      schema:
+        type: string
+        example: "OK"
+
+  schemas:
+    HealthCheckResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: UP
+    ExampleDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+
+  responses:
+    UnauthorizedError:
+      description: Non authentifié
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ForbiddenError:
+      description: Non autorisé
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFoundError:
+      description: Ressource introuvable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

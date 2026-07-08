@@ -1,0 +1,38 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: template-spring-app-back
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:template_db}
+    username: ${DB_USER:pgTemplate}
+    password: ${DB_PASSWORD:templatePwd}
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    schemas: template_business
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OAUTH2_ISSUER_URI:http://localhost:8080/realms/versefactory}
+          jwk-set-uri: ${OAUTH2_ISSUER_URI:http://localhost:8080/realms/versefactory}/protocol/openid-connect/certs
+minio:
+  url: ${MINIO_URL:http://localhost:9000}
+  access-key: ${MINIO_ACCESS_KEY:minio}
+  secret-key: ${MINIO_SECRET_KEY:minio123}
+  bucket: ${MINIO_BUCKET:active}
+
+server:
+  port: 8081
+  servlet:
+    context-path: /api
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always

@@ -1,0 +1,32 @@
+<!-- HTML for static distribution bundle build -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Swagger UI</title>
+  <link rel="stylesheet" type="text/css" href="./swagger-ui.css" />
+  <link rel="stylesheet" type="text/css" href="index.css" />
+  <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />
+</head>
+
+<body>
+  <header id="api-header-v1" class="api-header">
+    <button class="api-choice-btn active" data-spec="./openapi/openapi-common-v1.yaml">API Commun</button>
+    <button class="api-choice-btn" data-spec="./openapi/openapi-admin-v1.yaml">API Admin</button>
+    <!-- add API files here -->
+  </header>
+
+  <header id="api-header-v2" class="api-header">
+    <!-- add API files V2 here -->
+  </header>
+
+  <div id="swagger-ui"></div>
+
+  <script src="./swagger-ui-bundle.js" charset="UTF-8"> </script>
+  <script src="./swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
+  <script src="./swagger-initializer.js" charset="UTF-8" type="module"> </script>
+</body>
+
+</html>

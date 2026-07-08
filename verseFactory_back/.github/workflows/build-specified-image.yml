@@ -1,0 +1,45 @@
+name: Build specified image
+on:
+  workflow_dispatch:
+    inputs:
+      branchToBuildFrom:
+        description: 'Branch to build'
+        required: true
+        type: string
+      tag:
+        description: 'Tag to deploy'
+        required: true
+        type: string
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+env:
+  JAVA_VERSION: "21"
+  REGISTRY: "harbor.e-mothep.com"
+
+jobs:
+  build-specified-image:
+    name: 'Build specified image ${{ github.event.inputs.tag }} from ${{ github.event.inputs.branchToBuildFrom }}'
+    runs-on: [self-host, linux, back]
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branchToBuildFrom }}
+      - name: 'Install dependencies'
+        uses: e-mothep/shared-workflow-docker/.github/java/dependencies@main
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+      - name: '🏗️ Build application'
+        uses: e-mothep/shared-workflow-docker/.github/java/build@main
+      - name: '🐋 Build and push to registry'
+        uses: e-mothep/shared-workflow-docker/.github/java/build-docker@main
+        with:
+          DOCKER_REGISTRY: ${{ env.registry }}
+          HARBOR_USERNAME: ${{ secrets.HARBOR_USERNAME }}
+          HARBOR_PASSWORD: ${{ secrets.HARBOR_PASSWORD }}
+          APP_IMAGE_REPOSITORY: CHANGE_ME # Exemple: luna, qualiopsys, etc.
+          APP_NAME: ${{ github.event.repository.name }}
+          TAG_VERSION: ${{ github.event.input.tag }}

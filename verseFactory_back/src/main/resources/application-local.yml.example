@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/template_db
+    username: pgTemplate
+    password: templatePwd
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    schemas: template_business
+
+server:
+  port: 8081

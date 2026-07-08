@@ -1,0 +1,253 @@
+openapi: 3.0.3
+info:
+  title: Template Admin API
+  version: 1.0.0
+  description: API pour les opérations d'administration (authentifiées)
+
+servers:
+  - url: /api/v1/admin
+    description: Serveur local
+
+security:
+  - OAuth: []
+
+paths:
+  /pets:
+    get:
+      tags:
+        - Pet
+      summary: Get all pets (Admin only)
+      operationId: getAllPets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PetDto'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+  /pets/{id}:
+    get:
+      tags:
+        - Pet
+      summary: Get a pet by ID (Admin only)
+      operationId: getPetById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetDto'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /factory:
+    get:
+      tags:
+        - Factory
+      summary: Get factory details of the connected user
+      operationId: getConnectedUserFactory
+      security:
+        - OAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FactoryDto'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /factory/update-balance:
+    post:
+      tags:
+        - Factory
+      summary: Update factory balance by adding the sum of incomePerSecond of all pets in the factory
+      operationId: updateConnectedUserFactoryBalance
+      security:
+        - OAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FactoryDto'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /factory/pets:
+    get:
+      tags:
+        - Factory
+      summary: Get all pets in the factory of the connected user
+      operationId: getConnectedUserFactoryPets
+      security:
+        - OAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PetDto'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    post:
+      tags:
+        - Factory
+      summary: Add a pet to the factory of the connected user
+      operationId: addPetToConnectedUserFactory
+      security:
+        - OAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddPetToFactoryRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetDto'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+components:
+  securitySchemes:
+    OAuth:
+      flows:
+        authorizationCode:
+          authorizationUrl: '{{authUrl}}'
+          tokenUrl: '{{accessTokenUrl}}'
+          refreshUrl: '{{callbackUrl}}'
+          scopes:
+            openid: ''
+      type: oauth2
+
+  schemas:
+    FactoryDto:
+      type: object
+      required:
+        - id
+        - userId
+        - balance
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        balance:
+          type: number
+        lastUpdatedAt:
+          type: string
+          format: date-time
+
+    PetDto:
+      type: object
+      required:
+        - id
+        - name
+        - rarity
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        rarity:
+          type: string
+        incomePerSecond:
+          type: number
+        baseCost:
+          type: number
+
+    AddPetToFactoryRequest:
+      type: object
+      required:
+        - petId
+      properties:
+        petId:
+          type: string
+          format: uuid
+
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+
+  responses:
+    BadRequestError:
+      description: Requête incorrecte
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    UnauthorizedError:
+      description: Non authentifié
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ForbiddenError:
+      description: Non autorisé
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFoundError:
+      description: Ressource introuvable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

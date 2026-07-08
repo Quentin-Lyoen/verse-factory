@@ -1,0 +1,81 @@
+package fr.versefactory.template.v1.admin.factory;
+
+import fr.versefactory.template.v1.core.TemplateServiceV1;
+import fr.versefactory.template.v1.admin.openapi.payload.FactoryDto;
+import fr.versefactory.template.v1.admin.factory.representations.FactoryRepresentationV1;
+import fr.versefactory.template.exception.NotFoundException;
+import fr.versefactory.template.exception.ErrorMessages;
+import fr.versefactory.template.v1.admin.pet.PetRepositoryV1;
+import fr.versefactory.template.v1.admin.pet.PetMapperV1;
+import fr.versefactory.template.v1.admin.openapi.payload.PetDto;
+import fr.versefactory.template.v1.admin.pet.representations.PetRepresentationV1;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class FactoryServiceV1 extends TemplateServiceV1 {
+
+    private final FactoryRepositoryV1 repository;
+    private final FactoryMapperV1 mapper;
+    private final PetRepositoryV1 petRepository;
+    private final PetMapperV1 petMapper;
+
+    public FactoryDto getFactoryByUserId(UUID userId) {
+        FactoryRepresentationV1 representation = repository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+        return mapper.toDto(representation);
+    }
+
+    public List<PetDto> getPetsByFactoryUserId(UUID userId) {
+        FactoryRepresentationV1 representation = repository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+        return petRepository.findAllByFactoryId(representation.getFactory().getId()).stream()
+                .map(petMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public PetDto addPetToFactory(UUID userId, UUID petId) {
+        FactoryRepresentationV1 factoryRepresentation = repository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        PetRepresentationV1 petRepresentation = petRepository.findById(petId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        petRepository.addPetToFactory(factoryRepresentation.getFactory().getId(), petId);
+
+        return petMapper.toDto(petRepresentation);
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    public FactoryDto updateFactoryBalance(UUID userId) {
+        FactoryRepresentationV1 factoryRepresentation = repository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        List<PetRepresentationV1> pets = petRepository.findAllByFactoryId(factoryRepresentation.getFactory().getId());
+
+        BigDecimal sumOfIncome = pets.stream()
+                .map(p -> p.getPet().getIncomePerSecond())
+                .filter(Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal currentBalance = factoryRepresentation.getFactory().getBalance();
+        if (currentBalance == null) {
+            currentBalance = BigDecimal.ZERO;
+        }
+        BigDecimal newBalance = currentBalance.add(sumOfIncome);
+
+        repository.updateBalance(factoryRepresentation.getFactory().getId(), newBalance);
+
+        FactoryRepresentationV1 updatedRepresentation = repository.findById(factoryRepresentation.getFactory().getId())
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        return mapper.toDto(updatedRepresentation);
+    }
+}

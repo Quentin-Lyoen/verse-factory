@@ -1,0 +1,73 @@
+html {
+    box-sizing: border-box;
+    overflow: -moz-scrollbars-vertical;
+    overflow-y: scroll;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0;
+    background: #fafafa;
+}
+
+.api-header {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 15px;
+    border-bottom: 2px solid #ddd;
+}
+
+#api-header-v1 {
+    background: #f4f4f4;
+}
+
+#api-header-v2 {
+    background: #e3e3e3;
+}
+
+.api-header button {
+    position: relative;
+    padding: 10px 20px;
+    border: none;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.api-header button:hover, {
+    background: #0056b3;
+}
+
+.api-header button.active {
+    background: #28a745;
+}
+
+.badge-v2 {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    padding: 2px 7px;
+    background: linear-gradient(135deg, #ff3b3b, #c32d35);
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    border-radius: 20px;
+    box-shadow: 0 2px 6px rgba(169, 39, 46, 0.45);
+    text-transform: uppercase;
+    transform: rotate(12deg);
+    transition: transform 0.2s ease;
+}
+
+.api-header button:hover .badge-v2 {
+    transform: rotate(-4deg) scale(1.1);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
