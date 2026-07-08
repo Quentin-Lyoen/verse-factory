@@ -1,0 +1,126 @@
+version: '3.7'
+name: verseFactory
+
+services:
+  postgres:
+    image: postgres:16.2
+    ports:
+      - 5432:5432
+    volumes:
+      - template_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: verseFactory_db
+      POSTGRES_USER: factory
+      POSTGRES_PASSWORD: factory
+    networks:
+      - app_network
+
+  keycloak_db:
+    image: postgres:16.2
+    volumes:
+      - keycloak_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak_db
+      POSTGRES_USER: keycloak_db_user
+      POSTGRES_PASSWORD: keycloak_db_user_password
+    networks:
+      - app_network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0.6
+    command: start
+    environment:
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8080
+      KC_HOSTNAME_STRICT_BACKCHANNEL: false
+      KC_HTTP_ENABLED: true
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_HEALTH_ENABLED: true
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak_db/keycloak_db
+      KC_DB_USERNAME: keycloak_db_user
+      KC_DB_PASSWORD: keycloak_db_user_password
+    ports:
+      - 8080:8080
+    restart: always
+    depends_on:
+      - keycloak_db
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'"]
+      interval: 3s
+      timeout: 5s
+      retries: 50
+
+  init_keycloak:
+    image: quay.io/keycloak/keycloak:23.0.6
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    restart: no
+    environment:
+      SERVER: "http://host.docker.internal:8080"
+      REALM: "master"
+      ADMIN_USER: "admin"
+      ADMIN_PASSWORD: "password"
+      CLIENT_ID: "template"
+      REDIRECT_URIS: "[\"http://localhost:8081/*\"]"
+      SECRET: "UrXingk4s10k1uSiZRSPiCIvKxFA8nTg"
+      ACCESS_TOKEN_LIFESPAN: 28800
+    entrypoint: [
+      "bash", "-c",
+      "
+                   cd /opt/keycloak/bin && \
+                   set -x && \
+                   ./kcreg.sh config credentials --server $${SERVER} --realm $${REALM} --user $${ADMIN_USER} --password $${ADMIN_PASSWORD} && \
+                   ./kcreg.sh create -s clientId=$${CLIENT_ID} -s redirectUris=$${REDIRECT_URIS} -s secret=$${SECRET} -s serviceAccountsEnabled=true && \
+                   ./kcadm.sh config credentials --server $${SERVER} --realm $${REALM} --user $${ADMIN_USER} --password $${ADMIN_PASSWORD} && \
+                   ./kcadm.sh update clients/$$(./kcadm.sh get clients -q clientId=$${CLIENT_ID} --fields=id | grep '\"id\"' | cut -d'\"' -f4) -s 'attributes.\"access.token.lifespan\"='$${ACCESS_TOKEN_LIFESPAN} && \
+                   ./kcadm.sh add-roles --uusername service-account-$${CLIENT_ID} --cclientid $${REALM}-realm --rolename manage-users
+                  "
+    ]
+
+  # minio:
+  #   image: quay.io/minio/aistor/minio:RELEASE.2026-02-07T07-43-34Z
+  #   command: server /mnt/data
+  #   ports:
+  #     - 9000:9000
+  #     - 9001:9001
+  #   environment:
+  #     MINIO_ROOT_USER: minio
+  #     MINIO_ROOT_PASSWORD: minio123
+  #   volumes:
+  #     - minio_data:/mnt/data
+  #   networks:
+  #     - app_network
+
+  # minio-init:
+  #   image: minio/mc:RELEASE.2025-08-13T08-35-41Z
+  #   depends_on:
+  #     - minio
+  #   networks:
+  #     - app_network
+  #   entrypoint: >
+  #     /bin/sh -c "
+  #     sleep 5;
+  #     mc alias set local http://minio:9000 minio minio123;
+  #     echo 'Creating bucket active';
+  #     mc mb --ignore-existing local/active;
+  #     echo 'DONE';
+  #     exit 0;
+  #     "
+
+volumes:
+  template_data:
+    driver: local
+  keycloak_data:
+    driver: local
+  # minio_data:
+  #   driver: local
+
+networks:
+  app_network:
+    driver: bridge
