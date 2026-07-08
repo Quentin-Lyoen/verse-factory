@@ -53,7 +53,7 @@ verseFactory_back/target/
 !**/src/test/**/target/
 
 # Configuration locale ignorée par Git
-verseFactory_back/src/main/resources/application-local.yml
+src/main/resources/application-local.yml
 
 ### STS ###
 .apt_generated
