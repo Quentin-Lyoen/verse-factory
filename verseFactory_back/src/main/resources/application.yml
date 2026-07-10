@@ -40,7 +40,7 @@ management:
 keycloak:
   admin:
     server-url: ${KEYCLOAK_URL:http://localhost:8080}
-    realm: ${KEYCLOAK_REALM:versefactory}
+    realm: ${KEYCLOAK_REALM:master}
     client-id: ${KEYCLOAK_ADMIN_CLIENT_ID:admin-cli}
     username: ${KEYCLOAK_ADMIN_USER:admin}
-    password: ${KEYCLOAK_ADMIN_PASSWORD:admin}
+    password: ${KEYCLOAK_ADMIN_PASSWORD:password}
