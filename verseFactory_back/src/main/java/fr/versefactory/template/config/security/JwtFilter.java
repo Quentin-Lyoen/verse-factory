@@ -46,7 +46,7 @@ public class JwtFilter extends OncePerRequestFilter {
             // Skip security check for actuator and health endpoints if needed, 
             // but normally SecurityConfig handles this via permitAll().
             // However, JwtFilter is executed BEFORE standard security filter chain in some configs.
-            if (path.contains("/actuator") || path.contains("/healthz")) {
+            if (path.contains("/actuator") || path.contains("/healthz") || path.contains("/accounts")) {
                 filterChain.doFilter(request, response);
                 return;
             }
