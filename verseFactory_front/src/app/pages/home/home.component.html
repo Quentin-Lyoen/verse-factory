@@ -1,3 +1,53 @@
-<div class="flex flex-col items-center mt-12">
-  <h1 class="text-4xl font-bold">Bienvenue sur Verse Factory</h1>
-</div>
+<section
+  class="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center bg-(--bg-primary) text-gray-900 pb-20 relative overflow-hidden">
+
+  <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+    <div
+      class="absolute top-[-10%] left-[-10%] w-[30rem] h-[30rem] rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-pulse bg-(--bg-secondary) [animation-duration:4s]">
+    </div>
+    <div
+      class="absolute bottom-[-10%] right-[-10%] w-[30rem] h-[30rem] bg-purple-300/60 rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-pulse [animation-duration:5s] [animation-delay:1s]">
+    </div>
+  </div>
+
+  <div class="max-w-5xl mx-auto px-6 pt-24 pb-12 text-center z-10">
+    <div
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 backdrop-blur-md border border-purple-100 shadow-sm mb-8 hover:scale-105 transition-transform cursor-default ring-1 ring-purple-100/50">
+      <span class="flex h-2.5 w-2.5 rounded-full relative">
+        <span
+          class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-(--bg-secondary)"></span>
+        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-(--bg-secondary)"></span>
+      </span>
+      <span class="text-sm font-semibold tracking-wide text-(--bg-secondary) hover:cursor-pointer">Découvrez la nouvelle version</span>
+    </div>
+
+    <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 text-gray-900 leading-tight">
+      Bienvenue sur <br />
+      <span
+        class="text-transparent bg-clip-text bg-gradient-to-r from-(--bg-secondary) to-purple-500 drop-shadow-sm">Verse
+        Factory</span>
+    </h1>
+
+    <p class="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
+      La plateforme qui vous permet de gérer votre propre usine multidimensionnel. Collectez tous les éléments et enrichissez vous !
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
+      <button
+        class="px-8 py-4 rounded-2xl text-white font-bold text-lg shadow-xl shadow-purple-500/20 hover:shadow-2xl hover:shadow-purple-500/40 hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto bg-(--bg-secondary) hover:cursor-pointer">
+        Commencer à jouer
+      </button>
+      <button (click)="playIfLoggedIn()"
+        class="px-8 py-4 rounded-2xl bg-white/80 backdrop-blur-sm text-gray-800 font-bold text-lg border border-gray-200 shadow-sm hover:bg-gray-50 hover:border-gray-300 hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto flex items-center justify-center gap-2 group hover:cursor-pointer">
+        Je joue déjà
+        <svg xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 text-gray-400 group-hover:text-gray-800 group-hover:translate-x-1 transition-all duration-300"
+          viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd"
+            d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+            clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
