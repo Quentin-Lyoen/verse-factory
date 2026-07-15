@@ -1,0 +1,14 @@
+<nav>
+  <div class="nav-links">
+    <a routerLink="/">Accueil</a>
+    <a routerLink="/game">Jeu</a>
+  </div>
+  
+  <div class="auth-section">
+    @if (!isLoggedIn) {
+      <button (click)="login()">Connexion</button>
+    } @else {
+      <button (click)="logout()">Déconnexion</button>
+    }
+  </div>
+</nav>
