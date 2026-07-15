@@ -5,10 +5,10 @@
   </div>
   
   <div class="auth-section">
-    @if (!isLoggedIn) {
-      <button (click)="login()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Connexion</button>
+    @if (!authService.isLoggedIn) {
+      <button (click)="authService.login()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Connexion</button>
     } @else {
-      <button (click)="logout()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Déconnexion</button>
+      <button (click)="authService.logout()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Déconnexion</button>
     }
   </div>
 </nav>

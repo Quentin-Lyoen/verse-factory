@@ -1,6 +1,6 @@
 import { Component, inject } from "@angular/core";
-import { KeycloakService } from "../../core/auth/keycloak.service";
 import { RouterLink } from "@angular/router";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
     selector: "app-navigation-bar",
@@ -9,17 +9,5 @@ import { RouterLink } from "@angular/router";
 })
 
 export class NavigationBarComponent {
-    private keycloakService = inject(KeycloakService);
-
-    get isLoggedIn(): boolean {
-        return this.keycloakService.isLoggedIn();
-    }
-
-    login(): void {
-        this.keycloakService.login();
-    }
-
-    logout(): void {
-        this.keycloakService.logout();
-    }
+    public authService = inject(AuthService);
 }
