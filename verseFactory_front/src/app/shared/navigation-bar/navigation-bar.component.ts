@@ -1,11 +1,10 @@
-import { Component, inject, input } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { KeycloakService } from "../../core/auth/keycloak.service";
 import { RouterLink } from "@angular/router";
 
 @Component({
     selector: "app-navigation-bar",
     templateUrl: "./navigation-bar.component.html",
-    styleUrls: ['./navigation-bar.component.scss'],
     imports: [RouterLink]
 })
 

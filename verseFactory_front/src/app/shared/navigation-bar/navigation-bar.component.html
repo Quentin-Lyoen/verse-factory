@@ -1,14 +1,14 @@
-<nav>
-  <div class="nav-links">
-    <a routerLink="/">Accueil</a>
-    <a routerLink="/game">Jeu</a>
+<nav class="flex justify-between pt-[1.25rem] pb-[1.25rem] pl-[3rem] pr-[3rem] bg-[#B057CF]">
+  <div class="flex gap-[2rem]">
+    <a routerLink="/" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Accueil</a>
+    <a routerLink="/game" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Jeu</a>
   </div>
   
   <div class="auth-section">
     @if (!isLoggedIn) {
-      <button (click)="login()">Connexion</button>
+      <button (click)="login()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Connexion</button>
     } @else {
-      <button (click)="logout()">Déconnexion</button>
+      <button (click)="logout()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Déconnexion</button>
     }
   </div>
 </nav>
