@@ -2,6 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
+import { Dialog } from '@angular/cdk/dialog';
+import { CreateAccountComponent } from '../../shared/create-account/create-account.component';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +13,7 @@ export class HomeComponent implements OnInit {
   private titleService = inject(Title);
   private metaService = inject(Meta);
   private router = inject(Router);
+  private dialog = inject(Dialog);
   public authService = inject(AuthService);
 
   ngOnInit() {
@@ -24,5 +27,9 @@ export class HomeComponent implements OnInit {
     } else {
       this.authService.login()
     }
+  }
+
+  public openCreateAccountDialog() {
+    this.dialog.open(CreateAccountComponent);
   }
 }
