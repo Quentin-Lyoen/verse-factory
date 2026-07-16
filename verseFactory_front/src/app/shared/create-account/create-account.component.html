@@ -1,0 +1,13 @@
+<form (submit)="handleSubmit(); $event.preventDefault()" class="bg-(--bg-primary) flex flex-col gap-5 w-xl p-8 rounded-xl">
+    <h1 class="text-center text-2xl text-(--bg-secondary)">Créer un compte</h1>
+    <input [formField]="accountForm.username" class="border-1 border-black focus:border-(--bg-secondary) focus:outline-none rounded-full p-2" type="text"
+        placeholder="Pseudo">
+    <input [formField]="accountForm.email" class="border-1 border-black focus:border-(--bg-secondary) focus:outline-none rounded-full p-2" type="email"
+        placeholder="E-mail">
+    <input [formField]="accountForm.password" class="border-1 border-black focus:border-(--bg-secondary) focus:outline-none rounded-full p-2"
+        type="password" placeholder="Mot de passe">
+    <input [formField]="accountForm.confirmPassword" class="border-1 border-black focus:border-(--bg-secondary) focus:outline-none rounded-full p-2"
+        type="password" placeholder="Confirmer le mot de passe">
+    <button class="cursor-pointer bg-(--bg-secondary) rounded-full p-2 text-white" type="submit">Créer un
+        compte</button>
+</form>
