@@ -5,8 +5,9 @@
     <a routerLink="/patch-notes" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Patch Notes</a>
   </div>
   
-  <div class="auth-section">
+  <div class="flex gap-[2rem]">
     @if (!authService.isLoggedIn) {
+      <button (click)="openCreateAccount()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Créer un compte</button>
       <button (click)="authService.login()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Connexion</button>
     } @else {
       <button (click)="authService.logout()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Déconnexion</button>
