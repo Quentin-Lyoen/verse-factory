@@ -2,26 +2,13 @@ import { Component, inject, OnInit } from "@angular/core";
 import { Title, Meta } from "@angular/platform-browser";
 import { RouterLink } from "@angular/router";
 import { CommonModule } from "@angular/common";
-
-export interface PatchNoteCategory {
-  type: 'feature' | 'improvement' | 'fix';
-  title: string;
-  items: string[];
-}
-
-export interface PatchNote {
-  version: string;
-  date: string;
-  badge?: string;
-  title: string;
-  description: string;
-  categories: PatchNoteCategory[];
-}
+import { PatchNote } from "../../model/patch-note.model";
+import { PatchNoteCardComponent } from "./patch-note-card/patch-note-card.component";
 
 @Component({
     selector: 'app-patch-notes',
     templateUrl: './patch-notes.component.html',
-    imports: [RouterLink, CommonModule],
+    imports: [RouterLink, CommonModule, PatchNoteCardComponent],
 })
 export class PatchNotesComponent implements OnInit {
     private titleService = inject(Title);
