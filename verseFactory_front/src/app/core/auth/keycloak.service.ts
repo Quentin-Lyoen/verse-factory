@@ -22,6 +22,24 @@ export class KeycloakService {
     return this._profile;
   }
 
+  get token(): string | undefined {
+    return this.keycloakInstance?.token;
+  }
+
+  async getToken(): Promise<string | undefined> {
+    if (!this.isBrowser || !this.keycloakInstance || !this.isLoggedIn()) {
+      return undefined;
+    }
+
+    try {
+      await this.keycloakInstance.updateToken(30);
+      return this.keycloakInstance.token;
+    } catch (error) {
+      console.error('Failed to refresh token', error);
+      return undefined;
+    }
+  }
+
   async init(): Promise<boolean> {
     if (!this.isBrowser) {
       return false; // Skip Keycloak init on the server (SSR)

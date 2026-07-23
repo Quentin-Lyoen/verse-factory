@@ -3,6 +3,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { ProtectedComponent } from './pages/protected/protected.component';
 import { authGuard } from './core/auth/auth.guard';
 import { PatchNotesComponent } from './pages/patch-notes/patch-notes.component';
+import { GameComponent } from './pages/game/game.component';
 
 export const routes: Routes = [
   {
@@ -12,7 +13,7 @@ export const routes: Routes = [
   },
   {
     path: 'game',
-    component: ProtectedComponent,
+    component: GameComponent,
     canActivate: [authGuard],
     title: 'Jeu'
   },
