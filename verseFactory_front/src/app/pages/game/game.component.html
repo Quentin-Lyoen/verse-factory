@@ -1,0 +1,29 @@
+<section
+    class="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center bg-(--bg-primary) text-gray-900 pb-20 relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[30rem] h-[30rem] rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-pulse bg-(--bg-secondary) [animation-duration:4s]">
+        </div>
+        <div
+            class="absolute bottom-[-10%] right-[-10%] w-[30rem] h-[30rem] bg-purple-300/60 rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-pulse [animation-duration:5s] [animation-delay:1s]">
+        </div>
+    </div>
+
+    <div class="flex flex-col items-center gap-8">
+        <h1 class="font-bold text-3xl">Bienvenue dans votre <span class="text-(--bg-secondary)">factory</span> !</h1>
+
+        <p class="text-xl">Balance : {{ factory()?.balance }}$</p>
+
+        <div class="grid grid-cols-8 gap-4 border-2 border-(--bg-secondary) rounded-xl p-4">
+            @for (pet of factoryPets(); track pet.id) {
+            <div class="flex flex-col items-center">
+                <h2>{{ pet.name }}</h2>
+                <p>{{ pet.incomePerSecond }}$</p>
+            </div>
+            }
+        </div>
+
+        <button class="hover:cursor-pointer" (click)="addPet()">Ajouter un PET</button>
+        <button class="hover:cursor-pointer" (click)="updateBalance()">Mettre à jour la balance</button>
+    </div>
+</section>
