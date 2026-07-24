@@ -1,15 +1,18 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { FactoryService } from "../../services/factory.service";
 import { PetCardComponent } from "./pages/pet-card/pet-card.component";
+import { Meta, Title } from "@angular/platform-browser";
 
 @Component({
     selector: "app-game",
     templateUrl: "./game.component.html",
     imports: [PetCardComponent,],
 })
-export class GameComponent {
+export class GameComponent implements OnInit {
     private factoryService = inject(FactoryService);
+    private titleService = inject(Title);
+    private metaService = inject(Meta);
     public factory = toSignal(this.factoryService.getCurrentFactory());
     public factoryPets = toSignal(this.factoryService.getCurrentFactoryPets());
 
@@ -20,4 +23,9 @@ export class GameComponent {
     public updateBalance(){
         this.factoryService.updateFactoryBalance();
     }
+
+    ngOnInit() {
+    this.titleService.setTitle('Jeu - VerseFactory');
+    this.metaService.updateTag({ name: 'description', content: 'Découvrez Verse Factory, l\'ultime plateforme pour gérer votre propre usine multidimensionnel.' });
+  }
 }
