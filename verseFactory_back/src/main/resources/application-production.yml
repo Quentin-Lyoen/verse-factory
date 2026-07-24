@@ -6,7 +6,7 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
-    schemas: factory
+    schemas: versefactory
 
 server:
   port: ${PORT:8080}
