@@ -1,16 +1,47 @@
-<nav class="flex justify-between pt-[1.25rem] pb-[1.25rem] pl-[3rem] pr-[3rem] bg-(--bg-secondary)">
-  <div class="flex gap-[2rem]">
-    <a routerLink="/" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Accueil</a>
-    <a routerLink="/patch-notes" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Patch Notes</a>
-    <a routerLink="/game" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Jeu</a>
+<nav class="bg-(--bg-secondary) px-6 py-4">
+  <div class="flex items-center justify-between">
+    <div class="hidden md:flex gap-8 items-center">
+      <a routerLink="/" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Accueil</a>
+      <a routerLink="/patch-notes" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Patch Notes</a>
+      <a routerLink="/game" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Jeu</a>
+    </div>
+
+    <div class="md:hidden text-white font-bold text-lg">
+      <a routerLink="/">Verse Factory</a>
+    </div>
+
+    <div class="hidden md:flex gap-8 items-center">
+      @if (!authService.isLoggedIn) {
+        <button (click)="openCreateAccount()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Créer un compte</button>
+        <button (click)="authService.login()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Connexion</button>
+      } @else {
+        <button (click)="authService.logout()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Déconnexion</button>
+      }
+    </div>
+
+    <button (click)="toggleMenu()" class="md:hidden text-white p-2 focus:outline-none cursor-pointer" aria-label="Toggle menu">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        @if (!isMenuOpen()) {
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        } @else {
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        }
+      </svg>
+    </button>
   </div>
-  
-  <div class="flex gap-[2rem]">
-    @if (!authService.isLoggedIn) {
-      <button (click)="openCreateAccount()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Créer un compte</button>
-      <button (click)="authService.login()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Connexion</button>
-    } @else {
-      <button (click)="authService.logout()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Déconnexion</button>
-    }
-  </div>
+
+  @if (isMenuOpen()) {
+    <div class="md:hidden flex flex-col gap-4 pt-4 pb-2 mt-4 border-t border-white/20">
+      <a routerLink="/" (click)="toggleMenu()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Accueil</a>
+      <a routerLink="/patch-notes" (click)="toggleMenu()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Patch Notes</a>
+      <a routerLink="/game" (click)="toggleMenu()" class="text-white hover:text-gray-200 cursor-pointer hover:underline">Jeu</a>
+      <hr class="border-white/20 my-1" />
+      @if (!authService.isLoggedIn) {
+        <button (click)="openCreateAccount(); toggleMenu()" class="text-white text-left hover:text-gray-200 cursor-pointer hover:underline">Créer un compte</button>
+        <button (click)="authService.login(); toggleMenu()" class="text-white text-left hover:text-gray-200 cursor-pointer hover:underline">Connexion</button>
+      } @else {
+        <button (click)="authService.logout(); toggleMenu()" class="text-white text-left hover:text-gray-200 cursor-pointer hover:underline">Déconnexion</button>
+      }
+    </div>
+  }
 </nav>
