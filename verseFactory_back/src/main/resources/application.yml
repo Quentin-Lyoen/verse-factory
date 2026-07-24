@@ -1,6 +1,6 @@
 spring:
-  profiles:
-    active: local
+  # profiles.active removed: controlled via SPRING_PROFILES_ACTIVE env var
+  # (e.g. "production" on Railway, "local" for local development)
   application:
     name: template-spring-app-back
   datasource:
