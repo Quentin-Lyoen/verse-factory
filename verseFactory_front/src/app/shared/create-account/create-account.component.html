@@ -1,4 +1,4 @@
-<form (submit)="handleSubmit(); $event.preventDefault()" class="bg-(--bg-primary) flex flex-col gap-5 w-xl p-8 rounded-xl">
+<form (submit)="handleSubmit(); $event.preventDefault()" class="bg-(--bg-primary) flex flex-col gap-5 w-full lg:w-xl p-8 rounded-xl">
     <h1 class="text-center text-2xl text-(--bg-secondary)">Créer un compte</h1>
     <input [formField]="accountForm.username" class="border-1 border-black focus:border-(--bg-secondary) focus:outline-none rounded-full p-2" type="text"
         placeholder="Pseudo">
