@@ -14,12 +14,9 @@
 
         <p class="text-xl">Balance : {{ factory()?.balance }}$</p>
 
-        <div class="grid grid-cols-8 gap-4 border-2 border-(--bg-secondary) rounded-xl p-4">
+        <div class="grid grid-cols-10 gap-4 border-2 border-(--bg-secondary) rounded-xl p-4">
             @for (pet of factoryPets(); track pet.id) {
-            <div class="flex flex-col items-center">
-                <h2>{{ pet.name }}</h2>
-                <p>{{ pet.incomePerSecond }}$</p>
-            </div>
+                <app-pet-card [pet]="pet" />
             }
         </div>
 

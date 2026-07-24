@@ -1,10 +1,12 @@
 import { Component, inject } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { FactoryService } from "../../services/factory.service";
+import { PetCardComponent } from "./pages/pet-card/pet-card.component";
 
 @Component({
     selector: "app-game",
     templateUrl: "./game.component.html",
+    imports: [PetCardComponent,],
 })
 export class GameComponent {
     private factoryService = inject(FactoryService);
