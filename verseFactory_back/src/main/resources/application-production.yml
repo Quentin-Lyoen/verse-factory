@@ -9,4 +9,4 @@ spring:
     schemas: factory
 
 server:
-  port: 8081
+  port: ${PORT:8080}
