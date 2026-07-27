@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -60,15 +61,15 @@ public class SecurityConfig {
             HttpSecurity http,
             JwtFilter jwtFilter,
             CustomLogging customLogging,
-            GlobalExceptionHandler exceptionHandler,
-            @Value("${server.servlet.context-path:/api}") String contextPath) throws Exception {
+            GlobalExceptionHandler exceptionHandler) throws Exception {
 
-        http.securityMatcher(String.format("%s/**", contextPath))
+        http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(customLogging, OAuth2LoginAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/v1/common/healthz").permitAll()
                         .requestMatchers("/v1/common/accounts").permitAll()
