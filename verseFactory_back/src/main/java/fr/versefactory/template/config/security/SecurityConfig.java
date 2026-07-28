@@ -71,10 +71,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
-                        .requestMatchers("/v1/common/healthz").permitAll()
-                        .requestMatchers("/v1/common/accounts").permitAll()
-                        .requestMatchers("/v1/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(exceptionHandler))
                 .oauth2Login(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
