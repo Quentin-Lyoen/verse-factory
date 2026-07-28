@@ -2,6 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { KeycloakService } from "../core/auth/keycloak.service";
 import { HttpClient } from "@angular/common/http";
 import { CreateAccountRequest } from "../model/account.model";
+import { environment } from "../../environments/environment";
 
 @Injectable({
     providedIn: "root"
@@ -9,7 +10,7 @@ import { CreateAccountRequest } from "../model/account.model";
 export class AuthService {
     private keycloakService = inject(KeycloakService);
     private http = inject(HttpClient);
-    private url = '/api/v1/common';
+    private url = `${environment.apiUrl}/v1/common`;
 
     public get isLoggedIn(): boolean {
         return this.keycloakService.isLoggedIn();

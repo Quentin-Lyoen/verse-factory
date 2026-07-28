@@ -1,6 +1,7 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import Keycloak from 'keycloak-js';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -46,9 +47,9 @@ export class KeycloakService {
     }
 
     this.keycloakInstance = new Keycloak({
-      url: 'http://localhost:8080',
-      realm: 'versefactory',
-      clientId: 'versefactory-front'
+      url: environment.keycloak.url,
+      realm: environment.keycloak.realm,
+      clientId: environment.keycloak.clientId
     });
 
     try {
