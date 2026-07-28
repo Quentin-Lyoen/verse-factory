@@ -16,19 +16,17 @@ export class PatchNotesComponent implements OnInit {
 
     public patchNotes: PatchNote[] = [
       {
-        version: 'v1.0.0',
-        date: '1 Juillet 2026',
-        badge: 'Lancement',
-        title: 'Lancement Officiel de Verse Factory',
-        description: 'Bienvenue dans la première version officielle de Verse Factory ! Créez, gérez et développez votre usine multidimensionnelle.',
+        version: 'v0.0.1',
+        date: '28 Juillet 2026',
+        badge: 'Version Preview',
+        title: 'Lancement de la Preview de Verse Factory',
+        description: 'Bienvenue dans la première version preview de Verse Factory ! Créez, gérez et développez votre usine multidimensionnelle.',
         categories: [
           {
             type: 'feature',
             title: 'Nouveautés',
             items: [
-              'Déploiement du système de gestion d\'usine et de collecte d\'éléments.',
-              'Système d\'authentification sécurisé et création de compte.',
-              'Interface utilisateur intuitive avec thème personnalisé.'
+              'Première version du jeu disponible pour les testeurs.'
             ]
           }
         ]
