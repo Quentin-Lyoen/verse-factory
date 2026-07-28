@@ -12,6 +12,9 @@ public class KeycloakAdminConfig {
     @Value("${keycloak.admin.server-url}")
     private String serverUrl;
 
+    @Value("${keycloak.admin.auth-realm:master}")
+    private String authRealm;
+
     @Value("${keycloak.admin.realm}")
     private String realm;
 
@@ -28,7 +31,7 @@ public class KeycloakAdminConfig {
     public Keycloak keycloakAdminClient() {
         return KeycloakBuilder.builder()
                 .serverUrl(serverUrl)
-                .realm(realm)
+                .realm(authRealm)
                 .clientId(clientId)
                 .username(username)
                 .password(password)
