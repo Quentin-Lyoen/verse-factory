@@ -3,9 +3,9 @@ spring:
     name: template-spring-app-back
   datasource:
     # On utilise les noms de variables de Railway (PG...), avec tes valeurs locales par défaut
-    url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/${PGDATABASE:template_db}
-    username: ${PGUSER:pgTemplate}
-    password: ${PGPASSWORD:templatePwd}
+    url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/${PGDATABASE:verseFactory_db}
+    username: ${PGUSER:factory}
+    password: ${PGPASSWORD:factory}
   flyway:
     enabled: true
     baseline-on-migrate: true

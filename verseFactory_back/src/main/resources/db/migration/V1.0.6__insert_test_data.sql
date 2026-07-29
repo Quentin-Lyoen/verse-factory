@@ -23,3 +23,20 @@ INSERT INTO versefactory.factory_pet (id, factory_id, pet_id) VALUES
 ('50eebc99-9c0b-4ef8-bb6d-6bb9bd380a22', 'd0eebc99-9c0b-4ef8-bb6d-6bb9bd380a14', '20eebc99-9c0b-4ef8-bb6d-6bb9bd380a19'),
 ('60eebc99-9c0b-4ef8-bb6d-6bb9bd380a23', 'e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a15', '10eebc99-9c0b-4ef8-bb6d-6bb9bd380a18'),
 ('70eebc99-9c0b-4ef8-bb6d-6bb9bd380a24', 'e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a15', '30eebc99-9c0b-4ef8-bb6d-6bb9bd380a20');
+
+--Insertion de données de démonstration (Exemples de boîtes avec 3 pets chacune et leurs pourcentages de chance)
+INSERT INTO versefactory.box (id, name, description, price) VALUES
+('80eebc99-9c0b-4ef8-bb6d-6bb9bd380a25', 'Boîte Débutant', 'Une boîte contenant principalement des pets communs.', 100.00),
+('90eebc99-9c0b-4ef8-bb6d-6bb9bd380a26', 'Boîte Épique', 'Une boîte premium avec une chance d’obtenir un dragon !', 1000.00);
+
+-- Association des pets aux boîtes avec 3 pets par boîte et leurs pourcentages de chance (total = 100%)
+INSERT INTO versefactory.box_pet (id, box_id, pet_id, drop_chance) VALUES
+-- Boîte Débutant (Chien: 60%, Chat: 35%, Licorne: 5%)
+('a1eebc99-9c0b-4ef8-bb6d-6bb9bd380a27', '80eebc99-9c0b-4ef8-bb6d-6bb9bd380a25', '00eebc99-9c0b-4ef8-bb6d-6bb9bd380a17', 60.00),
+('a2eebc99-9c0b-4ef8-bb6d-6bb9bd380a28', '80eebc99-9c0b-4ef8-bb6d-6bb9bd380a25', '10eebc99-9c0b-4ef8-bb6d-6bb9bd380a18', 35.00),
+('a3eebc99-9c0b-4ef8-bb6d-6bb9bd380a29', '80eebc99-9c0b-4ef8-bb6d-6bb9bd380a25', '30eebc99-9c0b-4ef8-bb6d-6bb9bd380a20', 5.00),
+
+-- Boîte Épique (Chat: 40%, Licorne: 45%, Dragon: 15%)
+('a4eebc99-9c0b-4ef8-bb6d-6bb9bd380a30', '90eebc99-9c0b-4ef8-bb6d-6bb9bd380a26', '10eebc99-9c0b-4ef8-bb6d-6bb9bd380a18', 40.00),
+('a5eebc99-9c0b-4ef8-bb6d-6bb9bd380a31', '90eebc99-9c0b-4ef8-bb6d-6bb9bd380a26', '30eebc99-9c0b-4ef8-bb6d-6bb9bd380a20', 45.00),
+('a6eebc99-9c0b-4ef8-bb6d-6bb9bd380a32', '90eebc99-9c0b-4ef8-bb6d-6bb9bd380a26', '20eebc99-9c0b-4ef8-bb6d-6bb9bd380a19', 15.00);

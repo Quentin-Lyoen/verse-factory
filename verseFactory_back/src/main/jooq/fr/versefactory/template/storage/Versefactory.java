@@ -5,9 +5,12 @@ package fr.versefactory.template.storage;
 
 
 import fr.versefactory.template.storage.tables.AppUser;
+import fr.versefactory.template.storage.tables.Box;
+import fr.versefactory.template.storage.tables.BoxPet;
 import fr.versefactory.template.storage.tables.Example;
 import fr.versefactory.template.storage.tables.Factory;
 import fr.versefactory.template.storage.tables.FactoryPet;
+import fr.versefactory.template.storage.tables.FlywaySchemaHistory;
 import fr.versefactory.template.storage.tables.Pet;
 
 import java.util.Arrays;
@@ -46,6 +49,16 @@ public class Versefactory extends SchemaImpl {
     public final AppUser APP_USER = AppUser.APP_USER;
 
     /**
+     * The table <code>versefactory.box</code>.
+     */
+    public final Box BOX = Box.BOX;
+
+    /**
+     * The table <code>versefactory.box_pet</code>.
+     */
+    public final BoxPet BOX_PET = BoxPet.BOX_PET;
+
+    /**
      * The table <code>versefactory.example</code>.
      */
     public final Example EXAMPLE = Example.EXAMPLE;
@@ -59,6 +72,11 @@ public class Versefactory extends SchemaImpl {
      * The table <code>versefactory.factory_pet</code>.
      */
     public final FactoryPet FACTORY_PET = FactoryPet.FACTORY_PET;
+
+    /**
+     * The table <code>versefactory.flyway_schema_history</code>.
+     */
+    public final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
 
     /**
      * The table <code>versefactory.pet</code>.
@@ -82,9 +100,12 @@ public class Versefactory extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.asList(
             AppUser.APP_USER,
+            Box.BOX,
+            BoxPet.BOX_PET,
             Example.EXAMPLE,
             Factory.FACTORY,
             FactoryPet.FACTORY_PET,
+            FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
             Pet.PET
         );
     }

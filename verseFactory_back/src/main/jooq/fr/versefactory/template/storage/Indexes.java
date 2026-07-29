@@ -4,8 +4,10 @@
 package fr.versefactory.template.storage;
 
 
+import fr.versefactory.template.storage.tables.BoxPet;
 import fr.versefactory.template.storage.tables.Factory;
 import fr.versefactory.template.storage.tables.FactoryPet;
+import fr.versefactory.template.storage.tables.FlywaySchemaHistory;
 
 import javax.annotation.processing.Generated;
 
@@ -32,6 +34,9 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
+    public static final Index FLYWAY_SCHEMA_HISTORY_S_IDX = Internal.createIndex(DSL.name("flyway_schema_history_s_idx"), FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, new OrderField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS }, false);
+    public static final Index IDX_BOX_PET_BOX_ID = Internal.createIndex(DSL.name("idx_box_pet_box_id"), BoxPet.BOX_PET, new OrderField[] { BoxPet.BOX_PET.BOX_ID }, false);
+    public static final Index IDX_BOX_PET_PET_ID = Internal.createIndex(DSL.name("idx_box_pet_pet_id"), BoxPet.BOX_PET, new OrderField[] { BoxPet.BOX_PET.PET_ID }, false);
     public static final Index IDX_FACTORY_PET_FACTORY_ID = Internal.createIndex(DSL.name("idx_factory_pet_factory_id"), FactoryPet.FACTORY_PET, new OrderField[] { FactoryPet.FACTORY_PET.FACTORY_ID }, false);
     public static final Index IDX_FACTORY_PET_PET_ID = Internal.createIndex(DSL.name("idx_factory_pet_pet_id"), FactoryPet.FACTORY_PET, new OrderField[] { FactoryPet.FACTORY_PET.PET_ID }, false);
     public static final Index IDX_FACTORY_USER_ID = Internal.createIndex(DSL.name("idx_factory_user_id"), Factory.FACTORY, new OrderField[] { Factory.FACTORY.USER_ID }, false);
