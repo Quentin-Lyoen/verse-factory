@@ -4,6 +4,7 @@ import { ProtectedComponent } from './pages/protected/protected.component';
 import { authGuard } from './core/auth/auth.guard';
 import { PatchNotesComponent } from './pages/patch-notes/patch-notes.component';
 import { GameComponent } from './pages/game/game.component';
+import { ShopComponent } from './pages/shop/shop.component';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,12 @@ export const routes: Routes = [
     component: GameComponent,
     canActivate: [authGuard],
     title: 'Jeu'
+  },
+  {
+    path: 'shop',
+    component: ShopComponent,
+    canActivate: [authGuard],
+    title: 'Boutique'
   },
   {
     path: 'patch-notes',

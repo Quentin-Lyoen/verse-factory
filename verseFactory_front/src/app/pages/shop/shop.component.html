@@ -16,17 +16,14 @@
 
     <div class="flex flex-col items-center gap-8">
 
-        <h1 class="text-center font-bold text-3xl">Bienvenue dans votre <span class="text-(--bg-secondary)">factory</span> !</h1>
-
-        <p class="text-xl">Balance : {{ factory()?.balance }}$</p>
+        <h1 class="text-center font-bold text-3xl">Bienvenue dans la <span class="text-(--bg-secondary)">boutique</span> !</h1>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-4 border-2 border-(--bg-secondary) rounded-xl p-4">
-            @for (pet of factoryPets(); track pet.id) {
-                <app-pet-card [pet]="pet" />
-            }
+            <div class="flex flex-col items-center gap-2">
+                <h2 class="font-semibold">Boîte en carton</h2>
+                <p>100$</p>
+                <button class="px-3 py-1.5 rounded-lg border-2 border-(--bg-secondary) text-(--bg-secondary) text-sm font-semibold hover:bg-(--bg-secondary) hover:text-white transition cursor-pointer">Acheter</button>
+            </div>
         </div>
-
-        <button class="px-4 py-2 rounded-lg border-2 border-(--bg-secondary) text-(--bg-secondary) font-semibold hover:bg-(--bg-secondary) hover:text-white transition cursor-pointer" (click)="addPet()">Ajouter un PET</button>
-        <button class="px-4 py-2 rounded-lg border-2 border-(--bg-secondary) text-(--bg-secondary) font-semibold hover:bg-(--bg-secondary) hover:text-white transition cursor-pointer" (click)="updateBalance()">Mettre à jour la balance</button>
     </div>
 </section>

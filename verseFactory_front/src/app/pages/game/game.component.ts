@@ -3,11 +3,12 @@ import { toSignal } from "@angular/core/rxjs-interop";
 import { FactoryService } from "../../services/factory.service";
 import { PetCardComponent } from "./pages/pet-card/pet-card.component";
 import { Meta, Title } from "@angular/platform-browser";
+import { RouterLink, RouterLinkActive } from "@angular/router";
 
 @Component({
     selector: "app-game",
     templateUrl: "./game.component.html",
-    imports: [PetCardComponent,],
+    imports: [PetCardComponent, RouterLink, RouterLinkActive],
 })
 export class GameComponent implements OnInit {
     private factoryService = inject(FactoryService);
