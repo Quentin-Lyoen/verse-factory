@@ -1,8 +1,8 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://verse-factory-production.up.railway.app/api',
+  apiUrl: 'http://localhost:8081/api',
   keycloak: {
-    url: 'https://keycloak-production-581d.up.railway.app',
+    url: 'http://localhost:8080',
     realm: 'versefactory',
     clientId: 'versefactory-front'
   }
