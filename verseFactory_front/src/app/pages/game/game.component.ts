@@ -4,11 +4,12 @@ import { FactoryService } from "../../services/factory.service";
 import { PetCardComponent } from "./pages/pet-card/pet-card.component";
 import { Meta, Title } from "@angular/platform-browser";
 import { RouterLink, RouterLinkActive } from "@angular/router";
+import { GameMenuComponent } from "../../shared/game-menu/game-menu.component";
 
 @Component({
     selector: "app-game",
     templateUrl: "./game.component.html",
-    imports: [PetCardComponent, RouterLink, RouterLinkActive],
+    imports: [PetCardComponent, GameMenuComponent],
 })
 export class GameComponent implements OnInit {
     private factoryService = inject(FactoryService);

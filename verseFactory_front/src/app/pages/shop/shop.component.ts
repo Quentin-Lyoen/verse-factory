@@ -1,11 +1,12 @@
 import { Component, inject, OnInit } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
 import { RouterLink, RouterLinkActive } from "@angular/router";
+import { GameMenuComponent } from "../../shared/game-menu/game-menu.component";
 
 @Component({
     selector: 'app-shop',
     templateUrl: './shop.component.html',
-    imports: [RouterLink, RouterLinkActive],
+    imports: [GameMenuComponent],
 })
 export class ShopComponent implements OnInit {
     private titleService = inject(Title);
