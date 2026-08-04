@@ -25,6 +25,14 @@ export class FactoryService {
         );
     }
 
+    public refreshFactory(): void {
+        this.factoryRefresh.next();
+    }
+
+    public refreshPets(): void {
+        this.petRefresh.next();
+    }
+
     public addPetInFactory(petId: string): void{
         this.http.post<Pet>(`${this.url}/pets`, { petId }).subscribe({
             next: () => {

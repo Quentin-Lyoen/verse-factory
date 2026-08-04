@@ -5,6 +5,7 @@ import { GameMenuComponent } from "../../shared/game-menu/game-menu.component";
 import { ShopCardComponent } from "./pages/shop-card/shop-card.component";
 import { ShopService } from "../../services/shop.service";
 import { toSignal } from "@angular/core/rxjs-interop";
+import { FactoryService } from "../../services/factory.service";
 
 @Component({
     selector: 'app-shop',
@@ -15,8 +16,10 @@ export class ShopComponent implements OnInit {
     private titleService = inject(Title);
     private metaService = inject(Meta);
     private shopService = inject(ShopService);
+    private factoryService = inject(FactoryService);
 
     public boxes = toSignal(this.shopService.getBoxes());
+    public factory = toSignal(this.factoryService.getCurrentFactory());
     
     ngOnInit() {
         this.titleService.setTitle('Boutique - VerseFactory');

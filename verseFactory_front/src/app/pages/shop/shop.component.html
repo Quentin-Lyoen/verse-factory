@@ -15,6 +15,8 @@
 
         <h1 class="text-center font-bold text-3xl">Bienvenue dans la <span class="text-(--bg-secondary)">boutique</span> !</h1>
 
+        <p class="text-xl">Balance : {{ factory()?.balance }}$</p>
+
         <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-4 border-2 border-(--bg-secondary) rounded-xl p-4">
             @for (boxe of boxes(); track boxe.id) {
                 <app-shop-card [boxe]="boxe" />
