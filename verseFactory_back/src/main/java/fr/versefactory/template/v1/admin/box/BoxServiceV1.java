@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -42,6 +43,20 @@ public class BoxServiceV1 extends TemplateServiceV1 {
     public PetDto openBox(UUID userId, UUID boxId) {
         BoxRepresentationV1 boxRepresentation = repository.findById(boxId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        FactoryRepresentationV1 factoryRepresentation = factoryRepository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        BigDecimal price = boxRepresentation.getBox().getPrice();
+        BigDecimal currentBalance = factoryRepresentation.getFactory().getBalance() != null
+                ? factoryRepresentation.getFactory().getBalance()
+                : BigDecimal.ZERO;
+
+        if (price != null && price.compareTo(BigDecimal.ZERO) > 0) {
+            if (currentBalance.compareTo(price) < 0) {
+                throw new BadRequestException(ErrorMessages.BAD_REQUEST_INSUFFICIENT_BALANCE);
+            }
+        }
 
         List<BoxPetDropRepresentationV1> drops = repository.findPetsByBoxId(boxId);
         if (drops.isEmpty()) {
@@ -76,10 +91,12 @@ public class BoxServiceV1 extends TemplateServiceV1 {
         PetRepresentationV1 petRepresentation = petRepository.findById(wonPetId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
 
-        FactoryRepresentationV1 factoryRepresentation = factoryRepository.findByUserId(userId)
-                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
-
         petRepository.addPetToFactory(factoryRepresentation.getFactory().getId(), petRepresentation.getPet().getId());
+
+        if (price != null && price.compareTo(BigDecimal.ZERO) > 0) {
+            BigDecimal newBalance = currentBalance.subtract(price);
+            factoryRepository.updateBalance(factoryRepresentation.getFactory().getId(), newBalance);
+        }
 
         return petMapper.toDto(petRepresentation);
     }
