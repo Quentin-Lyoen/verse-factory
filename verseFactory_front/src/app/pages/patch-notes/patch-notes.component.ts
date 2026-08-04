@@ -16,7 +16,7 @@ export class PatchNotesComponent implements OnInit {
 
     public patchNotes: PatchNote[] = [
       {
-        version: 'v0.0.2',
+        version: 'v0.1.0',
         date: '04 Août 2026',
         badge: 'Mise à jour',
         title: 'Mise à jour du shop',
