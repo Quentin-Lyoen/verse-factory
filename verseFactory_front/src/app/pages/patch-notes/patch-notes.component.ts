@@ -16,6 +16,25 @@ export class PatchNotesComponent implements OnInit {
 
     public patchNotes: PatchNote[] = [
       {
+        version: 'v0.0.2',
+        date: '04 Août 2026',
+        badge: 'Mise à jour',
+        title: 'Mise à jour du shop',
+        description: 'La boutique de boîte vient d\'être ajoutée, il est maintenant possible d\'acheter des boîtes pour obtenir des pets.',
+        categories: [
+          {
+            type: 'feature',
+            title: 'Nouveautés',
+            items: [
+              'Ajout de la boutique.',
+              `Possibilité d'acheter une boîte pour obtenir un pet.`,
+              'Boîte débutant : Chien, Chat et Licorne',
+              'Boîte épique : Chat, Licorne et Dragon'
+            ]
+          }
+        ]
+      },
+      {
         version: 'v0.0.1',
         date: '28 Juillet 2026',
         badge: 'Version Preview',
@@ -30,7 +49,7 @@ export class PatchNotesComponent implements OnInit {
             ]
           }
         ]
-      }
+      },
     ];
 
     ngOnInit() {
