@@ -27,6 +27,7 @@ export class PatchNotesComponent implements OnInit {
             title: 'Corrections',
             items: [
               '- Changement de la page de connexion pour correspondre au reste du site.',
+              '- La bar de navigation reste afficher à l\'écran même quand on défile vers le bas.'
             ]
           },
           {
