@@ -106,6 +106,75 @@ public interface BoxesApi {
 
 
     /**
+     * GET /boxes/{id}/pets : Get all pets in a box by ID
+     *
+     * @param id  (required)
+     * @return OK (status code 200)
+     *         or Non authentifié (status code 401)
+     *         or Non autorisé (status code 403)
+     *         or Ressource introuvable (status code 404)
+     */
+    @Operation(
+        operationId = "getPetsByBoxId",
+        summary = "Get all pets in a box by ID",
+        tags = { "Box" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "OK", content = {
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = PetDto.class)))
+            }),
+            @ApiResponse(responseCode = "401", description = "Non authentifié", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "Non autorisé", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "Ressource introuvable", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            })
+        },
+        security = {
+            @SecurityRequirement(name = "OAuth")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/boxes/{id}/pets",
+        produces = { "application/json" }
+    )
+    
+    default ResponseEntity<List<PetDto>> getPetsByBoxId(
+        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") UUID id
+    ) throws Exception {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "[ { \"baseCost\" : 6.027456183070403, \"name\" : \"name\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"rarity\" : \"rarity\", \"incomePerSecond\" : 0.8008281904610115 }, { \"baseCost\" : 6.027456183070403, \"name\" : \"name\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"rarity\" : \"rarity\", \"incomePerSecond\" : 0.8008281904610115 } ]";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"path\" : \"path\", \"error\" : \"error\", \"message\" : \"message\", \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\", \"status\" : 1 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"path\" : \"path\", \"error\" : \"error\", \"message\" : \"message\", \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\", \"status\" : 1 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"path\" : \"path\", \"error\" : \"error\", \"message\" : \"message\", \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\", \"status\" : 1 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
      * POST /boxes/{id}/open : Open a box by ID and return the won pet based on drop chance
      *
      * @param id  (required)

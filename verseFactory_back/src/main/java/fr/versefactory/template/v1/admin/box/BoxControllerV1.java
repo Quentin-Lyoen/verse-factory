@@ -31,4 +31,10 @@ public class BoxControllerV1 extends AdminControllerV1 implements BoxesApi {
                 .getPrincipal();
         return ResponseEntity.ok(service.openBox(userDetails.getKeycloakId(), id));
     }
+
+    @Override
+    public ResponseEntity<List<PetDto>> getPetsByBoxId(UUID id) throws Exception {
+        return ResponseEntity.ok(service.getPetsByBoxId(id));
+    }
 }
+
