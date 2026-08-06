@@ -26,4 +26,8 @@ export class ShopService {
             })
         );
     }
-}
+
+    public getPetsByBoxId(id: string): Observable<Pet[]> {
+        return this.http.get<Pet[]>(`${this.url}/${id}/pets`);
+    }
+}

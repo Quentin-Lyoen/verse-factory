@@ -35,6 +35,7 @@ export class PatchNotesComponent implements OnInit {
             title: 'Nouveautés',
             items: [
               '- Ajout d\'images pour illustrer les boîtes de la boutique.',
+              '- Ajout de la pop-up d\'informations sur les boîtes de la boutique.'
             ]
           }
         ]
