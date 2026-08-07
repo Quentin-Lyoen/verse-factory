@@ -17,7 +17,7 @@ export class PatchNotesComponent implements OnInit {
     public patchNotes: PatchNote[] = [
       {
         version: 'v0.1.1',
-        date: '05 Août 2026',
+        date: '07 Août 2026',
         badge: 'Corrections',
         title: 'Correction de bugs',
         description: 'Correction de bugs mineurs et d\'autres petits ajouts.',
@@ -35,7 +35,8 @@ export class PatchNotesComponent implements OnInit {
             title: 'Nouveautés',
             items: [
               '- Ajout d\'images pour illustrer les boîtes de la boutique.',
-              '- Ajout de la pop-up d\'informations sur les boîtes de la boutique.'
+              '- Ajout de la pop-up d\'informations sur les boîtes de la boutique.',
+              '- Possibilité de retirer un pet de la factory.',
             ]
           }
         ]
