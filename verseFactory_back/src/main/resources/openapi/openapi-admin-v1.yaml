@@ -115,7 +115,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/PetDto'
+                  $ref: '#/components/schemas/FactoryPetDto'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -144,6 +144,30 @@ paths:
                 $ref: '#/components/schemas/PetDto'
         '400':
           $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /factory/pets/{id}:
+    delete:
+      tags:
+        - Factory
+      summary: Delete a pet from the factory of the connected user by factory_pet ID
+      operationId: deletePetFromConnectedUserFactory
+      security:
+        - OAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: No Content
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -283,6 +307,32 @@ components:
           type: number
         baseCost:
           type: number
+
+    FactoryPetDto:
+      type: object
+      required:
+        - id
+        - petId
+        - name
+        - rarity
+      properties:
+        id:
+          type: string
+          format: uuid
+        petId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        rarity:
+          type: string
+        incomePerSecond:
+          type: number
+        baseCost:
+          type: number
+        acquiredAt:
+          type: string
+          format: date-time
 
     AddPetToFactoryRequest:
       type: object

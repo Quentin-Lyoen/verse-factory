@@ -1,6 +1,7 @@
 package fr.versefactory.template.v1.admin.factory;
 
 import fr.versefactory.template.v1.admin.openapi.payload.FactoryDto;
+import fr.versefactory.template.v1.admin.openapi.payload.FactoryPetDto;
 import fr.versefactory.template.v1.admin.openapi.payload.PetDto;
 import java.util.List;
 import fr.versefactory.template.config.security.TestSecurityConfig;
@@ -29,124 +30,130 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class FactoryControllerV1Test {
 
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @MockitoBean
-    private FactoryServiceV1 service;
+        @MockitoBean
+        private FactoryServiceV1 service;
 
-    @Test
-    void getConnectedUserFactory_shouldReturnFactory_whenAuthenticated() throws Exception {
-        UUID userId = UUID.randomUUID();
-        UUID factoryId = UUID.randomUUID();
-        FactoryDto factoryDto = new FactoryDto(factoryId, userId, BigDecimal.valueOf(150.0));
+        @Test
+        void getConnectedUserFactory_shouldReturnFactory_whenAuthenticated() throws Exception {
+                UUID userId = UUID.randomUUID();
+                UUID factoryId = UUID.randomUUID();
+                FactoryDto factoryDto = new FactoryDto(factoryId, userId, BigDecimal.valueOf(150.0));
 
-        UserDetailsImpl principal = UserDetailsImpl.builder()
-                .keycloakId(userId)
-                .username("testuser")
-                .build();
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
+                UserDetailsImpl principal = UserDetailsImpl.builder()
+                                .keycloakId(userId)
+                                .username("testuser")
+                                .build();
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, null,
+                                principal.getAuthorities());
 
-        when(service.getFactoryByUserId(userId)).thenReturn(factoryDto);
+                when(service.getFactoryByUserId(userId)).thenReturn(factoryDto);
 
-        mockMvc.perform(get("/v1/admin/factory")
-                        .with(authentication(auth))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(factoryId.toString()))
-                .andExpect(jsonPath("$.userId").value(userId.toString()))
-                .andExpect(jsonPath("$.balance").value(150.0));
+                mockMvc.perform(get("/v1/admin/factory")
+                                .with(authentication(auth))
+                                .accept(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(jsonPath("$.id").value(factoryId.toString()))
+                                .andExpect(jsonPath("$.userId").value(userId.toString()))
+                                .andExpect(jsonPath("$.balance").value(150.0));
 
-        verify(service, times(1)).getFactoryByUserId(userId);
-    }
+                verify(service, times(1)).getFactoryByUserId(userId);
+        }
 
-    @Test
-    void getConnectedUserFactoryPets_shouldReturnPetsList_whenAuthenticated() throws Exception {
-        UUID userId = UUID.randomUUID();
-        UUID petId1 = UUID.randomUUID();
-        PetDto pet1 = new PetDto(petId1, "Chien", "COMMON");
-        pet1.setIncomePerSecond(BigDecimal.valueOf(1.5));
-        pet1.setBaseCost(BigDecimal.valueOf(50.0));
+        @Test
+        void getConnectedUserFactoryPets_shouldReturnPetsList_whenAuthenticated() throws Exception {
+                UUID userId = UUID.randomUUID();
+                UUID factoryPetId = UUID.randomUUID();
+                UUID petId = UUID.randomUUID();
+                FactoryPetDto pet1 = new FactoryPetDto(factoryPetId, petId, "Chien", "COMMON");
+                pet1.setIncomePerSecond(BigDecimal.valueOf(1.5));
+                pet1.setBaseCost(BigDecimal.valueOf(50.0));
 
-        UserDetailsImpl principal = UserDetailsImpl.builder()
-                .keycloakId(userId)
-                .username("testuser")
-                .build();
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
+                UserDetailsImpl principal = UserDetailsImpl.builder()
+                                .keycloakId(userId)
+                                .username("testuser")
+                                .build();
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, null,
+                                principal.getAuthorities());
 
-        when(service.getPetsByFactoryUserId(userId)).thenReturn(List.of(pet1));
+                when(service.getPetsByFactoryUserId(userId)).thenReturn(List.of(pet1));
 
-        mockMvc.perform(get("/v1/admin/factory/pets")
-                        .with(authentication(auth))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.size()").value(1))
-                .andExpect(jsonPath("$[0].id").value(petId1.toString()))
-                .andExpect(jsonPath("$[0].name").value("Chien"))
-                .andExpect(jsonPath("$[0].rarity").value("COMMON"))
-                .andExpect(jsonPath("$[0].incomePerSecond").value(1.5))
-                .andExpect(jsonPath("$[0].baseCost").value(50.0));
+                mockMvc.perform(get("/v1/admin/factory/pets")
+                                .with(authentication(auth))
+                                .accept(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(jsonPath("$.size()").value(1))
+                                .andExpect(jsonPath("$[0].id").value(factoryPetId.toString()))
+                                .andExpect(jsonPath("$[0].petId").value(petId.toString()))
+                                .andExpect(jsonPath("$[0].name").value("Chien"))
+                                .andExpect(jsonPath("$[0].rarity").value("COMMON"))
+                                .andExpect(jsonPath("$[0].incomePerSecond").value(1.5))
+                                .andExpect(jsonPath("$[0].baseCost").value(50.0));
 
-        verify(service, times(1)).getPetsByFactoryUserId(userId);
-    }
+                verify(service, times(1)).getPetsByFactoryUserId(userId);
+        }
 
-    @Test
-    void addPetToConnectedUserFactory_shouldAddPetAndReturnCreated_whenAuthenticated() throws Exception {
-        UUID userId = UUID.randomUUID();
-        UUID petId = UUID.randomUUID();
-        PetDto petDto = new PetDto(petId, "Chien", "COMMON");
-        petDto.setIncomePerSecond(BigDecimal.valueOf(1.5));
-        petDto.setBaseCost(BigDecimal.valueOf(50.0));
+        @Test
+        void addPetToConnectedUserFactory_shouldAddPetAndReturnCreated_whenAuthenticated() throws Exception {
+                UUID userId = UUID.randomUUID();
+                UUID petId = UUID.randomUUID();
+                PetDto petDto = new PetDto(petId, "Chien", "COMMON");
+                petDto.setIncomePerSecond(BigDecimal.valueOf(1.5));
+                petDto.setBaseCost(BigDecimal.valueOf(50.0));
 
-        UserDetailsImpl principal = UserDetailsImpl.builder()
-                .keycloakId(userId)
-                .username("testuser")
-                .build();
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
+                UserDetailsImpl principal = UserDetailsImpl.builder()
+                                .keycloakId(userId)
+                                .username("testuser")
+                                .build();
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, null,
+                                principal.getAuthorities());
 
-        when(service.addPetToFactory(userId, petId)).thenReturn(petDto);
+                when(service.addPetToFactory(userId, petId)).thenReturn(petDto);
 
-        mockMvc.perform(post("/v1/admin/factory/pets")
-                        .with(authentication(auth))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"petId\":\"" + petId.toString() + "\"}")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(petId.toString()))
-                .andExpect(jsonPath("$.name").value("Chien"))
-                .andExpect(jsonPath("$.rarity").value("COMMON"))
-                .andExpect(jsonPath("$.incomePerSecond").value(1.5))
-                .andExpect(jsonPath("$.baseCost").value(50.0));
+                mockMvc.perform(post("/v1/admin/factory/pets")
+                                .with(authentication(auth))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"petId\":\"" + petId.toString() + "\"}")
+                                .accept(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isCreated())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(jsonPath("$.id").value(petId.toString()))
+                                .andExpect(jsonPath("$.name").value("Chien"))
+                                .andExpect(jsonPath("$.rarity").value("COMMON"))
+                                .andExpect(jsonPath("$.incomePerSecond").value(1.5))
+                                .andExpect(jsonPath("$.baseCost").value(50.0));
 
-        verify(service, times(1)).addPetToFactory(userId, petId);
-    }
+                verify(service, times(1)).addPetToFactory(userId, petId);
+        }
 
-    @Test
-    void updateConnectedUserFactoryBalance_shouldReturnUpdatedFactory_whenAuthenticated() throws Exception {
-        UUID userId = UUID.randomUUID();
-        UUID factoryId = UUID.randomUUID();
-        FactoryDto factoryDto = new FactoryDto(factoryId, userId, BigDecimal.valueOf(150.0));
+        @Test
+        void updateConnectedUserFactoryBalance_shouldReturnUpdatedFactory_whenAuthenticated() throws Exception {
+                UUID userId = UUID.randomUUID();
+                UUID factoryId = UUID.randomUUID();
+                FactoryDto factoryDto = new FactoryDto(factoryId, userId, BigDecimal.valueOf(150.0));
 
-        UserDetailsImpl principal = UserDetailsImpl.builder()
-                .keycloakId(userId)
-                .username("testuser")
-                .build();
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
+                UserDetailsImpl principal = UserDetailsImpl.builder()
+                                .keycloakId(userId)
+                                .username("testuser")
+                                .build();
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, null,
+                                principal.getAuthorities());
 
-        when(service.updateFactoryBalance(userId)).thenReturn(factoryDto);
+                when(service.updateFactoryBalance(userId)).thenReturn(factoryDto);
 
-        mockMvc.perform(post("/v1/admin/factory/update-balance")
-                        .with(authentication(auth))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(factoryId.toString()))
-                .andExpect(jsonPath("$.userId").value(userId.toString()))
-                .andExpect(jsonPath("$.balance").value(150.0));
+                mockMvc.perform(post("/v1/admin/factory/update-balance")
+                                .with(authentication(auth))
+                                .accept(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(jsonPath("$.id").value(factoryId.toString()))
+                                .andExpect(jsonPath("$.userId").value(userId.toString()))
+                                .andExpect(jsonPath("$.balance").value(150.0));
 
-        verify(service, times(1)).updateFactoryBalance(userId);
-    }
+                verify(service, times(1)).updateFactoryBalance(userId);
+        }
 }

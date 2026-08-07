@@ -7,6 +7,7 @@ import fr.versefactory.template.exception.NotFoundException;
 import fr.versefactory.template.exception.ErrorMessages;
 import fr.versefactory.template.v1.admin.pet.PetRepositoryV1;
 import fr.versefactory.template.v1.admin.pet.PetMapperV1;
+import fr.versefactory.template.v1.admin.openapi.payload.FactoryPetDto;
 import fr.versefactory.template.v1.admin.openapi.payload.PetDto;
 import fr.versefactory.template.v1.admin.pet.representations.PetRepresentationV1;
 import lombok.RequiredArgsConstructor;
@@ -33,12 +34,10 @@ public class FactoryServiceV1 extends TemplateServiceV1 {
         return mapper.toDto(representation);
     }
 
-    public List<PetDto> getPetsByFactoryUserId(UUID userId) {
+    public List<FactoryPetDto> getPetsByFactoryUserId(UUID userId) {
         FactoryRepresentationV1 representation = repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
-        return petRepository.findAllByFactoryId(representation.getFactory().getId()).stream()
-                .map(petMapper::toDto)
-                .collect(Collectors.toList());
+        return petRepository.findFactoryPetsByFactoryId(representation.getFactory().getId());
     }
 
     public PetDto addPetToFactory(UUID userId, UUID petId) {
@@ -77,5 +76,15 @@ public class FactoryServiceV1 extends TemplateServiceV1 {
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
 
         return mapper.toDto(updatedRepresentation);
+    }
+
+    public void deletePetFromFactory(UUID userId, UUID factoryPetId) {
+        FactoryRepresentationV1 factoryRepresentation = repository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        boolean removed = petRepository.removePetFromFactory(factoryPetId, factoryRepresentation.getFactory().getId());
+        if (!removed) {
+            throw new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE);
+        }
     }
 }
