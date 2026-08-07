@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, switchMap } from "rxjs";
-import { Factory, Pet } from "../model/factory.model";
+import { Factory, FactoryPet, Pet } from "../model/factory.model";
 import { environment } from "../../environments/environment";
 
 @Injectable({
@@ -19,9 +19,9 @@ export class FactoryService {
         );
     }
 
-    public getCurrentFactoryPets(): Observable<Pet[]> {
+    public getCurrentFactoryPets(): Observable<FactoryPet[]> {
         return this.petRefresh.pipe(
-            switchMap(() => this.http.get<Pet[]>(`${this.url}/pets`))
+            switchMap(() => this.http.get<FactoryPet[]>(`${this.url}/pets`))
         );
     }
 
@@ -45,6 +45,14 @@ export class FactoryService {
         this.http.post<Factory>(`${this.url}/update-balance`, {}).subscribe({
             next: () => {
                 this.factoryRefresh.next();
+            }
+        });
+    }
+
+    public deletePetFromFactory(factoryPetId: string): void {
+        this.http.delete<void>(`${this.url}/pets/${factoryPetId}`).subscribe({
+            next: () => {
+                this.petRefresh.next();
             }
         });
     }

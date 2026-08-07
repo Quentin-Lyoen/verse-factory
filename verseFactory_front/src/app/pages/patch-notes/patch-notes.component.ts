@@ -16,6 +16,32 @@ export class PatchNotesComponent implements OnInit {
 
     public patchNotes: PatchNote[] = [
       {
+        version: 'v0.1.1',
+        date: '07 Août 2026',
+        badge: 'Corrections',
+        title: 'Correction de bugs',
+        description: 'Correction de bugs mineurs et d\'autres petits ajouts.',
+        categories: [
+          {
+            type: 'fix',
+            title: 'Corrections',
+            items: [
+              '- Changement de la page de connexion pour correspondre au reste du site.',
+              '- La bar de navigation reste afficher à l\'écran même quand on défile vers le bas.'
+            ]
+          },
+          {
+            type: 'feature',
+            title: 'Nouveautés',
+            items: [
+              '- Ajout d\'images pour illustrer les boîtes de la boutique.',
+              '- Ajout de la pop-up d\'informations sur les boîtes de la boutique.',
+              '- Possibilité de retirer un pet de la factory.',
+            ]
+          }
+        ]
+      },
+      {
         version: 'v0.1.0',
         date: '04 Août 2026',
         badge: 'Mise à jour',
@@ -26,10 +52,10 @@ export class PatchNotesComponent implements OnInit {
             type: 'feature',
             title: 'Nouveautés',
             items: [
-              'Ajout de la boutique.',
-              `Possibilité d'acheter une boîte pour obtenir un pet.`,
-              'Boîte débutant : Chien, Chat et Licorne',
-              'Boîte épique : Chat, Licorne et Dragon'
+              '- Ajout de la boutique.',
+              '- Possibilité d\'acheter une boîte pour obtenir un pet.',
+              '- Boîte débutant : Chien, Chat et Licorne',
+              '- Boîte épique : Chat, Licorne et Dragon'
             ]
           }
         ]
@@ -45,7 +71,7 @@ export class PatchNotesComponent implements OnInit {
             type: 'feature',
             title: 'Nouveautés',
             items: [
-              'Première version du jeu disponible pour les testeurs.'
+              '- Première version du jeu disponible pour les testeurs.'
             ]
           }
         ]

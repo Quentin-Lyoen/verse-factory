@@ -1,6 +1,7 @@
 package fr.versefactory.template.v1.admin.factory;
 
 import fr.versefactory.template.v1.admin.openapi.payload.FactoryDto;
+import fr.versefactory.template.v1.admin.openapi.payload.FactoryPetDto;
 import fr.versefactory.template.v1.admin.openapi.payload.PetDto;
 import fr.versefactory.template.v1.admin.factory.representations.FactoryRepresentationV1;
 import fr.versefactory.template.v1.admin.pet.PetRepositoryV1;
@@ -70,7 +71,8 @@ class FactoryServiceV1Test {
         UUID userId = UUID.randomUUID();
         when(repository.findByUserId(userId)).thenReturn(Optional.empty());
 
-        assertThrows(fr.versefactory.template.exception.NotFoundException.class, () -> service.getFactoryByUserId(userId));
+        assertThrows(fr.versefactory.template.exception.NotFoundException.class,
+                () -> service.getFactoryByUserId(userId));
 
         verify(repository, times(1)).findByUserId(userId);
         verify(mapper, never()).toDto(any());
@@ -84,28 +86,26 @@ class FactoryServiceV1Test {
         FactoryRecord factoryRecord = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(100.0), now);
         FactoryRepresentationV1 factoryRepresentation = new FactoryRepresentationV1(factoryRecord);
 
+        UUID factoryPetId = UUID.randomUUID();
         UUID petId = UUID.randomUUID();
-        PetRecord petRecord = new PetRecord(petId, "Chien", "COMMON", BigDecimal.valueOf(1.5), BigDecimal.valueOf(50.0));
-        PetRepresentationV1 petRepresentation = new PetRepresentationV1(petRecord);
-        PetDto petDto = new PetDto(petId, "Chien", "COMMON");
-        petDto.setIncomePerSecond(BigDecimal.valueOf(1.5));
-        petDto.setBaseCost(BigDecimal.valueOf(50.0));
+        FactoryPetDto factoryPetDto = new FactoryPetDto(factoryPetId, petId, "Chien", "COMMON");
+        factoryPetDto.setIncomePerSecond(BigDecimal.valueOf(1.5));
+        factoryPetDto.setBaseCost(BigDecimal.valueOf(50.0));
 
         when(repository.findByUserId(userId)).thenReturn(Optional.of(factoryRepresentation));
-        when(petRepository.findAllByFactoryId(factoryId)).thenReturn(List.of(petRepresentation));
-        when(petMapper.toDto(petRepresentation)).thenReturn(petDto);
+        when(petRepository.findFactoryPetsByFactoryId(factoryId)).thenReturn(List.of(factoryPetDto));
 
-        List<PetDto> result = service.getPetsByFactoryUserId(userId);
+        List<FactoryPetDto> result = service.getPetsByFactoryUserId(userId);
 
         assertNotNull(result);
         assertEquals(1, result.size());
-        assertEquals(petId, result.get(0).getId());
+        assertEquals(factoryPetId, result.get(0).getId());
+        assertEquals(petId, result.get(0).getPetId());
         assertEquals("Chien", result.get(0).getName());
         assertEquals("COMMON", result.get(0).getRarity());
 
         verify(repository, times(1)).findByUserId(userId);
-        verify(petRepository, times(1)).findAllByFactoryId(factoryId);
-        verify(petMapper, times(1)).toDto(petRepresentation);
+        verify(petRepository, times(1)).findFactoryPetsByFactoryId(factoryId);
     }
 
     @Test
@@ -113,7 +113,8 @@ class FactoryServiceV1Test {
         UUID userId = UUID.randomUUID();
         when(repository.findByUserId(userId)).thenReturn(Optional.empty());
 
-        assertThrows(fr.versefactory.template.exception.NotFoundException.class, () -> service.getPetsByFactoryUserId(userId));
+        assertThrows(fr.versefactory.template.exception.NotFoundException.class,
+                () -> service.getPetsByFactoryUserId(userId));
 
         verify(repository, times(1)).findByUserId(userId);
         verify(petRepository, never()).findAllByFactoryId(any());
@@ -129,7 +130,8 @@ class FactoryServiceV1Test {
         FactoryRepresentationV1 factoryRepresentation = new FactoryRepresentationV1(factoryRecord);
 
         UUID petId = UUID.randomUUID();
-        PetRecord petRecord = new PetRecord(petId, "Chien", "COMMON", BigDecimal.valueOf(1.5), BigDecimal.valueOf(50.0));
+        PetRecord petRecord = new PetRecord(petId, "Chien", "COMMON", BigDecimal.valueOf(1.5),
+                BigDecimal.valueOf(50.0));
         PetRepresentationV1 petRepresentation = new PetRepresentationV1(petRecord);
         PetDto petDto = new PetDto(petId, "Chien", "COMMON");
 
@@ -155,7 +157,8 @@ class FactoryServiceV1Test {
         UUID petId = UUID.randomUUID();
         when(repository.findByUserId(userId)).thenReturn(Optional.empty());
 
-        assertThrows(fr.versefactory.template.exception.NotFoundException.class, () -> service.addPetToFactory(userId, petId));
+        assertThrows(fr.versefactory.template.exception.NotFoundException.class,
+                () -> service.addPetToFactory(userId, petId));
 
         verify(repository, times(1)).findByUserId(userId);
         verify(petRepository, never()).findById(any());
@@ -175,7 +178,8 @@ class FactoryServiceV1Test {
         when(repository.findByUserId(userId)).thenReturn(Optional.of(factoryRepresentation));
         when(petRepository.findById(petId)).thenReturn(Optional.empty());
 
-        assertThrows(fr.versefactory.template.exception.NotFoundException.class, () -> service.addPetToFactory(userId, petId));
+        assertThrows(fr.versefactory.template.exception.NotFoundException.class,
+                () -> service.addPetToFactory(userId, petId));
 
         verify(repository, times(1)).findByUserId(userId);
         verify(petRepository, times(1)).findById(petId);
@@ -192,11 +196,13 @@ class FactoryServiceV1Test {
         FactoryRepresentationV1 factoryRepresentation = new FactoryRepresentationV1(factoryRecord);
 
         UUID petId1 = UUID.randomUUID();
-        PetRecord petRecord1 = new PetRecord(petId1, "Chien", "COMMON", BigDecimal.valueOf(1.5), BigDecimal.valueOf(50.0));
+        PetRecord petRecord1 = new PetRecord(petId1, "Chien", "COMMON", BigDecimal.valueOf(1.5),
+                BigDecimal.valueOf(50.0));
         PetRepresentationV1 petRepresentation1 = new PetRepresentationV1(petRecord1);
 
         UUID petId2 = UUID.randomUUID();
-        PetRecord petRecord2 = new PetRecord(petId2, "Dragon", "LEGENDARY", BigDecimal.valueOf(10.0), BigDecimal.valueOf(1000.0));
+        PetRecord petRecord2 = new PetRecord(petId2, "Dragon", "LEGENDARY", BigDecimal.valueOf(10.0),
+                BigDecimal.valueOf(1000.0));
         PetRepresentationV1 petRepresentation2 = new PetRepresentationV1(petRecord2);
 
         FactoryRecord updatedRecord = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(111.5), now);
@@ -225,7 +231,8 @@ class FactoryServiceV1Test {
         UUID userId = UUID.randomUUID();
         when(repository.findByUserId(userId)).thenReturn(Optional.empty());
 
-        assertThrows(fr.versefactory.template.exception.NotFoundException.class, () -> service.updateFactoryBalance(userId));
+        assertThrows(fr.versefactory.template.exception.NotFoundException.class,
+                () -> service.updateFactoryBalance(userId));
 
         verify(repository, times(1)).findByUserId(userId);
         verify(petRepository, never()).findAllByFactoryId(any());

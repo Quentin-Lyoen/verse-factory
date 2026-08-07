@@ -1,0 +1,381 @@
+/* ==========================================================================
+   VERSE FACTORY - Keycloak Custom Login Theme
+   Colors: Primary Purple #B057CF, Dark accents, Ambient Glassmorphism
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --vf-primary: #B057CF;
+  --vf-primary-hover: #9b46b9;
+  --vf-primary-gradient: linear-gradient(135deg, #B057CF 0%, #7C3AED 100%);
+  --vf-bg-dark: #0f172a;
+  --vf-card-bg: rgba(255, 255, 255, 0.88);
+  --vf-text-main: #1e293b;
+  --vf-text-muted: #64748b;
+  --vf-border-color: rgba(176, 87, 207, 0.2);
+  --vf-focus-ring: rgba(176, 87, 207, 0.4);
+  --vf-radius: 20px;
+  --vf-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base resets & typography */
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--vf-text-main);
+  background-color: #f8fafc;
+  overflow-x: hidden;
+}
+
+/* Background container with animated gradient blobs */
+body.login-pf {
+  background: #f1f5f9;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+body.login-pf::before {
+  content: '';
+  position: fixed;
+  top: -150px;
+  left: -150px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(176, 87, 207, 0.35) 0%, rgba(124, 58, 237, 0.15) 60%, transparent 80%);
+  filter: blur(60px);
+  animation: pulseBlob1 8s infinite alternate ease-in-out;
+  z-index: 0;
+  pointer-events: none;
+}
+
+body.login-pf::after {
+  content: '';
+  position: fixed;
+  bottom: -150px;
+  right: -150px;
+  width: 550px;
+  height: 550px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(192, 132, 252, 0.3) 0%, rgba(168, 85, 247, 0.1) 60%, transparent 80%);
+  filter: blur(70px);
+  animation: pulseBlob2 10s infinite alternate ease-in-out;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes pulseBlob1 {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.15) translate(40px, 30px); }
+}
+
+@keyframes pulseBlob2 {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.2) translate(-50px, -40px); }
+}
+
+/* Main Keycloak Container Wrapper */
+#kc-container, #kc-container-wrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 460px;
+  padding: 1.5rem;
+  margin: 0 auto;
+}
+
+/* Header & Logo */
+#kc-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+#kc-header-wrapper {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: var(--vf-primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding: 0;
+  text-transform: none;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Card Container (Glassmorphism) */
+.card-pf, #kc-form-card {
+  background: var(--vf-card-bg) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  border-radius: var(--vf-radius) !important;
+  box-shadow: 0 20px 40px -15px rgba(176, 87, 207, 0.2), 0 0 15px rgba(0, 0, 0, 0.03) !important;
+  padding: 2.5rem 2rem !important;
+  margin: 0 auto !important;
+  transition: var(--vf-transition);
+}
+
+.card-pf:hover {
+  box-shadow: 0 25px 50px -12px rgba(176, 87, 207, 0.28) !important;
+}
+
+/* Page Title */
+#kc-page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--vf-text-main);
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 1.75rem;
+}
+
+/* Form Groups & Labels */
+.form-group, .pf-c-form__group {
+  margin-bottom: 1.25rem;
+}
+
+label, .control-label, .pf-c-form__label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.5rem;
+}
+
+/* Form Controls (Inputs) */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+.form-control,
+.pf-c-form-control {
+  width: 100% !important;
+  height: 48px !important;
+  line-height: 48px !important;
+  padding: 0 1.1rem !important;
+  font-size: 0.95rem !important;
+  font-family: inherit !important;
+  color: var(--vf-text-main) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1.5px solid rgba(203, 213, 225, 0.8) !important;
+  border-radius: 12px !important;
+  outline: none !important;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02) !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  vertical-align: middle !important;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+.form-control:focus,
+.pf-c-form-control:focus {
+  border: 1.5px solid var(--vf-primary) !important;
+  border-bottom-width: 1.5px !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 4px var(--vf-focus-ring) !important;
+  outline: none !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+/* Supprimer l'élément pseudo ::after de PatternFly qui provoque un saut de bordure au focus */
+.pf-c-form-control::after,
+.pf-c-form-control:focus::after,
+.pf-c-form-control::before,
+.pf-c-form-control:focus::before {
+  display: none !important;
+  content: none !important;
+  border: none !important;
+}
+
+/* Groupes d'inputs (ex: bouton afficher/masquer le mot de passe) */
+.pf-c-input-group, .input-group {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+.pf-c-input-group .pf-c-form-control {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.pf-c-input-group .pf-c-button,
+.input-group .btn {
+  height: 48px !important;
+  border-top-right-radius: 12px !important;
+  border-bottom-right-radius: 12px !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border: 1.5px solid rgba(203, 213, 225, 0.8) !important;
+  border-left: none !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  margin: 0 !important;
+  padding: 0 1rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Primary Action Button (Login) */
+.btn-primary,
+#kc-login,
+input[type="submit"].btn-primary {
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: #ffffff;
+  background: var(--vf-primary-gradient) !important;
+  border: none !important;
+  border-radius: 14px !important;
+  cursor: pointer;
+  box-shadow: 0 10px 25px -5px rgba(176, 87, 207, 0.4) !important;
+  transition: var(--vf-transition) !important;
+  margin-top: 0.5rem;
+}
+
+.btn-primary:hover,
+#kc-login:hover,
+input[type="submit"].btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px -5px rgba(176, 87, 207, 0.55) !important;
+  opacity: 0.96;
+}
+
+.btn-primary:active,
+#kc-login:active {
+  transform: translateY(0);
+}
+
+/* Form Settings (Remember Me & Forgot Password) */
+#kc-form-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.checkbox label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: var(--vf-text-muted);
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.checkbox input[type="checkbox"] {
+  accent-color: var(--vf-primary);
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Links */
+a {
+  color: var(--vf-primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--vf-transition);
+}
+
+a:hover {
+  color: #7C3AED;
+  text-decoration: underline;
+}
+
+/* Alerts & Messages */
+.alert {
+  padding: 0.9rem 1.1rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.alert-error {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+}
+
+.alert-warning {
+  background-color: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #d97706;
+}
+
+.alert-success {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #16a34a;
+}
+
+.alert-info {
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  color: #0284c7;
+}
+
+/* Registration & Footer Links */
+#kc-registration-container {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(226, 232, 240, 0.8);
+  font-size: 0.9rem;
+  color: var(--vf-text-muted);
+}
+
+#kc-registration a {
+  margin-left: 0.35rem;
+}
+
+/* Social Login Providers */
+#kc-social-providers {
+  margin-top: 1.5rem;
+}
+
+#kc-social-providers ul {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+#kc-social-providers a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  color: var(--vf-text-main);
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+}
+
+#kc-social-providers a:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  text-decoration: none;
+}

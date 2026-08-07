@@ -8,7 +8,9 @@ package fr.versefactory.template.v1.admin.openapi.endpoint;
 import fr.versefactory.template.v1.admin.openapi.payload.AddPetToFactoryRequest;
 import fr.versefactory.template.v1.admin.openapi.payload.ErrorResponse;
 import fr.versefactory.template.v1.admin.openapi.payload.FactoryDto;
+import fr.versefactory.template.v1.admin.openapi.payload.FactoryPetDto;
 import fr.versefactory.template.v1.admin.openapi.payload.PetDto;
+import java.util.UUID;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -126,6 +128,68 @@ public interface FactoryApi {
 
 
     /**
+     * DELETE /factory/pets/{id} : Delete a pet from the factory of the connected user by factory_pet ID
+     *
+     * @param id  (required)
+     * @return No Content (status code 204)
+     *         or Non authentifié (status code 401)
+     *         or Non autorisé (status code 403)
+     *         or Ressource introuvable (status code 404)
+     */
+    @Operation(
+        operationId = "deletePetFromConnectedUserFactory",
+        summary = "Delete a pet from the factory of the connected user by factory_pet ID",
+        tags = { "Factory" },
+        responses = {
+            @ApiResponse(responseCode = "204", description = "No Content"),
+            @ApiResponse(responseCode = "401", description = "Non authentifié", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "Non autorisé", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "Ressource introuvable", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            })
+        },
+        security = {
+            @SecurityRequirement(name = "OAuth")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.DELETE,
+        value = "/factory/pets/{id}",
+        produces = { "application/json" }
+    )
+    
+    default ResponseEntity<Void> deletePetFromConnectedUserFactory(
+        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") UUID id
+    ) throws Exception {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"path\" : \"path\", \"error\" : \"error\", \"message\" : \"message\", \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\", \"status\" : 1 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"path\" : \"path\", \"error\" : \"error\", \"message\" : \"message\", \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\", \"status\" : 1 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"path\" : \"path\", \"error\" : \"error\", \"message\" : \"message\", \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\", \"status\" : 1 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
      * GET /factory : Get factory details of the connected user
      *
      * @return OK (status code 200)
@@ -207,7 +271,7 @@ public interface FactoryApi {
         tags = { "Factory" },
         responses = {
             @ApiResponse(responseCode = "200", description = "OK", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = PetDto.class)))
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FactoryPetDto.class)))
             }),
             @ApiResponse(responseCode = "401", description = "Non authentifié", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
@@ -229,13 +293,13 @@ public interface FactoryApi {
         produces = { "application/json" }
     )
     
-    default ResponseEntity<List<PetDto>> getConnectedUserFactoryPets(
+    default ResponseEntity<List<FactoryPetDto>> getConnectedUserFactoryPets(
         
     ) throws Exception {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"baseCost\" : 6.027456183070403, \"name\" : \"name\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"rarity\" : \"rarity\", \"incomePerSecond\" : 0.8008281904610115 }, { \"baseCost\" : 6.027456183070403, \"name\" : \"name\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"rarity\" : \"rarity\", \"incomePerSecond\" : 0.8008281904610115 } ]";
+                    String exampleString = "[ { \"baseCost\" : 6.027456183070403, \"petId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"name\" : \"name\", \"acquiredAt\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"rarity\" : \"rarity\", \"incomePerSecond\" : 0.8008281904610115 }, { \"baseCost\" : 6.027456183070403, \"petId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"name\" : \"name\", \"acquiredAt\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"rarity\" : \"rarity\", \"incomePerSecond\" : 0.8008281904610115 } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

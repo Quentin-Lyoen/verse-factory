@@ -100,4 +100,14 @@ public class BoxServiceV1 extends TemplateServiceV1 {
 
         return petMapper.toDto(petRepresentation);
     }
+
+    public List<PetDto> getPetsByBoxId(UUID boxId) {
+        repository.findById(boxId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        return repository.findAllPetsByBoxId(boxId).stream()
+                .map(petMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }
+

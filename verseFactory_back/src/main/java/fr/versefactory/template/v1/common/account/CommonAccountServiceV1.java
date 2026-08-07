@@ -60,10 +60,25 @@ public class CommonAccountServiceV1 {
                         .execute();
 
                 // Initialize factory
-                dslContext.insertInto(Tables.FACTORY)
+                var factoryRecord = dslContext.insertInto(Tables.FACTORY)
                         .set(Tables.FACTORY.USER_ID, keycloakId)
                         .set(Tables.FACTORY.BALANCE, BigDecimal.ZERO)
-                        .execute();
+                        .returning(Tables.FACTORY.ID)
+                        .fetchOne();
+
+                if (factoryRecord != null) {
+                    UUID factoryId = factoryRecord.getId();
+                    dslContext.selectFrom(Tables.PET)
+                            .where(Tables.PET.NAME.equalIgnoreCase("Chien"))
+                            .fetchOptional()
+                            .ifPresent(dogPet -> {
+                                dslContext.insertInto(Tables.FACTORY_PET)
+                                        .set(Tables.FACTORY_PET.FACTORY_ID, factoryId)
+                                        .set(Tables.FACTORY_PET.PET_ID, dogPet.getId())
+                                        .execute();
+                                log.info("Assigned default pet 'Chien' (ID: {}) to factory (ID: {}) for user {}", dogPet.getId(), factoryId, keycloakId);
+                            });
+                }
 
                 return keycloakId;
             } else {

@@ -44,6 +44,8 @@ services:
       KC_DB_PASSWORD: keycloak_db_user_password
     ports:
       - 8080:8080
+    volumes:
+      - ./themes/verse-factory:/opt/keycloak/themes/verse-factory
     restart: always
     depends_on:
       - keycloak_db
