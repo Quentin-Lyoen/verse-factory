@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://88.96.63.117:8080/api',
+  apiUrl: 'https://versefactory.duckdns.org/api',
   keycloak: {
-    url: 'http://88.96.63.117:8081',
+    url: 'https://versefactory.duckdns.org',
     realm: 'versefactory',
     clientId: 'versefactory-front'
   }
