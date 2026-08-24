@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://verse-factory-production.up.railway.app/api',
+  apiUrl: 'http://88.96.63.117:8080/api',
   keycloak: {
-    url: 'https://keycloak-production-581d.up.railway.app',
+    url: 'http://88.96.63.117:8081',
     realm: 'versefactory',
     clientId: 'versefactory-front'
   }
