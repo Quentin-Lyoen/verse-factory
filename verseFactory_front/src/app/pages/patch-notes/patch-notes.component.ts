@@ -23,6 +23,13 @@ export class PatchNotesComponent implements OnInit {
         description: 'Plusieurs bugs ont été corrigés et plusieurs ajustements ont été apportés.',
         categories: [
           {
+            type: 'feature',
+            title: 'Nouveautés',
+            items: [
+              '- Affichage des messages d\'erreur lors de la création de compte.'
+            ]
+          },
+          {
             type: 'fix',
             title: 'Corrections',
             items: [
