@@ -1,0 +1,32 @@
+name: Deploiement API VerseFactory
+
+# Quand est-ce que le robot s'active ?
+on:
+  push:
+    branches:
+      - main # (ou master)
+    paths:
+      - 'verseFactory_back/**' # Il ne s'active que si tu as modifié le backend !
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Connexion SSH et mise à jour du serveur
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # 1. On va dans le dossier du code source
+            cd ~/versefactory/code_source
+            
+            # 2. On télécharge les nouveautés depuis GitHub
+            git pull origin main
+            
+            # 3. On remonte dans le dossier de Docker
+            cd ~/versefactory
+            
+            # 4. On demande à Docker de recompiler et redémarrer UNIQUEMENT l'API
+            docker compose up -d --build api
