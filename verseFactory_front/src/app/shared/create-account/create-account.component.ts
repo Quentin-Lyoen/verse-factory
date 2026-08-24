@@ -40,8 +40,17 @@ export class CreateAccountComponent {
             password: password,
         }
 
-        const result = this.authService.createAccount(data);
-
-        if (result.success) this.dialogRef.close();
+        this.authService.createAccount(data).subscribe({
+            next: () => {
+                this.dialogRef.close();
+            },
+            error: (err) => {
+                if (err.status === 409) {
+                    alert('Cette adresse e-mail est déjà utilisée.');
+                } else {
+                    alert('Une erreur est survenue lors de la création du compte.');
+                }
+            }
+        });
     }
 }

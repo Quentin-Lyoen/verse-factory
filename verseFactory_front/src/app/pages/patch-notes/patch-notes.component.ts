@@ -16,6 +16,22 @@ export class PatchNotesComponent implements OnInit {
 
     public patchNotes: PatchNote[] = [
       {
+        version: 'v0.1.2',
+        date: '24 Août 2026',
+        badge: 'Corrections',
+        title: 'Corrections de bugs et ajustements',
+        description: 'Plusieurs bugs ont été corrigés et plusieurs ajustements ont été apportés.',
+        categories: [
+          {
+            type: 'fix',
+            title: 'Corrections',
+            items: [
+              '- Correction de l\'affichage lors de la création de compte.'
+            ]
+          }
+        ]
+      },
+      {
         version: 'v0.1.1',
         date: '07 Août 2026',
         badge: 'Corrections',
