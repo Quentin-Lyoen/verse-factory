@@ -3,6 +3,7 @@ package fr.versefactory.template.v1.admin.factory;
 import fr.versefactory.template.v1.core.TemplateServiceV1;
 import fr.versefactory.template.v1.admin.openapi.payload.FactoryDto;
 import fr.versefactory.template.v1.admin.factory.representations.FactoryRepresentationV1;
+import fr.versefactory.template.exception.BadRequestException;
 import fr.versefactory.template.exception.NotFoundException;
 import fr.versefactory.template.exception.ErrorMessages;
 import fr.versefactory.template.v1.admin.pet.PetRepositoryV1;
@@ -43,6 +44,15 @@ public class FactoryServiceV1 extends TemplateServiceV1 {
     public PetDto addPetToFactory(UUID userId, UUID petId) {
         FactoryRepresentationV1 factoryRepresentation = repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        int maxCapacity = factoryRepresentation.getFactory().getMaxSize() != null
+                ? factoryRepresentation.getFactory().getMaxSize()
+                : 6;
+
+        int currentPetCount = petRepository.countByFactoryId(factoryRepresentation.getFactory().getId());
+        if (currentPetCount >= maxCapacity) {
+            throw new BadRequestException(ErrorMessages.BAD_REQUEST_FACTORY_FULL, maxCapacity);
+        }
 
         PetRepresentationV1 petRepresentation = petRepository.findById(petId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));

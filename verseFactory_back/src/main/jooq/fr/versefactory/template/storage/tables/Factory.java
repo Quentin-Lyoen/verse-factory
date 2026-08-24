@@ -91,6 +91,11 @@ public class Factory extends TableImpl<FactoryRecord> {
      */
     public final TableField<FactoryRecord, LocalDateTime> LAST_UPDATED_AT = createField(DSL.name("last_updated_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "");
 
+    /**
+     * The column <code>versefactory.factory.max_size</code>.
+     */
+    public final TableField<FactoryRecord, Integer> MAX_SIZE = createField(DSL.name("max_size"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field(DSL.raw("6"), SQLDataType.INTEGER)), this, "");
+
     private Factory(Name alias, Table<FactoryRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

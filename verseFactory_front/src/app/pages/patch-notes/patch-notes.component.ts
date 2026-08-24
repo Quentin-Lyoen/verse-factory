@@ -16,6 +16,32 @@ export class PatchNotesComponent implements OnInit {
 
     public patchNotes: PatchNote[] = [
       {
+        version: 'v0.1.2',
+        date: '24 Août 2026',
+        badge: 'Corrections',
+        title: 'Corrections de bugs et ajustements',
+        description: 'Plusieurs bugs ont été corrigés et plusieurs ajustements ont été apportés.',
+        categories: [
+          {
+            type: 'feature',
+            title: 'Nouveautés',
+            items: [
+              '- Affichage du message et du pet quand on ouvre une boîte.',
+              '- Ajout d\'une limitation du nombre de pets à 6.'
+            ]
+          },
+          {
+            type: 'fix',
+            title: 'Corrections',
+            items: [
+              '- Affichage des messages d\'erreur lors de l\'achat de boîtes.',
+              '- Affichage des messages d\'erreur lors de la création de compte.',
+              '- Correction de l\'affichage lors de la création de compte.'
+            ]
+          }
+        ]
+      },
+      {
         version: 'v0.1.1',
         date: '07 Août 2026',
         badge: 'Corrections',
@@ -23,20 +49,20 @@ export class PatchNotesComponent implements OnInit {
         description: 'Correction de bugs mineurs et d\'autres petits ajouts.',
         categories: [
           {
-            type: 'fix',
-            title: 'Corrections',
-            items: [
-              '- Changement de la page de connexion pour correspondre au reste du site.',
-              '- La bar de navigation reste afficher à l\'écran même quand on défile vers le bas.'
-            ]
-          },
-          {
             type: 'feature',
             title: 'Nouveautés',
             items: [
               '- Ajout d\'images pour illustrer les boîtes de la boutique.',
               '- Ajout de la pop-up d\'informations sur les boîtes de la boutique.',
               '- Possibilité de retirer un pet de la factory.',
+            ]
+          },
+          {
+            type: 'fix',
+            title: 'Corrections',
+            items: [
+              '- Changement de la page de connexion pour correspondre au reste du site.',
+              '- La bar de navigation reste afficher à l\'écran même quand on défile vers le bas.'
             ]
           }
         ]

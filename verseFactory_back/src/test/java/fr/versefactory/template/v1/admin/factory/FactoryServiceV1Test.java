@@ -47,7 +47,7 @@ class FactoryServiceV1Test {
         UUID userId = UUID.randomUUID();
         UUID factoryId = UUID.randomUUID();
         LocalDateTime now = LocalDateTime.now();
-        FactoryRecord record = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(1250.50), now);
+        FactoryRecord record = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(1250.50), now, 6);
         FactoryRepresentationV1 representation = new FactoryRepresentationV1(record);
 
         FactoryDto expectedDto = new FactoryDto(factoryId, userId, BigDecimal.valueOf(1250.50));
@@ -83,7 +83,7 @@ class FactoryServiceV1Test {
         UUID userId = UUID.randomUUID();
         UUID factoryId = UUID.randomUUID();
         LocalDateTime now = LocalDateTime.now();
-        FactoryRecord factoryRecord = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(100.0), now);
+        FactoryRecord factoryRecord = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(100.0), now, 6);
         FactoryRepresentationV1 factoryRepresentation = new FactoryRepresentationV1(factoryRecord);
 
         UUID factoryPetId = UUID.randomUUID();
@@ -126,7 +126,7 @@ class FactoryServiceV1Test {
         UUID userId = UUID.randomUUID();
         UUID factoryId = UUID.randomUUID();
         LocalDateTime now = LocalDateTime.now();
-        FactoryRecord factoryRecord = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(100.0), now);
+        FactoryRecord factoryRecord = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(100.0), now, 6);
         FactoryRepresentationV1 factoryRepresentation = new FactoryRepresentationV1(factoryRecord);
 
         UUID petId = UUID.randomUUID();
@@ -171,7 +171,7 @@ class FactoryServiceV1Test {
         UUID userId = UUID.randomUUID();
         UUID factoryId = UUID.randomUUID();
         LocalDateTime now = LocalDateTime.now();
-        FactoryRecord factoryRecord = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(100.0), now);
+        FactoryRecord factoryRecord = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(100.0), now, 6);
         FactoryRepresentationV1 factoryRepresentation = new FactoryRepresentationV1(factoryRecord);
 
         UUID petId = UUID.randomUUID();
@@ -188,11 +188,32 @@ class FactoryServiceV1Test {
     }
 
     @Test
+    void addPetToFactory_shouldThrowBadRequestException_whenFactoryIsFull() {
+        UUID userId = UUID.randomUUID();
+        UUID factoryId = UUID.randomUUID();
+        LocalDateTime now = LocalDateTime.now();
+        FactoryRecord factoryRecord = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(100.0), now, 6);
+        FactoryRepresentationV1 factoryRepresentation = new FactoryRepresentationV1(factoryRecord);
+
+        UUID petId = UUID.randomUUID();
+        when(repository.findByUserId(userId)).thenReturn(Optional.of(factoryRepresentation));
+        when(petRepository.countByFactoryId(factoryId)).thenReturn(6);
+
+        assertThrows(fr.versefactory.template.exception.BadRequestException.class,
+                () -> service.addPetToFactory(userId, petId));
+
+        verify(repository, times(1)).findByUserId(userId);
+        verify(petRepository, times(1)).countByFactoryId(factoryId);
+        verify(petRepository, never()).findById(any());
+        verify(petRepository, never()).addPetToFactory(any(), any());
+    }
+
+    @Test
     void updateFactoryBalance_shouldUpdateAndReturnDto_whenFactoryExists() {
         UUID userId = UUID.randomUUID();
         UUID factoryId = UUID.randomUUID();
         LocalDateTime now = LocalDateTime.now();
-        FactoryRecord factoryRecord = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(100.0), now);
+        FactoryRecord factoryRecord = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(100.0), now, 6);
         FactoryRepresentationV1 factoryRepresentation = new FactoryRepresentationV1(factoryRecord);
 
         UUID petId1 = UUID.randomUUID();
@@ -205,7 +226,7 @@ class FactoryServiceV1Test {
                 BigDecimal.valueOf(1000.0));
         PetRepresentationV1 petRepresentation2 = new PetRepresentationV1(petRecord2);
 
-        FactoryRecord updatedRecord = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(111.5), now);
+        FactoryRecord updatedRecord = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(111.5), now, 6);
         FactoryRepresentationV1 updatedRepresentation = new FactoryRepresentationV1(updatedRecord);
         FactoryDto expectedDto = new FactoryDto(factoryId, userId, BigDecimal.valueOf(111.5));
 

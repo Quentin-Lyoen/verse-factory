@@ -1,8 +1,9 @@
-import { Component, inject, linkedSignal } from "@angular/core";
+import { Component, inject, linkedSignal, signal } from "@angular/core";
 import { DialogRef } from '@angular/cdk/dialog';
 import { AuthService } from "../../services/auth.service";
 import { CreateAccountFormData, CreateAccountRequest } from "../../model/account.model";
 import { form, FormField } from '@angular/forms/signals';
+import { toSignal } from "@angular/core/rxjs-interop";
 
 @Component({
     selector: 'app-create-account',
@@ -14,6 +15,7 @@ import { form, FormField } from '@angular/forms/signals';
 export class CreateAccountComponent {
     private dialogRef = inject(DialogRef);
     private authService = inject(AuthService);
+    public errorMessage = signal('');
 
     private accountSignal = linkedSignal<CreateAccountFormData>(() => ({
         username: '',
@@ -40,8 +42,17 @@ export class CreateAccountComponent {
             password: password,
         }
 
-        const result = this.authService.createAccount(data);
-
-        if (result.success) this.dialogRef.close();
+        this.authService.createAccount(data).subscribe({
+            next: () => {
+                this.dialogRef.close();
+            },
+            error: (err) => {
+                if (err.status === 409) {
+                    this.errorMessage.set('Cette adresse e-mail est déjà utilisée.');
+                } else {
+                    this.errorMessage.set('Une erreur est survenue lors de la création du compte.');
+                }
+            }
+        });
     }
 }

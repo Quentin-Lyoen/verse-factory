@@ -1,8 +1,9 @@
-import { Component, inject, input } from "@angular/core";
+import { Component, inject, input, output } from "@angular/core";
 import { Boxe } from "../../../../model/shop.model";
 import { ShopService } from "../../../../services/shop.service";
 import { BoxInfoComponent } from "../../../../shared/box-info/box-info.component";
 import { Dialog } from "@angular/cdk/dialog";
+import { Pet } from "../../../../model/factory.model";
 
 @Component({
     selector: "app-shop-card",
@@ -11,17 +12,19 @@ import { Dialog } from "@angular/cdk/dialog";
 export class ShopCardComponent {
     private shopService = inject(ShopService);
     private dialog = inject(Dialog);
+    public petInfo = output<Pet>();
+    public errorMessage = output<string>();
 
     public boxe = input<Boxe>();
 
     public buyBoxe(): void {
         this.shopService.buyBoxe(this.boxe()!.id).subscribe({
             next: (pet) => {
-                alert(`Felicitation ! Vous avez obtenu : ${pet.name} !`);
+                this.petInfo.emit(pet);
             },
             error: (err) => {
-                console.error(err);
-                alert("Solde insuffisant !");
+                const message = err?.error?.message || "Erreur lors de l'achat de la boîte !";
+                this.errorMessage.emit(message);
             }
         });
     }

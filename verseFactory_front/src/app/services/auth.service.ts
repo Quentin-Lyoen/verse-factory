@@ -3,6 +3,7 @@ import { KeycloakService } from "../core/auth/keycloak.service";
 import { HttpClient } from "@angular/common/http";
 import { CreateAccountRequest } from "../model/account.model";
 import { environment } from "../../environments/environment";
+import { Observable } from "rxjs";
 
 @Injectable({
     providedIn: "root"
@@ -24,21 +25,7 @@ export class AuthService {
         this.keycloakService.logout();
     }
 
-    public createAccount(account: CreateAccountRequest): { success: boolean, error: string } {
-        let success: boolean = false;
-        let error: string = '';
-        this.http.post(`${this.url}/accounts`, account).subscribe({
-            next: (res) => {
-                success = true;
-            },
-            error: (err) => {
-                if (err.status === 409) {
-                    error = 'Cette adresse e-mail est déjà utilisée.';
-                } else {
-                    error = 'Une erreur est survenue lors de la création du compte.';
-                }
-            }
-        });
-        return { success, error };
+    public createAccount(account: CreateAccountRequest): Observable<void> {
+        return this.http.post<void>(`${this.url}/accounts`, account);
     }
 }

@@ -86,4 +86,11 @@ public class PetRepositoryV1 extends TemplateRepositoryV1 {
                 .execute();
         return rows > 0;
     }
+
+    public int countByFactoryId(UUID factoryId) {
+        return dslContext.fetchCount(
+                Tables.FACTORY_PET,
+                Tables.FACTORY_PET.FACTORY_ID.eq(factoryId)
+        );
+    }
 }

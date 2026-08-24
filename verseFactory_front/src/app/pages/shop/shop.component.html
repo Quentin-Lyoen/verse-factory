@@ -17,9 +17,20 @@
 
         <p class="text-xl">Balance : {{ factory()?.balance }}$</p>
 
+        @if (errorMessage(); as errorMessage) {
+            <p class="text-md xl:text-2xl text-red-500 text-center">{{ errorMessage }}</p>
+        }
+
+        @if (petName(); as petName) {
+            <div class="flex items-center gap-2">
+                <p class="text-md xl:text-2xl">Vous avez obtenu : <span class="font-bold text-(--bg-secondary)">{{ petName }}</span> !</p>
+                <img [src]="'img/pets/' + petName + '.png'" alt="" class="w-10 h-10">
+            </div>
+        }
+
         <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-4 border-2 border-(--bg-secondary) rounded-xl p-4">
             @for (boxe of boxes(); track boxe.id) {
-                <app-shop-card [boxe]="boxe" />
+                <app-shop-card [boxe]="boxe" (petInfo)="receivePet($event)" (errorMessage)="receiveErrorMessage($event)" />
             }
         </div>
     </div>

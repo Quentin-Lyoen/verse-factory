@@ -47,6 +47,15 @@ public class BoxServiceV1 extends TemplateServiceV1 {
         FactoryRepresentationV1 factoryRepresentation = factoryRepository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
 
+        int maxCapacity = factoryRepresentation.getFactory().getMaxSize() != null
+                ? factoryRepresentation.getFactory().getMaxSize()
+                : 6;
+
+        int currentPetCount = petRepository.countByFactoryId(factoryRepresentation.getFactory().getId());
+        if (currentPetCount >= maxCapacity) {
+            throw new BadRequestException(ErrorMessages.BAD_REQUEST_FACTORY_FULL, maxCapacity);
+        }
+
         BigDecimal price = boxRepresentation.getBox().getPrice();
         BigDecimal currentBalance = factoryRepresentation.getFactory().getBalance() != null
                 ? factoryRepresentation.getFactory().getBalance()
