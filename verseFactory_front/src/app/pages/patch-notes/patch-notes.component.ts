@@ -26,7 +26,8 @@ export class PatchNotesComponent implements OnInit {
             type: 'feature',
             title: 'Nouveautés',
             items: [
-              '- Affichage des messages d\'erreur lors de la création de compte.'
+              '- Affichage des messages d\'erreur lors de la création de compte.',
+              '- Affichage du message et du pet quand on ouvre une boîte.'
             ]
           },
           {
@@ -46,20 +47,20 @@ export class PatchNotesComponent implements OnInit {
         description: 'Correction de bugs mineurs et d\'autres petits ajouts.',
         categories: [
           {
-            type: 'fix',
-            title: 'Corrections',
-            items: [
-              '- Changement de la page de connexion pour correspondre au reste du site.',
-              '- La bar de navigation reste afficher à l\'écran même quand on défile vers le bas.'
-            ]
-          },
-          {
             type: 'feature',
             title: 'Nouveautés',
             items: [
               '- Ajout d\'images pour illustrer les boîtes de la boutique.',
               '- Ajout de la pop-up d\'informations sur les boîtes de la boutique.',
               '- Possibilité de retirer un pet de la factory.',
+            ]
+          },
+          {
+            type: 'fix',
+            title: 'Corrections',
+            items: [
+              '- Changement de la page de connexion pour correspondre au reste du site.',
+              '- La bar de navigation reste afficher à l\'écran même quand on défile vers le bas.'
             ]
           }
         ]
