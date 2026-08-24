@@ -94,6 +94,21 @@ public class FactoryRecord extends UpdatableRecordImpl<FactoryRecord> {
         return (LocalDateTime) get(3);
     }
 
+    /**
+     * Setter for <code>versefactory.factory.max_size</code>.
+     */
+    public FactoryRecord setMaxSize(Integer value) {
+        set(4, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>versefactory.factory.max_size</code>.
+     */
+    public Integer getMaxSize() {
+        return (Integer) get(4);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -117,13 +132,14 @@ public class FactoryRecord extends UpdatableRecordImpl<FactoryRecord> {
     /**
      * Create a detached, initialised FactoryRecord
      */
-    public FactoryRecord(UUID id, UUID userId, BigDecimal balance, LocalDateTime lastUpdatedAt) {
+    public FactoryRecord(UUID id, UUID userId, BigDecimal balance, LocalDateTime lastUpdatedAt, Integer maxSize) {
         super(Factory.FACTORY);
 
         setId(id);
         setUserId(userId);
         setBalance(balance);
         setLastUpdatedAt(lastUpdatedAt);
+        setMaxSize(maxSize);
         resetChangedOnNotNull();
     }
 }

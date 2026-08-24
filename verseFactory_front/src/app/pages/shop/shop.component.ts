@@ -22,6 +22,7 @@ export class ShopComponent implements OnInit {
     public boxes = toSignal(this.shopService.getBoxes());
     public factory = toSignal(this.factoryService.getCurrentFactory());
     public petName = signal('');
+    public errorMessage = signal('');
     
     ngOnInit() {
         this.titleService.setTitle('Boutique - VerseFactory');
@@ -30,5 +31,9 @@ export class ShopComponent implements OnInit {
 
     public receivePet(pet: Pet): void {
         this.petName.set(pet.name);
+    }
+
+    public receiveErrorMessage(message: string): void {
+        this.errorMessage.set(message);
     }
 }

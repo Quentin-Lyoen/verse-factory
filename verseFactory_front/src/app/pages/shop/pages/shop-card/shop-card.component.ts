@@ -13,6 +13,7 @@ export class ShopCardComponent {
     private shopService = inject(ShopService);
     private dialog = inject(Dialog);
     public petInfo = output<Pet>();
+    public errorMessage = output<string>();
 
     public boxe = input<Boxe>();
 
@@ -22,8 +23,8 @@ export class ShopCardComponent {
                 this.petInfo.emit(pet);
             },
             error: (err) => {
-                console.error(err);
-                alert("Solde insuffisant !");
+                const message = err?.error?.message || "Erreur lors de l'achat de la boîte !";
+                this.errorMessage.emit(message);
             }
         });
     }

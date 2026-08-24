@@ -10,6 +10,7 @@ public enum ErrorMessages {
     BAD_REQUEST_UNEXISTANT_PATH("Le chemin %s n'existe pas"),
     BAD_REQUEST_INVALID_RANGE_VALUE("La plage demandée est invalide"),
     BAD_REQUEST_INSUFFICIENT_BALANCE("Solde insuffisant"),
+    BAD_REQUEST_FACTORY_FULL("La factory a atteint sa capacité maximale (%s pets max)"),
     UNAUTHORIZED_NO_USER_AUTHENTICATED("Aucun utilisateur authentifié"),
     UNAUTHORIZED_AUTHORIZATION_HEADER_SHOULD_START_WITH_BEARER("Le header Authorization doit commencer par 'Bearer '"),
     UNAUTHORIZED_AUTHORIZATION_HEADER_SHOULD_CONTAINS_A_TOKEN("Le header Authorization doit contenir un token"),

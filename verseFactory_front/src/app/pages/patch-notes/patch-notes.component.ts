@@ -26,14 +26,16 @@ export class PatchNotesComponent implements OnInit {
             type: 'feature',
             title: 'Nouveautés',
             items: [
-              '- Affichage des messages d\'erreur lors de la création de compte.',
-              '- Affichage du message et du pet quand on ouvre une boîte.'
+              '- Affichage du message et du pet quand on ouvre une boîte.',
+              '- Ajout d\'une limitation du nombre de pets à 6.'
             ]
           },
           {
             type: 'fix',
             title: 'Corrections',
             items: [
+              '- Affichage des messages d\'erreur lors de l\'achat de boîtes.',
+              '- Affichage des messages d\'erreur lors de la création de compte.',
               '- Correction de l\'affichage lors de la création de compte.'
             ]
           }
