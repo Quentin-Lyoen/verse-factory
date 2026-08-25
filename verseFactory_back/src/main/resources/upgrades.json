@@ -1,0 +1,16 @@
+{
+    "PET_STORAGE": {
+        "levels": {
+            "1": { "cost": 1000, "effect_value" : 2},
+            "2": { "cost": 2000, "effect_value" : 2},
+            "3": { "cost": 3000, "effect_value" : 2},
+            "4": { "cost": 4000, "effect_value" : 2},
+            "5": { "cost": 5000, "effect_value" : 2},
+            "6": { "cost": 6000, "effect_value" : 2},
+            "7": { "cost": 7000, "effect_value" : 2},
+            "8": { "cost": 8000, "effect_value" : 2},
+            "9": { "cost": 9000, "effect_value" : 2},
+            "10": { "cost": 10000, "effect_value" : 2}
+        }
+    }
+}

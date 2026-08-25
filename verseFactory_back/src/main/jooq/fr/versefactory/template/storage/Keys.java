@@ -10,16 +10,20 @@ import fr.versefactory.template.storage.tables.BoxPet;
 import fr.versefactory.template.storage.tables.Example;
 import fr.versefactory.template.storage.tables.Factory;
 import fr.versefactory.template.storage.tables.FactoryPet;
+import fr.versefactory.template.storage.tables.FactoryUpgrade;
 import fr.versefactory.template.storage.tables.FlywaySchemaHistory;
 import fr.versefactory.template.storage.tables.Pet;
+import fr.versefactory.template.storage.tables.Upgrade;
 import fr.versefactory.template.storage.tables.records.AppUserRecord;
 import fr.versefactory.template.storage.tables.records.BoxPetRecord;
 import fr.versefactory.template.storage.tables.records.BoxRecord;
 import fr.versefactory.template.storage.tables.records.ExampleRecord;
 import fr.versefactory.template.storage.tables.records.FactoryPetRecord;
 import fr.versefactory.template.storage.tables.records.FactoryRecord;
+import fr.versefactory.template.storage.tables.records.FactoryUpgradeRecord;
 import fr.versefactory.template.storage.tables.records.FlywaySchemaHistoryRecord;
 import fr.versefactory.template.storage.tables.records.PetRecord;
+import fr.versefactory.template.storage.tables.records.UpgradeRecord;
 
 import javax.annotation.processing.Generated;
 
@@ -56,8 +60,10 @@ public class Keys {
     public static final UniqueKey<FactoryRecord> FACTORY_PKEY = Internal.createUniqueKey(Factory.FACTORY, DSL.name("factory_pkey"), new TableField[] { Factory.FACTORY.ID }, true);
     public static final UniqueKey<FactoryRecord> FACTORY_USER_ID_KEY = Internal.createUniqueKey(Factory.FACTORY, DSL.name("factory_user_id_key"), new TableField[] { Factory.FACTORY.USER_ID }, true);
     public static final UniqueKey<FactoryPetRecord> FACTORY_PET_PKEY = Internal.createUniqueKey(FactoryPet.FACTORY_PET, DSL.name("factory_pet_pkey"), new TableField[] { FactoryPet.FACTORY_PET.ID }, true);
+    public static final UniqueKey<FactoryUpgradeRecord> FACTORY_UPGRADE_PK = Internal.createUniqueKey(FactoryUpgrade.FACTORY_UPGRADE, DSL.name("factory_upgrade_pk"), new TableField[] { FactoryUpgrade.FACTORY_UPGRADE.FACTORY_ID, FactoryUpgrade.FACTORY_UPGRADE.UPGRADE_ID }, true);
     public static final UniqueKey<FlywaySchemaHistoryRecord> FLYWAY_SCHEMA_HISTORY_PK = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, DSL.name("flyway_schema_history_pk"), new TableField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);
     public static final UniqueKey<PetRecord> PET_PKEY = Internal.createUniqueKey(Pet.PET, DSL.name("pet_pkey"), new TableField[] { Pet.PET.ID }, true);
+    public static final UniqueKey<UpgradeRecord> UPGRADE_PKEY = Internal.createUniqueKey(Upgrade.UPGRADE, DSL.name("upgrade_pkey"), new TableField[] { Upgrade.UPGRADE.ID }, true);
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
@@ -68,4 +74,6 @@ public class Keys {
     public static final ForeignKey<FactoryRecord, AppUserRecord> FACTORY__FK_FACTORY_USER = Internal.createForeignKey(Factory.FACTORY, DSL.name("fk_factory_user"), new TableField[] { Factory.FACTORY.USER_ID }, Keys.APP_USER_PKEY, new TableField[] { AppUser.APP_USER.ID }, true);
     public static final ForeignKey<FactoryPetRecord, FactoryRecord> FACTORY_PET__FK_FACTORY_PET_FACTORY = Internal.createForeignKey(FactoryPet.FACTORY_PET, DSL.name("fk_factory_pet_factory"), new TableField[] { FactoryPet.FACTORY_PET.FACTORY_ID }, Keys.FACTORY_PKEY, new TableField[] { Factory.FACTORY.ID }, true);
     public static final ForeignKey<FactoryPetRecord, PetRecord> FACTORY_PET__FK_FACTORY_PET_PET = Internal.createForeignKey(FactoryPet.FACTORY_PET, DSL.name("fk_factory_pet_pet"), new TableField[] { FactoryPet.FACTORY_PET.PET_ID }, Keys.PET_PKEY, new TableField[] { Pet.PET.ID }, true);
+    public static final ForeignKey<FactoryUpgradeRecord, FactoryRecord> FACTORY_UPGRADE__FACTORY_UPGRADE_FACTORY_FK = Internal.createForeignKey(FactoryUpgrade.FACTORY_UPGRADE, DSL.name("factory_upgrade_factory_fk"), new TableField[] { FactoryUpgrade.FACTORY_UPGRADE.FACTORY_ID }, Keys.FACTORY_PKEY, new TableField[] { Factory.FACTORY.ID }, true);
+    public static final ForeignKey<FactoryUpgradeRecord, UpgradeRecord> FACTORY_UPGRADE__FACTORY_UPGRADE_UPGRADE_FK = Internal.createForeignKey(FactoryUpgrade.FACTORY_UPGRADE, DSL.name("factory_upgrade_upgrade_fk"), new TableField[] { FactoryUpgrade.FACTORY_UPGRADE.UPGRADE_ID }, Keys.UPGRADE_PKEY, new TableField[] { Upgrade.UPGRADE.ID }, true);
 }
