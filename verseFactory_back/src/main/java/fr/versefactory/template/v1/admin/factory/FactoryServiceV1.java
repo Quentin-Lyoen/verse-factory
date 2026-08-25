@@ -9,7 +9,10 @@ import fr.versefactory.template.exception.ErrorMessages;
 import fr.versefactory.template.v1.admin.pet.PetRepositoryV1;
 import fr.versefactory.template.v1.admin.pet.PetMapperV1;
 import fr.versefactory.template.v1.admin.openapi.payload.FactoryPetDto;
+import fr.versefactory.template.v1.admin.openapi.payload.FactoryUpgradeDto;
 import fr.versefactory.template.v1.admin.openapi.payload.PetDto;
+import fr.versefactory.template.v1.admin.factory.config.UpgradeConfigService;
+import fr.versefactory.template.v1.admin.factory.representations.FactoryUpgradeRepresentationV1;
 import fr.versefactory.template.v1.admin.pet.representations.PetRepresentationV1;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,7 @@ public class FactoryServiceV1 extends TemplateServiceV1 {
     private final FactoryMapperV1 mapper;
     private final PetRepositoryV1 petRepository;
     private final PetMapperV1 petMapper;
+    private final UpgradeConfigService upgradeConfigService;
 
     public FactoryDto getFactoryByUserId(UUID userId) {
         FactoryRepresentationV1 representation = repository.findByUserId(userId)
@@ -39,6 +43,22 @@ public class FactoryServiceV1 extends TemplateServiceV1 {
         FactoryRepresentationV1 representation = repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
         return petRepository.findFactoryPetsByFactoryId(representation.getFactory().getId());
+    }
+
+    public List<FactoryUpgradeDto> getUpgradesByFactoryUserId(UUID userId) {
+        FactoryRepresentationV1 representation = repository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        List<FactoryUpgradeRepresentationV1> upgrades = repository.findUpgradesByFactoryId(representation.getFactory().getId());
+
+        return upgrades.stream()
+                .map(upgradeRep -> {
+                    FactoryUpgradeDto dto = mapper.toDto(upgradeRep);
+                    BigDecimal nextLevelCost = upgradeConfigService.getNextLevelCost(dto.getUpgradeId(), dto.getLevel());
+                    dto.setCost(nextLevelCost);
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     public PetDto addPetToFactory(UUID userId, UUID petId) {

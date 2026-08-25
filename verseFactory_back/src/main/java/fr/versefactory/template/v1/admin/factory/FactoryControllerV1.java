@@ -4,6 +4,7 @@ import fr.versefactory.template.v1.admin.AdminControllerV1;
 import fr.versefactory.template.v1.admin.openapi.endpoint.FactoryApi;
 import fr.versefactory.template.v1.admin.openapi.payload.FactoryDto;
 import fr.versefactory.template.v1.admin.openapi.payload.FactoryPetDto;
+import fr.versefactory.template.v1.admin.openapi.payload.FactoryUpgradeDto;
 import fr.versefactory.template.v1.admin.openapi.payload.PetDto;
 import fr.versefactory.template.v1.admin.openapi.payload.AddPetToFactoryRequest;
 import fr.versefactory.template.config.security.user.UserDetailsImpl;
@@ -36,6 +37,14 @@ public class FactoryControllerV1 extends AdminControllerV1 implements FactoryApi
                 .getAuthentication()
                 .getPrincipal();
         return ResponseEntity.ok(service.getPetsByFactoryUserId(userDetails.getKeycloakId()));
+    }
+
+    @Override
+    public ResponseEntity<List<FactoryUpgradeDto>> getConnectedUserFactoryUpgrades() throws Exception {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+        return ResponseEntity.ok(service.getUpgradesByFactoryUserId(userDetails.getKeycloakId()));
     }
 
     @Override

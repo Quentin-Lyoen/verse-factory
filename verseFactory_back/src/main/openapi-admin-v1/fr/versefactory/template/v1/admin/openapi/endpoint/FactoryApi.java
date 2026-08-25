@@ -9,6 +9,7 @@ import fr.versefactory.template.v1.admin.openapi.payload.AddPetToFactoryRequest;
 import fr.versefactory.template.v1.admin.openapi.payload.ErrorResponse;
 import fr.versefactory.template.v1.admin.openapi.payload.FactoryDto;
 import fr.versefactory.template.v1.admin.openapi.payload.FactoryPetDto;
+import fr.versefactory.template.v1.admin.openapi.payload.FactoryUpgradeDto;
 import fr.versefactory.template.v1.admin.openapi.payload.PetDto;
 import java.util.UUID;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -300,6 +301,74 @@ public interface FactoryApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "[ { \"baseCost\" : 6.027456183070403, \"petId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"name\" : \"name\", \"acquiredAt\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"rarity\" : \"rarity\", \"incomePerSecond\" : 0.8008281904610115 }, { \"baseCost\" : 6.027456183070403, \"petId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"name\" : \"name\", \"acquiredAt\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"rarity\" : \"rarity\", \"incomePerSecond\" : 0.8008281904610115 } ]";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"path\" : \"path\", \"error\" : \"error\", \"message\" : \"message\", \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\", \"status\" : 1 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"path\" : \"path\", \"error\" : \"error\", \"message\" : \"message\", \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\", \"status\" : 1 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"path\" : \"path\", \"error\" : \"error\", \"message\" : \"message\", \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\", \"status\" : 1 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /factory/upgrades : Get all upgrades with current level for the connected user&#39;s factory
+     *
+     * @return OK (status code 200)
+     *         or Non authentifié (status code 401)
+     *         or Non autorisé (status code 403)
+     *         or Ressource introuvable (status code 404)
+     */
+    @Operation(
+        operationId = "getConnectedUserFactoryUpgrades",
+        summary = "Get all upgrades with current level for the connected user's factory",
+        tags = { "Factory" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "OK", content = {
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FactoryUpgradeDto.class)))
+            }),
+            @ApiResponse(responseCode = "401", description = "Non authentifié", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "Non autorisé", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "Ressource introuvable", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            })
+        },
+        security = {
+            @SecurityRequirement(name = "OAuth")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/factory/upgrades",
+        produces = { "application/json" }
+    )
+    
+    default ResponseEntity<List<FactoryUpgradeDto>> getConnectedUserFactoryUpgrades(
+        
+    ) throws Exception {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "[ { \"maxLevel\" : 0, \"cost\" : 1.4658129805029452, \"level\" : 6, \"name\" : \"name\", \"description\" : \"description\", \"type\" : \"type\", \"upgradeId\" : \"upgradeId\" }, { \"maxLevel\" : 0, \"cost\" : 1.4658129805029452, \"level\" : 6, \"name\" : \"name\", \"description\" : \"description\", \"type\" : \"type\", \"upgradeId\" : \"upgradeId\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

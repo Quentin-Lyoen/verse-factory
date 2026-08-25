@@ -75,7 +75,7 @@ class FactoryServiceV1Test {
                 () -> service.getFactoryByUserId(userId));
 
         verify(repository, times(1)).findByUserId(userId);
-        verify(mapper, never()).toDto(any());
+        verify(mapper, never()).toDto(any(FactoryRepresentationV1.class));
     }
 
     @Test
