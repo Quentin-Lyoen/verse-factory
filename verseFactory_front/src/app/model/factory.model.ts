@@ -22,3 +22,13 @@ export interface FactoryPet {
     baseCost: number;
     acquiredAt?: Date;
 }
+
+export interface FactoryUpgrade {
+    upgradeId: string;
+    name: string;
+    description: string;
+    type: string;
+    maxLevel: number;
+    level: number;
+    cost: number;
+}
