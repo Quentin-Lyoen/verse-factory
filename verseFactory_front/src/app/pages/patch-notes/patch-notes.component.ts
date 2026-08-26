@@ -16,6 +16,31 @@ export class PatchNotesComponent implements OnInit {
 
     public patchNotes: PatchNote[] = [
       {
+        version: 'v0.2.0',
+        date: '26 Août 2026',
+        badge: 'Mise à jour',
+        title: 'Mise à jour des améliorations',
+        description: 'Les améliorations font leur arrivé dans votre factory ainsi que quelques ajustements de gameplay !',
+        categories: [
+          {
+            type: 'feature',
+            title: 'Nouveautés',
+            items: [
+              '- Ajout des améliorations dans la boutique.',
+              '- Ajout de l\'amélioration de la capacité de stockage de la factory.',
+              '- Ajout d\'un cooldown pour récupérer l\'argent de la factory.'
+            ]
+          },
+          {
+            type: 'fix',
+            title: 'Corrections',
+            items: [
+              
+            ]
+          }
+        ]
+      },
+      {
         version: 'v0.1.2',
         date: '24 Août 2026',
         badge: 'Corrections',
