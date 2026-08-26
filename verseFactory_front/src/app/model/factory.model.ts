@@ -32,3 +32,8 @@ export interface FactoryUpgrade {
     level: number;
     cost: number;
 }
+
+export interface BuyFactoryUpgrade {
+    upgradeId: string;
+    price: number;
+}

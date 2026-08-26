@@ -3,7 +3,7 @@
     <p class="text-md text-center font-semibold">{{ upgrade()?.name }}</p>
     <p>{{ upgrade()?.cost }}$</p>
     <p class="text-(--bg-secondary) font-semibold">{{ upgrade()?.level }} / {{ upgrade()?.maxLevel }}</p>
-    <button
+    <button (click)="buyUpgrade()"
         class="px-3 py-1.5 rounded-lg border-2 border-(--bg-secondary) text-(--bg-secondary) text-sm font-semibold hover:bg-(--bg-secondary) hover:text-white transition cursor-pointer">
         Acheter
     </button>

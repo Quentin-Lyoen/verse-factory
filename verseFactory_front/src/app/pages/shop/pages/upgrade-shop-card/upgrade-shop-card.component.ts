@@ -1,5 +1,6 @@
-import { Component, input } from "@angular/core";
-import { FactoryUpgrade } from "../../../../model/factory.model";
+import { Component, inject, input } from "@angular/core";
+import { BuyFactoryUpgrade, FactoryUpgrade } from "../../../../model/factory.model";
+import { FactoryService } from "../../../../services/factory.service";
 
 @Component({
     selector: 'app-upgrade-shop-card',
@@ -7,5 +8,15 @@ import { FactoryUpgrade } from "../../../../model/factory.model";
 })
 
 export class UpgradeShopCardComponent {
-    public upgrade = input<FactoryUpgrade>()
+    private factoryService = inject(FactoryService);
+
+    public upgrade = input<FactoryUpgrade>();
+
+    public buyUpgrade(): void {
+        const upgradeRequest: BuyFactoryUpgrade = {
+            upgradeId: this.upgrade()!.upgradeId,
+            price: this.upgrade()!.cost
+        };
+        this.factoryService.buyUpgrade(upgradeRequest);
+    }
 }
