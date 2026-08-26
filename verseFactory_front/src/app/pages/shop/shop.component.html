@@ -15,5 +15,23 @@
 
     <p class="text-xl">Balance : {{ factory()?.balance }}$</p>
 
-    <app-box-shop />
+    <div class="flex gap-4 items-center text-lg">
+        <a (click)="switchShopPage('box')"
+            class="px-4 py-2 rounded-lg border-2 border-(--bg-secondary) text-(--bg-secondary) font-semibold hover:bg-(--bg-secondary)/10 transition cursor-pointer"
+            [class.!bg-(--bg-secondary)]="currentShopPage() === 'box'"
+            [class.!text-white]="currentShopPage() === 'box'">Boites</a>
+        <a (click)="switchShopPage('upgrade')"
+            class="px-4 py-2 rounded-lg border-2 border-(--bg-secondary) text-(--bg-secondary) font-semibold hover:bg-(--bg-secondary)/10 transition cursor-pointer"
+            [class.!bg-(--bg-secondary)]="currentShopPage() === 'upgrade'"
+            [class.!text-white]="currentShopPage() === 'upgrade'">Améliorations</a>
+    </div>
+
+    @switch (currentShopPage()) {
+        @case ('box') {
+            <app-box-shop />
+        }
+        @case ('upgrade') {
+            <app-upgrade-shop />
+        }
+    }
 </section>
