@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, switchMap } from "rxjs";
-import { Factory, FactoryPet, Pet } from "../model/factory.model";
+import { Factory, FactoryPet, FactoryUpgrade, Pet } from "../model/factory.model";
 import { environment } from "../../environments/environment";
 
 @Injectable({
@@ -12,6 +12,7 @@ export class FactoryService {
     private url = `${environment.apiUrl}/v1/admin/factory`;
     private petRefresh = new BehaviorSubject<void>(undefined);
     private factoryRefresh = new BehaviorSubject<void>(undefined);
+    private upgradeRefresh = new BehaviorSubject<void>(undefined);
 
     public getCurrentFactory(): Observable<Factory> {
         return this.factoryRefresh.pipe(
@@ -55,5 +56,11 @@ export class FactoryService {
                 this.petRefresh.next();
             }
         });
+    }
+
+    public getCurrentUpgrades(): Observable<FactoryUpgrade[]> {
+        return this.upgradeRefresh.pipe(
+            switchMap(() => this.http.get<FactoryUpgrade[]>(`${this.url}/upgrades`))
+        );
     }
 }
