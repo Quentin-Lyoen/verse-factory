@@ -61,4 +61,46 @@ public class FactoryRepositoryV1 extends TemplateRepositoryV1 {
                             .build();
                 });
     }
+
+    public Optional<FactoryUpgradeRepresentationV1> findUpgradeByFactoryIdAndUpgradeId(UUID factoryId, String upgradeId) {
+        return dslContext.select(
+                        Tables.UPGRADE.asterisk(),
+                        Tables.FACTORY_UPGRADE.asterisk()
+                )
+                .from(Tables.UPGRADE)
+                .leftJoin(Tables.FACTORY_UPGRADE)
+                .on(Tables.UPGRADE.ID.eq(Tables.FACTORY_UPGRADE.UPGRADE_ID)
+                        .and(Tables.FACTORY_UPGRADE.FACTORY_ID.eq(factoryId)))
+                .where(Tables.UPGRADE.ID.eq(upgradeId))
+                .fetchOptional(record -> {
+                    UpgradeRecord upgradeRecord = record.into(Tables.UPGRADE);
+                    FactoryUpgradeRecord factoryUpgradeRecord = record.into(Tables.FACTORY_UPGRADE);
+                    if (factoryUpgradeRecord.getFactoryId() == null && factoryUpgradeRecord.getUpgradeId() == null) {
+                        factoryUpgradeRecord = null;
+                    }
+                    return FactoryUpgradeRepresentationV1.builder()
+                            .upgrade(upgradeRecord)
+                            .factoryUpgrade(factoryUpgradeRecord)
+                            .build();
+                });
+    }
+
+    public void incrementUpgradeLevel(UUID factoryId, String upgradeId) {
+        int updated = dslContext.update(Tables.FACTORY_UPGRADE)
+                .set(Tables.FACTORY_UPGRADE.LEVEL, Tables.FACTORY_UPGRADE.LEVEL.add(1))
+                .set(Tables.FACTORY_UPGRADE.UPDATED_AT, LocalDateTime.now())
+                .where(Tables.FACTORY_UPGRADE.FACTORY_ID.eq(factoryId))
+                .and(Tables.FACTORY_UPGRADE.UPGRADE_ID.eq(upgradeId))
+                .execute();
+
+        if (updated == 0) {
+            dslContext.insertInto(Tables.FACTORY_UPGRADE)
+                    .set(Tables.FACTORY_UPGRADE.FACTORY_ID, factoryId)
+                    .set(Tables.FACTORY_UPGRADE.UPGRADE_ID, upgradeId)
+                    .set(Tables.FACTORY_UPGRADE.LEVEL, 1)
+                    .set(Tables.FACTORY_UPGRADE.CREATED_AT, LocalDateTime.now())
+                    .set(Tables.FACTORY_UPGRADE.UPDATED_AT, LocalDateTime.now())
+                    .execute();
+        }
+    }
 }

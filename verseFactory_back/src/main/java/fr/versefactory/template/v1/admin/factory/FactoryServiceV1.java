@@ -117,4 +117,40 @@ public class FactoryServiceV1 extends TemplateServiceV1 {
             throw new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE);
         }
     }
+
+    @org.springframework.transaction.annotation.Transactional
+    public FactoryUpgradeDto buyUpgrade(UUID userId, String upgradeId, BigDecimal price) {
+        FactoryRepresentationV1 factoryRepresentation = repository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        BigDecimal currentBalance = factoryRepresentation.getFactory().getBalance();
+        if (currentBalance == null) {
+            currentBalance = BigDecimal.ZERO;
+        }
+
+        BigDecimal priceToPay = price != null ? price : BigDecimal.ZERO;
+
+        if (currentBalance.compareTo(priceToPay) < 0) {
+            throw new BadRequestException(ErrorMessages.BAD_REQUEST_INSUFFICIENT_BALANCE);
+        }
+
+        FactoryUpgradeRepresentationV1 upgradeRep = repository.findUpgradeByFactoryIdAndUpgradeId(
+                factoryRepresentation.getFactory().getId(), upgradeId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        BigDecimal newBalance = currentBalance.subtract(priceToPay);
+        repository.updateBalance(factoryRepresentation.getFactory().getId(), newBalance);
+
+        repository.incrementUpgradeLevel(factoryRepresentation.getFactory().getId(), upgradeId);
+
+        FactoryUpgradeRepresentationV1 updatedUpgradeRep = repository.findUpgradeByFactoryIdAndUpgradeId(
+                factoryRepresentation.getFactory().getId(), upgradeId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        FactoryUpgradeDto dto = mapper.toDto(updatedUpgradeRep);
+        BigDecimal nextLevelCost = upgradeConfigService.getNextLevelCost(dto.getUpgradeId(), dto.getLevel());
+        dto.setCost(nextLevelCost);
+
+        return dto;
+    }
 }
