@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, signal } from "@angular/core";
 import { BehaviorSubject, Observable, switchMap } from "rxjs";
 import { BuyFactoryUpgrade, Factory, FactoryPet, FactoryUpgrade, Pet } from "../model/factory.model";
 import { environment } from "../../environments/environment";
@@ -13,6 +13,34 @@ export class FactoryService {
     private petRefresh = new BehaviorSubject<void>(undefined);
     private factoryRefresh = new BehaviorSubject<void>(undefined);
     private upgradeRefresh = new BehaviorSubject<void>(undefined);
+
+    public cooldownSeconds = signal<number>(0);
+    private cooldownInterval: ReturnType<typeof setInterval> | null = null;
+    private readonly COOLDOWN_KEY = 'balance_update_cooldown_end';
+    private readonly COOLDOWN_DURATION_SEC = 10;
+
+    constructor() {
+        this.initCooldown();
+    }
+
+    private isBrowser(): boolean {
+        return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
+    }
+
+    private initCooldown(): void {
+        if (!this.isBrowser()) return;
+
+        const savedEndTime = localStorage.getItem(this.COOLDOWN_KEY);
+        if (savedEndTime) {
+            const endTime = parseInt(savedEndTime, 10);
+            const remaining = Math.ceil((endTime - Date.now()) / 1000);
+            if (remaining > 0) {
+                this.startCooldownTimer(endTime);
+            } else {
+                localStorage.removeItem(this.COOLDOWN_KEY);
+            }
+        }
+    }
 
     public getCurrentFactory(): Observable<Factory> {
         return this.factoryRefresh.pipe(
@@ -43,11 +71,46 @@ export class FactoryService {
     }
 
     public updateFactoryBalance(): void{
+        if (this.cooldownSeconds() > 0) return;
+
+        const endTime = Date.now() + this.COOLDOWN_DURATION_SEC * 1000;
+        if (this.isBrowser()) {
+            localStorage.setItem(this.COOLDOWN_KEY, endTime.toString());
+        }
+        this.startCooldownTimer(endTime);
+
         this.http.post<Factory>(`${this.url}/update-balance`, {}).subscribe({
             next: () => {
                 this.factoryRefresh.next();
             }
         });
+    }
+
+    private startCooldownTimer(endTime: number): void {
+        this.clearCooldownTimer();
+
+        const updateRemaining = () => {
+            const remaining = Math.ceil((endTime - Date.now()) / 1000);
+            if (remaining <= 0) {
+                this.cooldownSeconds.set(0);
+                if (this.isBrowser()) {
+                    localStorage.removeItem(this.COOLDOWN_KEY);
+                }
+                this.clearCooldownTimer();
+            } else {
+                this.cooldownSeconds.set(remaining);
+            }
+        };
+
+        updateRemaining();
+        this.cooldownInterval = setInterval(updateRemaining, 1000);
+    }
+
+    private clearCooldownTimer(): void {
+        if (this.cooldownInterval) {
+            clearInterval(this.cooldownInterval);
+            this.cooldownInterval = null;
+        }
     }
 
     public deletePetFromFactory(factoryPetId: string): void {

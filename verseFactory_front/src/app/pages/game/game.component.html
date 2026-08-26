@@ -23,6 +23,15 @@
             }
         </div>
         
-        <button class="px-4 py-2 rounded-lg border-2 border-(--bg-secondary) text-(--bg-secondary) font-semibold hover:bg-(--bg-secondary) hover:text-white transition cursor-pointer" (click)="updateBalance()">Mettre à jour la balance</button>
+        <button 
+            class="px-4 py-2 rounded-lg border-2 border-(--bg-secondary) text-(--bg-secondary) font-semibold transition cursor-pointer hover:bg-(--bg-secondary) hover:text-white disabled:opacity-50 disabled:bg-gray-200 disabled:border-gray-400 disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-gray-500 flex items-center justify-center gap-2"
+            [disabled]="cooldownSeconds() > 0"
+            (click)="updateBalance()">
+            @if (cooldownSeconds() > 0) {
+                <span>Recharge ({{ cooldownSeconds() }}s)</span>
+            } @else {
+                <span>Mettre à jour la balance</span>
+            }
+        </button>
     </div>
 </section>
