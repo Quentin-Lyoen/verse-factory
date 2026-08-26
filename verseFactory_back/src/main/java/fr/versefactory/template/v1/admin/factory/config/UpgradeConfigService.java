@@ -30,7 +30,8 @@ public class UpgradeConfigService {
         try {
             Resource resource = resourceLoader.getResource("classpath:upgrades.json");
             try (InputStream inputStream = resource.getInputStream()) {
-                upgradeConfigs = objectMapper.readValue(inputStream, new TypeReference<Map<String, UpgradeDetails>>() {});
+                upgradeConfigs = objectMapper.readValue(inputStream, new TypeReference<Map<String, UpgradeDetails>>() {
+                });
             }
         } catch (Exception e) {
             log.error("Failed to load upgrades.json config", e);
@@ -48,6 +49,18 @@ public class UpgradeConfigService {
         int nextLevel = currentLevel + 1;
         LevelDetails levelDetails = upgradeDetails.getLevels().get(String.valueOf(nextLevel));
         return levelDetails != null ? levelDetails.getCost() : null;
+    }
+
+    public BigDecimal getEffectValue(String upgradeId, int level) {
+        if (upgradeConfigs == null || !upgradeConfigs.containsKey(upgradeId)) {
+            return null;
+        }
+        UpgradeDetails upgradeDetails = upgradeConfigs.get(upgradeId);
+        if (upgradeDetails == null || upgradeDetails.getLevels() == null) {
+            return null;
+        }
+        LevelDetails levelDetails = upgradeDetails.getLevels().get(String.valueOf(level));
+        return levelDetails != null ? levelDetails.getEffectValue() : null;
     }
 
     @Data

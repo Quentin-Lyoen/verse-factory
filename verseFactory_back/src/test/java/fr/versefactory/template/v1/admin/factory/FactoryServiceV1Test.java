@@ -275,7 +275,8 @@ class FactoryServiceV1Test {
         FactoryRecord factoryRecord = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(5000.0), now, 6);
         FactoryRepresentationV1 factoryRepresentation = new FactoryRepresentationV1(factoryRecord);
 
-        UpgradeRecord upgradeRecord = new UpgradeRecord("PET_STORAGE", "Amélioration du stockage", "Augmente le stockage", "STORAGE", 10);
+        UpgradeRecord upgradeRecord = new UpgradeRecord("PET_STORAGE", "Amélioration du stockage",
+                "Augmente le stockage", "STORAGE", 10);
         FactoryUpgradeRepresentationV1 upgradeRep = FactoryUpgradeRepresentationV1.builder()
                 .upgrade(upgradeRecord)
                 .build();
@@ -284,8 +285,10 @@ class FactoryServiceV1Test {
         expectedDto.setCost(BigDecimal.valueOf(2000.0));
 
         when(repository.findByUserId(userId)).thenReturn(Optional.of(factoryRepresentation));
-        when(repository.findUpgradeByFactoryIdAndUpgradeId(factoryId, "PET_STORAGE")).thenReturn(Optional.of(upgradeRep));
+        when(repository.findUpgradeByFactoryIdAndUpgradeId(factoryId, "PET_STORAGE"))
+                .thenReturn(Optional.of(upgradeRep));
         when(mapper.toDto(any(FactoryUpgradeRepresentationV1.class))).thenReturn(expectedDto);
+        when(upgradeConfigService.getEffectValue("PET_STORAGE", 1)).thenReturn(BigDecimal.valueOf(2));
         when(upgradeConfigService.getNextLevelCost("PET_STORAGE", 1)).thenReturn(BigDecimal.valueOf(2000.0));
 
         FactoryUpgradeDto result = service.buyUpgrade(userId, "PET_STORAGE", BigDecimal.valueOf(1000.0));
@@ -298,6 +301,7 @@ class FactoryServiceV1Test {
         verify(repository, times(1)).findByUserId(userId);
         verify(repository, times(1)).updateBalance(factoryId, BigDecimal.valueOf(4000.0));
         verify(repository, times(1)).incrementUpgradeLevel(factoryId, "PET_STORAGE");
+        verify(repository, times(1)).updateMaxSize(factoryId, 8);
     }
 
     @Test

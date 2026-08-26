@@ -336,6 +336,8 @@ components:
           format: uuid
         balance:
           type: number
+        maxSize:
+          type: integer
         lastUpdatedAt:
           type: string
           format: date-time

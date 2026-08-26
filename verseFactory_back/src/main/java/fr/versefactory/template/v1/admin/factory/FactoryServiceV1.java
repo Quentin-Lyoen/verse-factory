@@ -49,12 +49,14 @@ public class FactoryServiceV1 extends TemplateServiceV1 {
         FactoryRepresentationV1 representation = repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
 
-        List<FactoryUpgradeRepresentationV1> upgrades = repository.findUpgradesByFactoryId(representation.getFactory().getId());
+        List<FactoryUpgradeRepresentationV1> upgrades = repository
+                .findUpgradesByFactoryId(representation.getFactory().getId());
 
         return upgrades.stream()
                 .map(upgradeRep -> {
                     FactoryUpgradeDto dto = mapper.toDto(upgradeRep);
-                    BigDecimal nextLevelCost = upgradeConfigService.getNextLevelCost(dto.getUpgradeId(), dto.getLevel());
+                    BigDecimal nextLevelCost = upgradeConfigService.getNextLevelCost(dto.getUpgradeId(),
+                            dto.getLevel());
                     dto.setCost(nextLevelCost);
                     return dto;
                 })
@@ -148,6 +150,18 @@ public class FactoryServiceV1 extends TemplateServiceV1 {
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
 
         FactoryUpgradeDto dto = mapper.toDto(updatedUpgradeRep);
+
+        if ("PET_STORAGE".equals(upgradeId)) {
+            BigDecimal effectValue = upgradeConfigService.getEffectValue(upgradeId, dto.getLevel());
+            if (effectValue != null) {
+                int currentMaxSize = factoryRepresentation.getFactory().getMaxSize() != null
+                        ? factoryRepresentation.getFactory().getMaxSize()
+                        : 6;
+                int newMaxSize = currentMaxSize + effectValue.intValue();
+                repository.updateMaxSize(factoryRepresentation.getFactory().getId(), newMaxSize);
+            }
+        }
+
         BigDecimal nextLevelCost = upgradeConfigService.getNextLevelCost(dto.getUpgradeId(), dto.getLevel());
         dto.setCost(nextLevelCost);
 

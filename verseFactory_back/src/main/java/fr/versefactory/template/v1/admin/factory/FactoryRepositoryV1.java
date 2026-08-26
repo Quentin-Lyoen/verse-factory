@@ -40,11 +40,18 @@ public class FactoryRepositoryV1 extends TemplateRepositoryV1 {
                 .execute();
     }
 
+    public void updateMaxSize(UUID id, int maxSize) {
+        dslContext.update(Tables.FACTORY)
+                .set(Tables.FACTORY.MAX_SIZE, maxSize)
+                .set(Tables.FACTORY.LAST_UPDATED_AT, LocalDateTime.now())
+                .where(Tables.FACTORY.ID.eq(id))
+                .execute();
+    }
+
     public List<FactoryUpgradeRepresentationV1> findUpgradesByFactoryId(UUID factoryId) {
         return dslContext.select(
-                        Tables.UPGRADE.asterisk(),
-                        Tables.FACTORY_UPGRADE.asterisk()
-                )
+                Tables.UPGRADE.asterisk(),
+                Tables.FACTORY_UPGRADE.asterisk())
                 .from(Tables.UPGRADE)
                 .leftJoin(Tables.FACTORY_UPGRADE)
                 .on(Tables.UPGRADE.ID.eq(Tables.FACTORY_UPGRADE.UPGRADE_ID)
@@ -62,11 +69,11 @@ public class FactoryRepositoryV1 extends TemplateRepositoryV1 {
                 });
     }
 
-    public Optional<FactoryUpgradeRepresentationV1> findUpgradeByFactoryIdAndUpgradeId(UUID factoryId, String upgradeId) {
+    public Optional<FactoryUpgradeRepresentationV1> findUpgradeByFactoryIdAndUpgradeId(UUID factoryId,
+            String upgradeId) {
         return dslContext.select(
-                        Tables.UPGRADE.asterisk(),
-                        Tables.FACTORY_UPGRADE.asterisk()
-                )
+                Tables.UPGRADE.asterisk(),
+                Tables.FACTORY_UPGRADE.asterisk())
                 .from(Tables.UPGRADE)
                 .leftJoin(Tables.FACTORY_UPGRADE)
                 .on(Tables.UPGRADE.ID.eq(Tables.FACTORY_UPGRADE.UPGRADE_ID)

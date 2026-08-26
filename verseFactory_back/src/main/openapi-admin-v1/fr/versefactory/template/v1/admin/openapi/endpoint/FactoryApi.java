@@ -312,7 +312,7 @@ public interface FactoryApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"balance\" : 0.8008281904610115, \"lastUpdatedAt\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"userId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
+                    String exampleString = "{ \"balance\" : 0.8008281904610115, \"lastUpdatedAt\" : \"2000-01-23T04:56:07.000+00:00\", \"maxSize\" : 6, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"userId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -516,7 +516,7 @@ public interface FactoryApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"balance\" : 0.8008281904610115, \"lastUpdatedAt\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"userId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
+                    String exampleString = "{ \"balance\" : 0.8008281904610115, \"lastUpdatedAt\" : \"2000-01-23T04:56:07.000+00:00\", \"maxSize\" : 6, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"userId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
