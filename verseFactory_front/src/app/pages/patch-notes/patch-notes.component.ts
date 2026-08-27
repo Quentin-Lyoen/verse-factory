@@ -28,7 +28,9 @@ export class PatchNotesComponent implements OnInit {
             items: [
               '- Ajout des améliorations dans la boutique.',
               '- Ajout de l\'amélioration de la capacité de stockage de la factory.',
-              '- Ajout d\'un cooldown pour récupérer l\'argent de la factory.'
+              '- Ajout d\'un cooldown pour récupérer l\'argent de la factory.',
+              '- Ajout de l\'amélioration de la vitesse de production de la factory.',
+              '- Ajout de la boite océan avec 3 pets : Requin (EPIC), Poisson-Clown (RARE), Poisson (COMMON).'
             ]
           },
           {
