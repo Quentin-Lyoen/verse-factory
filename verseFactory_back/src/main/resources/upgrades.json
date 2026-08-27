@@ -12,5 +12,14 @@
             "9": { "cost": 5000, "effect_value" : 2},
             "10": { "cost": 8000, "effect_value" : 2}
         }
+    },
+    "BALANCE_COOLDOWN": {
+        "levels": {
+            "1": { "cost": 100, "effect_value" : 1},
+            "2": { "cost": 300, "effect_value" : 2},
+            "3": { "cost": 600, "effect_value" : 3},
+            "4": { "cost": 900, "effect_value" : 4},
+            "5": { "cost": 1200, "effect_value" : 5}
+        }
     }
 }

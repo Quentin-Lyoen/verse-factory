@@ -17,14 +17,31 @@ export class FactoryService {
     public cooldownSeconds = signal<number>(0);
     private cooldownInterval: ReturnType<typeof setInterval> | null = null;
     private readonly COOLDOWN_KEY = 'balance_update_cooldown_end';
-    private readonly COOLDOWN_DURATION_SEC = 10;
+    private readonly BASE_COOLDOWN_DURATION_SEC = 10;
+    private currentCooldownDurationSec = 10;
 
     constructor() {
         this.initCooldown();
+        this.loadUpgrades();
     }
 
     private isBrowser(): boolean {
         return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
+    }
+
+    private loadUpgrades(): void {
+        this.getCurrentUpgrades().subscribe({
+            next: (upgrades) => {
+                this.updateCooldownFromUpgrades(upgrades);
+            },
+            error: () => {}
+        });
+    }
+
+    private updateCooldownFromUpgrades(upgrades: FactoryUpgrade[]): void {
+        const cooldownUpgrade = upgrades.find(u => u.upgradeId === 'BALANCE_COOLDOWN');
+        const level = cooldownUpgrade ? cooldownUpgrade.level : 0;
+        this.currentCooldownDurationSec = Math.max(1, this.BASE_COOLDOWN_DURATION_SEC - level);
     }
 
     private initCooldown(): void {
@@ -73,7 +90,7 @@ export class FactoryService {
     public updateFactoryBalance(): void{
         if (this.cooldownSeconds() > 0) return;
 
-        const endTime = Date.now() + this.COOLDOWN_DURATION_SEC * 1000;
+        const endTime = Date.now() + this.currentCooldownDurationSec * 1000;
         if (this.isBrowser()) {
             localStorage.setItem(this.COOLDOWN_KEY, endTime.toString());
         }
@@ -123,13 +140,17 @@ export class FactoryService {
 
     public getCurrentUpgrades(): Observable<FactoryUpgrade[]> {
         return this.upgradeRefresh.pipe(
-            switchMap(() => this.http.get<FactoryUpgrade[]>(`${this.url}/upgrades`))
+            switchMap(() => this.http.get<FactoryUpgrade[]>(`${this.url}/upgrades`)),
+            tap((upgrades) => this.updateCooldownFromUpgrades(upgrades))
         );
     }
 
     public buyUpgrade(upgradeRequest: BuyFactoryUpgrade): Observable<FactoryUpgrade>{
         return this.http.post<FactoryUpgrade>(`${this.url}/upgrades`, upgradeRequest).pipe(
-            tap(() => {
+            tap((purchasedUpgrade) => {
+                if (purchasedUpgrade.upgradeId === 'BALANCE_COOLDOWN') {
+                    this.currentCooldownDurationSec = Math.max(1, this.BASE_COOLDOWN_DURATION_SEC - purchasedUpgrade.level);
+                }
                 this.upgradeRefresh.next();
                 this.factoryRefresh.next();
             })

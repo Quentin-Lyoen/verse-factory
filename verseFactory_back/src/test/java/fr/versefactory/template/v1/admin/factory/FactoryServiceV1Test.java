@@ -321,4 +321,40 @@ class FactoryServiceV1Test {
         verify(repository, never()).updateBalance(any(), any());
         verify(repository, never()).incrementUpgradeLevel(any(), any());
     }
+
+    @Test
+    void buyUpgrade_shouldBuyBalanceCooldownUpgrade_whenBalanceSufficient() {
+        UUID userId = UUID.randomUUID();
+        UUID factoryId = UUID.randomUUID();
+        LocalDateTime now = LocalDateTime.now();
+        FactoryRecord factoryRecord = new FactoryRecord(factoryId, userId, BigDecimal.valueOf(2000.0), now, 6);
+        FactoryRepresentationV1 factoryRepresentation = new FactoryRepresentationV1(factoryRecord);
+
+        UpgradeRecord upgradeRecord = new UpgradeRecord("BALANCE_COOLDOWN", "Réduction du temps de recharge",
+                "Réduit le temps d'attente", "COOLDOWN", 5);
+        FactoryUpgradeRepresentationV1 upgradeRep = FactoryUpgradeRepresentationV1.builder()
+                .upgrade(upgradeRecord)
+                .build();
+
+        FactoryUpgradeDto expectedDto = new FactoryUpgradeDto("BALANCE_COOLDOWN", "Réduction du temps de recharge", "COOLDOWN", 1);
+        expectedDto.setCost(BigDecimal.valueOf(1000.0));
+
+        when(repository.findByUserId(userId)).thenReturn(Optional.of(factoryRepresentation));
+        when(repository.findUpgradeByFactoryIdAndUpgradeId(factoryId, "BALANCE_COOLDOWN"))
+                .thenReturn(Optional.of(upgradeRep));
+        when(mapper.toDto(any(FactoryUpgradeRepresentationV1.class))).thenReturn(expectedDto);
+        when(upgradeConfigService.getNextLevelCost("BALANCE_COOLDOWN", 1)).thenReturn(BigDecimal.valueOf(1000.0));
+
+        FactoryUpgradeDto result = service.buyUpgrade(userId, "BALANCE_COOLDOWN", BigDecimal.valueOf(500.0));
+
+        assertNotNull(result);
+        assertEquals("BALANCE_COOLDOWN", result.getUpgradeId());
+        assertEquals(1, result.getLevel());
+        assertEquals(BigDecimal.valueOf(1000.0), result.getCost());
+
+        verify(repository, times(1)).findByUserId(userId);
+        verify(repository, times(1)).updateBalance(factoryId, BigDecimal.valueOf(1500.0));
+        verify(repository, times(1)).incrementUpgradeLevel(factoryId, "BALANCE_COOLDOWN");
+        verify(repository, never()).updateMaxSize(any(), anyInt());
+    }
 }

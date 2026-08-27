@@ -24,3 +24,6 @@ CREATE TABLE versefactory.factory_upgrade (
 
 CREATE INDEX idx_factory_upgrade_factory_id ON versefactory.factory_upgrade(factory_id);
 CREATE INDEX idx_factory_upgrade_upgrade_id ON versefactory.factory_upgrade(upgrade_id);
+
+INSERT INTO versefactory.upgrade (id, name, description, type, max_level) VALUES
+('BALANCE_COOLDOWN', 'Temps de recharge', 'Réduit le temps d''attente pour récolter les revenus de la factory.', 'COOLDOWN', 5);
