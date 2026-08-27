@@ -35,7 +35,7 @@ export class PatchNotesComponent implements OnInit {
             type: 'fix',
             title: 'Corrections',
             items: [
-              
+              '- Ajustement des prix de la boutique.'
             ]
           }
         ]
