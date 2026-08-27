@@ -8,6 +8,7 @@ import { FactoryService } from "../../../../services/factory.service";
 })
 export class PetCardComponent {
     public pet = input.required<FactoryPet>();
+    public disableButton = input<boolean>(false);
 
     private factoryService = inject(FactoryService);
 

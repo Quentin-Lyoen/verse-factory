@@ -19,9 +19,11 @@
 
         <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-4 border-2 border-(--bg-secondary) rounded-xl p-4">
             @for (pet of factoryPets(); track pet.id) {
-                <app-pet-card [pet]="pet" />
+                <app-pet-card [pet]="pet" [disableButton]="factoryPets()?.length === 1" />
             }
         </div>
+
+        <p class="text-lg">Capacité : {{ factoryPets()?.length }} / {{ factory()?.maxSize }}</p>
         
         <button 
             class="px-4 py-2 rounded-lg border-2 border-(--bg-secondary) text-(--bg-secondary) font-semibold transition cursor-pointer hover:bg-(--bg-secondary) hover:text-white disabled:opacity-50 disabled:bg-gray-200 disabled:border-gray-400 disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-gray-500 flex items-center justify-center gap-2"

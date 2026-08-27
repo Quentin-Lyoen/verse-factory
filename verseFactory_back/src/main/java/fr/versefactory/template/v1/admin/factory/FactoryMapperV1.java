@@ -18,6 +18,7 @@ public interface FactoryMapperV1 {
     @Mapping(target = "id", source = "factory.id")
     @Mapping(target = "userId", source = "factory.userId")
     @Mapping(target = "balance", source = "factory.balance")
+    @Mapping(target = "maxSize", source = "factory.maxSize")
     @Mapping(target = "lastUpdatedAt", source = "factory.lastUpdatedAt", qualifiedByName = "localToOffsetDateTime")
     FactoryDto toDto(FactoryRepresentationV1 representation);
 

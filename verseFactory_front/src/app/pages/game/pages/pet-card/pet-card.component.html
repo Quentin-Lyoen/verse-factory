@@ -2,5 +2,5 @@
     <img class="w-15" [src]="`img/pets/${pet().name}.png`" [alt]="pet().name">
     <h2>{{ pet().name }}</h2>
     <p>{{ pet().incomePerSecond }}$</p>
-    <button (click)="deletePetFromFactory()" class="px-3 py-1 mt-2 rounded-lg border-2 border-(--bg-secondary) text-(--bg-secondary) font-semibold hover:bg-(--bg-secondary) hover:text-white transition cursor-pointer">Retirer</button>
+    <button [disabled]="disableButton()" (click)="deletePetFromFactory()" class="px-3 py-1 mt-2 rounded-lg border-2 border-(--bg-secondary) text-(--bg-secondary) font-semibold hover:bg-(--bg-secondary) hover:text-white transition cursor-pointer disabled:bg-gray-200 disabled:border-gray-400 disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-gray-500">Retirer</button>
 </div>

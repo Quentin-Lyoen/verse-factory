@@ -2,6 +2,7 @@ export interface Factory {
     id: string;
     userId: string;
     balance: number;
+    maxSize: number;
     lastUpdatedAt: Date;
 }
 
