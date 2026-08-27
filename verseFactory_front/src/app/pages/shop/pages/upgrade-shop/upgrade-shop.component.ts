@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { FactoryService } from "../../../../services/factory.service";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { UpgradeShopCardComponent } from "../upgrade-shop-card/upgrade-shop-card.component";
@@ -11,5 +11,11 @@ import { UpgradeShopCardComponent } from "../upgrade-shop-card/upgrade-shop-card
 export class UpgradeShopComponent {
     private factoryService = inject(FactoryService);
 
+    public errorMessage = signal<string>('');
+
     public upgrades = toSignal(this.factoryService.getCurrentUpgrades());
+
+    public updateErrorMessage(errorMessage: string): void {
+        this.errorMessage.set(errorMessage);
+    }
 }

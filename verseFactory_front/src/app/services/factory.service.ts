@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, signal } from "@angular/core";
-import { BehaviorSubject, Observable, switchMap } from "rxjs";
+import { BehaviorSubject, Observable, switchMap, tap } from "rxjs";
 import { BuyFactoryUpgrade, Factory, FactoryPet, FactoryUpgrade, Pet } from "../model/factory.model";
 import { environment } from "../../environments/environment";
 
@@ -127,12 +127,12 @@ export class FactoryService {
         );
     }
 
-    public buyUpgrade(upgradeRequest: BuyFactoryUpgrade): void{
-        this.http.post<FactoryUpgrade>(`${this.url}/upgrades`, upgradeRequest).subscribe({
-            next: () => {
+    public buyUpgrade(upgradeRequest: BuyFactoryUpgrade): Observable<FactoryUpgrade>{
+        return this.http.post<FactoryUpgrade>(`${this.url}/upgrades`, upgradeRequest).pipe(
+            tap(() => {
                 this.upgradeRefresh.next();
                 this.factoryRefresh.next();
-            }
-        });
+            })
+        );
     }
 }
