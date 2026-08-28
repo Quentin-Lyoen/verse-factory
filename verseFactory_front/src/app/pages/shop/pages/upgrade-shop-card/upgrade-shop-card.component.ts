@@ -1,6 +1,8 @@
 import { Component, inject, input, output } from "@angular/core";
 import { BuyFactoryUpgrade, FactoryUpgrade } from "../../../../model/factory.model";
 import { FactoryService } from "../../../../services/factory.service";
+import { Dialog } from "@angular/cdk/dialog";
+import { UpgradeInfoComponent } from "../../../../shared/upgrade-info/upgrade-info.component";
 
 @Component({
     selector: 'app-upgrade-shop-card',
@@ -9,6 +11,7 @@ import { FactoryService } from "../../../../services/factory.service";
 
 export class UpgradeShopCardComponent {
     private factoryService = inject(FactoryService);
+    private dialog = inject(Dialog);
 
     public upgrade = input<FactoryUpgrade>();
     public errorMessage = output<string>();
@@ -22,6 +25,12 @@ export class UpgradeShopCardComponent {
             error: (error) => {
                 this.errorMessage.emit(error.error.message);
             }
+        });
+    }
+
+    public openUpgradeInfo(): void {
+        this.dialog.open(UpgradeInfoComponent, {
+            data: this.upgrade(),
         });
     }
 }

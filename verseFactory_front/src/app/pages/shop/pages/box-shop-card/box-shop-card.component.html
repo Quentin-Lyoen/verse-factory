@@ -1,5 +1,5 @@
 <div class="flex flex-col items-center gap-2">
-    <img class="w-15 hover:w-17 hover:cursor-pointer" [src]="`img/pets/${boxe()?.name}.png`" [alt]="boxe()?.name" (click)="openModal()">
+    <img class="w-15 hover:cursor-pointer hover:scale-110 transition" [src]="`img/pets/${boxe()?.name}.png`" [alt]="boxe()?.name" (click)="openModal()">
     <h2 class="font-semibold">{{boxe()?.name}}</h2>
     <p>{{boxe()?.price}}$</p>
     <button (click)="buyBoxe()"
