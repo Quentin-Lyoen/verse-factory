@@ -1,0 +1,14 @@
+<div class="relative bg-(--bg-primary) flex flex-col gap-5 w-full lg:w-xl p-8 rounded-xl items-center">
+    <button (click)="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-(--bg-secondary) cursor-pointer focus:outline-none" aria-label="Fermer">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </button>
+
+    <img class="w-20" [src]="`img/upgrades/${upgrade?.upgradeId}.png`" [alt]="upgrade?.name">
+    <h2 class="font-semibold">{{upgrade?.name}}</h2>
+
+    <p class="text-center">{{upgrade?.description}}</p>
+
+    <p class="text-center text-(--bg-secondary) font-semibold">Niveau : {{upgrade?.level}} / {{upgrade?.maxLevel}}</p>
+</div>

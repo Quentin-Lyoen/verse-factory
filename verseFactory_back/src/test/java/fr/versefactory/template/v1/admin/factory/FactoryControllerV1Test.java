@@ -2,6 +2,7 @@ package fr.versefactory.template.v1.admin.factory;
 
 import fr.versefactory.template.v1.admin.openapi.payload.FactoryDto;
 import fr.versefactory.template.v1.admin.openapi.payload.FactoryPetDto;
+import fr.versefactory.template.v1.admin.openapi.payload.FactoryUpgradeDto;
 import fr.versefactory.template.v1.admin.openapi.payload.PetDto;
 import java.util.List;
 import fr.versefactory.template.config.security.TestSecurityConfig;
@@ -155,5 +156,34 @@ class FactoryControllerV1Test {
                                 .andExpect(jsonPath("$.balance").value(150.0));
 
                 verify(service, times(1)).updateFactoryBalance(userId);
+        }
+
+        @Test
+        void buyConnectedUserFactoryUpgrade_shouldBuyUpgradeAndReturnOk_whenAuthenticated() throws Exception {
+                UUID userId = UUID.randomUUID();
+                FactoryUpgradeDto upgradeDto = new FactoryUpgradeDto("PET_STORAGE", "Amélioration du stockage", "STORAGE", 1);
+                upgradeDto.setCost(BigDecimal.valueOf(2000.0));
+
+                UserDetailsImpl principal = UserDetailsImpl.builder()
+                                .keycloakId(userId)
+                                .username("testuser")
+                                .build();
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, null,
+                                principal.getAuthorities());
+
+                when(service.buyUpgrade(userId, "PET_STORAGE", BigDecimal.valueOf(1000.0))).thenReturn(upgradeDto);
+
+                mockMvc.perform(post("/v1/admin/factory/upgrades")
+                                .with(authentication(auth))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"upgradeId\":\"PET_STORAGE\",\"price\":1000.0}")
+                                .accept(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(jsonPath("$.upgradeId").value("PET_STORAGE"))
+                                .andExpect(jsonPath("$.level").value(1))
+                                .andExpect(jsonPath("$.cost").value(2000.0));
+
+                verify(service, times(1)).buyUpgrade(userId, "PET_STORAGE", BigDecimal.valueOf(1000.0));
         }
 }

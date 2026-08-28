@@ -16,6 +16,35 @@ export class PatchNotesComponent implements OnInit {
 
     public patchNotes: PatchNote[] = [
       {
+        version: 'v0.2.0',
+        date: '28 Août 2026',
+        badge: 'Mise à jour',
+        title: 'Mise à jour des améliorations',
+        description: 'Les améliorations font leur arrivé dans votre factory ainsi que quelques ajustements de gameplay !',
+        categories: [
+          {
+            type: 'feature',
+            title: 'Nouveautés',
+            items: [
+              '- Ajout des améliorations dans la boutique.',
+              '- Ajout de l\'amélioration de la capacité de stockage de la factory.',
+              '- Ajout d\'un cooldown pour récupérer l\'argent de la factory.',
+              '- Ajout de l\'amélioration de la vitesse de production de la factory.',
+              '- Ajout de la boite océan avec 3 pets : Requin (EPIC), Poisson-Clown (RARE), Poisson (COMMON).',
+              '- Ajout de la boite méduse avec 3 pets : Méduse (LEGENDARY), Requin (EPIC), Poisson-Clown (RARE).'
+            ]
+          },
+          {
+            type: 'fix',
+            title: 'Corrections',
+            items: [
+              '- Ajustement des prix de la boutique.',
+              '- Vous ne pouvez plus avoir une factory vide !'
+            ]
+          }
+        ]
+      },
+      {
         version: 'v0.1.2',
         date: '24 Août 2026',
         badge: 'Corrections',

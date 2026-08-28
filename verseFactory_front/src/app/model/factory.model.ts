@@ -2,6 +2,7 @@ export interface Factory {
     id: string;
     userId: string;
     balance: number;
+    maxSize: number;
     lastUpdatedAt: Date;
 }
 
@@ -21,4 +22,19 @@ export interface FactoryPet {
     incomePerSecond: number;
     baseCost: number;
     acquiredAt?: Date;
+}
+
+export interface FactoryUpgrade {
+    upgradeId: string;
+    name: string;
+    description: string;
+    type: string;
+    maxLevel: number;
+    level: number;
+    cost: number;
+}
+
+export interface BuyFactoryUpgrade {
+    upgradeId: string;
+    price: number;
 }

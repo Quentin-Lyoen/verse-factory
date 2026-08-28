@@ -4,8 +4,10 @@ import fr.versefactory.template.v1.admin.AdminControllerV1;
 import fr.versefactory.template.v1.admin.openapi.endpoint.FactoryApi;
 import fr.versefactory.template.v1.admin.openapi.payload.FactoryDto;
 import fr.versefactory.template.v1.admin.openapi.payload.FactoryPetDto;
+import fr.versefactory.template.v1.admin.openapi.payload.FactoryUpgradeDto;
 import fr.versefactory.template.v1.admin.openapi.payload.PetDto;
 import fr.versefactory.template.v1.admin.openapi.payload.AddPetToFactoryRequest;
+import fr.versefactory.template.v1.admin.openapi.payload.BuyUpgradeRequest;
 import fr.versefactory.template.config.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,6 +41,14 @@ public class FactoryControllerV1 extends AdminControllerV1 implements FactoryApi
     }
 
     @Override
+    public ResponseEntity<List<FactoryUpgradeDto>> getConnectedUserFactoryUpgrades() throws Exception {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+        return ResponseEntity.ok(service.getUpgradesByFactoryUserId(userDetails.getKeycloakId()));
+    }
+
+    @Override
     public ResponseEntity<PetDto> addPetToConnectedUserFactory(AddPetToFactoryRequest addPetToFactoryRequest) throws Exception {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext()
                 .getAuthentication()
@@ -62,5 +72,17 @@ public class FactoryControllerV1 extends AdminControllerV1 implements FactoryApi
                 .getPrincipal();
         service.deletePetFromFactory(userDetails.getKeycloakId(), id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<FactoryUpgradeDto> buyConnectedUserFactoryUpgrade(BuyUpgradeRequest buyUpgradeRequest) throws Exception {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+        FactoryUpgradeDto purchasedUpgrade = service.buyUpgrade(
+                userDetails.getKeycloakId(),
+                buyUpgradeRequest.getUpgradeId(),
+                buyUpgradeRequest.getPrice());
+        return ResponseEntity.ok(purchasedUpgrade);
     }
 }

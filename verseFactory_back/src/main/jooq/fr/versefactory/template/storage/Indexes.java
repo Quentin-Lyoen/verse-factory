@@ -7,6 +7,7 @@ package fr.versefactory.template.storage;
 import fr.versefactory.template.storage.tables.BoxPet;
 import fr.versefactory.template.storage.tables.Factory;
 import fr.versefactory.template.storage.tables.FactoryPet;
+import fr.versefactory.template.storage.tables.FactoryUpgrade;
 import fr.versefactory.template.storage.tables.FlywaySchemaHistory;
 
 import javax.annotation.processing.Generated;
@@ -39,5 +40,7 @@ public class Indexes {
     public static final Index IDX_BOX_PET_PET_ID = Internal.createIndex(DSL.name("idx_box_pet_pet_id"), BoxPet.BOX_PET, new OrderField[] { BoxPet.BOX_PET.PET_ID }, false);
     public static final Index IDX_FACTORY_PET_FACTORY_ID = Internal.createIndex(DSL.name("idx_factory_pet_factory_id"), FactoryPet.FACTORY_PET, new OrderField[] { FactoryPet.FACTORY_PET.FACTORY_ID }, false);
     public static final Index IDX_FACTORY_PET_PET_ID = Internal.createIndex(DSL.name("idx_factory_pet_pet_id"), FactoryPet.FACTORY_PET, new OrderField[] { FactoryPet.FACTORY_PET.PET_ID }, false);
+    public static final Index IDX_FACTORY_UPGRADE_FACTORY_ID = Internal.createIndex(DSL.name("idx_factory_upgrade_factory_id"), FactoryUpgrade.FACTORY_UPGRADE, new OrderField[] { FactoryUpgrade.FACTORY_UPGRADE.FACTORY_ID }, false);
+    public static final Index IDX_FACTORY_UPGRADE_UPGRADE_ID = Internal.createIndex(DSL.name("idx_factory_upgrade_upgrade_id"), FactoryUpgrade.FACTORY_UPGRADE, new OrderField[] { FactoryUpgrade.FACTORY_UPGRADE.UPGRADE_ID }, false);
     public static final Index IDX_FACTORY_USER_ID = Internal.createIndex(DSL.name("idx_factory_user_id"), Factory.FACTORY, new OrderField[] { Factory.FACTORY.USER_ID }, false);
 }

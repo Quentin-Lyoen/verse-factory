@@ -10,8 +10,10 @@ import fr.versefactory.template.storage.tables.BoxPet;
 import fr.versefactory.template.storage.tables.Example;
 import fr.versefactory.template.storage.tables.Factory;
 import fr.versefactory.template.storage.tables.FactoryPet;
+import fr.versefactory.template.storage.tables.FactoryUpgrade;
 import fr.versefactory.template.storage.tables.FlywaySchemaHistory;
 import fr.versefactory.template.storage.tables.Pet;
+import fr.versefactory.template.storage.tables.Upgrade;
 
 import java.util.Arrays;
 import java.util.List;
@@ -74,6 +76,11 @@ public class Versefactory extends SchemaImpl {
     public final FactoryPet FACTORY_PET = FactoryPet.FACTORY_PET;
 
     /**
+     * The table <code>versefactory.factory_upgrade</code>.
+     */
+    public final FactoryUpgrade FACTORY_UPGRADE = FactoryUpgrade.FACTORY_UPGRADE;
+
+    /**
      * The table <code>versefactory.flyway_schema_history</code>.
      */
     public final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
@@ -82,6 +89,11 @@ public class Versefactory extends SchemaImpl {
      * The table <code>versefactory.pet</code>.
      */
     public final Pet PET = Pet.PET;
+
+    /**
+     * The table <code>versefactory.upgrade</code>.
+     */
+    public final Upgrade UPGRADE = Upgrade.UPGRADE;
 
     /**
      * No further instances allowed
@@ -105,8 +117,10 @@ public class Versefactory extends SchemaImpl {
             Example.EXAMPLE,
             Factory.FACTORY,
             FactoryPet.FACTORY_PET,
+            FactoryUpgrade.FACTORY_UPGRADE,
             FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
-            Pet.PET
+            Pet.PET,
+            Upgrade.UPGRADE
         );
     }
 }

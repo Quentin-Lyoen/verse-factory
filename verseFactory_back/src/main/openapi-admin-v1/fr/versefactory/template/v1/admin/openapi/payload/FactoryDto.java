@@ -36,6 +36,8 @@ public class FactoryDto implements Serializable {
 
   private BigDecimal balance;
 
+  private @Nullable Integer maxSize;
+
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
   private @Nullable OffsetDateTime lastUpdatedAt;
 
@@ -112,6 +114,26 @@ public class FactoryDto implements Serializable {
     this.balance = balance;
   }
 
+  public FactoryDto maxSize(Integer maxSize) {
+    this.maxSize = maxSize;
+    return this;
+  }
+
+  /**
+   * Get maxSize
+   * @return maxSize
+   */
+  
+  @Schema(name = "maxSize", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("maxSize")
+  public Integer getMaxSize() {
+    return maxSize;
+  }
+
+  public void setMaxSize(Integer maxSize) {
+    this.maxSize = maxSize;
+  }
+
   public FactoryDto lastUpdatedAt(OffsetDateTime lastUpdatedAt) {
     this.lastUpdatedAt = lastUpdatedAt;
     return this;
@@ -144,12 +166,13 @@ public class FactoryDto implements Serializable {
     return Objects.equals(this.id, factoryDto.id) &&
         Objects.equals(this.userId, factoryDto.userId) &&
         Objects.equals(this.balance, factoryDto.balance) &&
+        Objects.equals(this.maxSize, factoryDto.maxSize) &&
         Objects.equals(this.lastUpdatedAt, factoryDto.lastUpdatedAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, userId, balance, lastUpdatedAt);
+    return Objects.hash(id, userId, balance, maxSize, lastUpdatedAt);
   }
 
   @Override
@@ -159,6 +182,7 @@ public class FactoryDto implements Serializable {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("    balance: ").append(toIndentedString(balance)).append("\n");
+    sb.append("    maxSize: ").append(toIndentedString(maxSize)).append("\n");
     sb.append("    lastUpdatedAt: ").append(toIndentedString(lastUpdatedAt)).append("\n");
     sb.append("}");
     return sb.toString();

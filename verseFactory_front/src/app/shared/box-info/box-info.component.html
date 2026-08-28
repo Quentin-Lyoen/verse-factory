@@ -8,6 +8,8 @@
     <img class="w-20" [src]="`img/pets/${boxe?.name}.png`" [alt]="boxe?.name">
     <h2 class="font-semibold">{{boxe?.name}}</h2>
 
+    <p class="text-center">{{boxe?.description}}</p>
+
     <div class="grid grid-cols-3 gap-5">
         @for (pet of pets(); track pet.id) {
             <div class="flex flex-col items-center gap-2">

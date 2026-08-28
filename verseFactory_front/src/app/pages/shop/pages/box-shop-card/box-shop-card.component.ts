@@ -6,10 +6,10 @@ import { Dialog } from "@angular/cdk/dialog";
 import { Pet } from "../../../../model/factory.model";
 
 @Component({
-    selector: "app-shop-card",
-    templateUrl: "./shop-card.component.html",
+    selector: "app-box-shop-card",
+    templateUrl: "./box-shop-card.component.html",
 })
-export class ShopCardComponent {
+export class BoxShopCardComponent {
     private shopService = inject(ShopService);
     private dialog = inject(Dialog);
     public petInfo = output<Pet>();

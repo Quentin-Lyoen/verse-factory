@@ -150,6 +150,57 @@ paths:
           $ref: '#/components/responses/ForbiddenError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+  /factory/upgrades:
+    get:
+      tags:
+        - Factory
+      summary: Get all upgrades with current level for the connected user's factory
+      operationId: getConnectedUserFactoryUpgrades
+      security:
+        - OAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FactoryUpgradeDto'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    post:
+      tags:
+        - Factory
+      summary: Buy an upgrade for the connected user's factory
+      operationId: buyConnectedUserFactoryUpgrade
+      security:
+        - OAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyUpgradeRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FactoryUpgradeDto'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
   /factory/pets/{id}:
     delete:
       tags:
@@ -285,6 +336,8 @@ components:
           format: uuid
         balance:
           type: number
+        maxSize:
+          type: integer
         lastUpdatedAt:
           type: string
           format: date-time
@@ -334,6 +387,29 @@ components:
           type: string
           format: date-time
 
+    FactoryUpgradeDto:
+      type: object
+      required:
+        - upgradeId
+        - name
+        - type
+        - level
+      properties:
+        upgradeId:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+        maxLevel:
+          type: integer
+        level:
+          type: integer
+        cost:
+          type: number
+
     AddPetToFactoryRequest:
       type: object
       required:
@@ -342,6 +418,17 @@ components:
         petId:
           type: string
           format: uuid
+
+    BuyUpgradeRequest:
+      type: object
+      required:
+        - upgradeId
+        - price
+      properties:
+        upgradeId:
+          type: string
+        price:
+          type: number
 
     BoxDto:
       type: object

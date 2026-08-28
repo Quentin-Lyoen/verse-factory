@@ -9,6 +9,8 @@ import fr.versefactory.template.storage.Keys;
 import fr.versefactory.template.storage.Versefactory;
 import fr.versefactory.template.storage.tables.AppUser.AppUserPath;
 import fr.versefactory.template.storage.tables.FactoryPet.FactoryPetPath;
+import fr.versefactory.template.storage.tables.FactoryUpgrade.FactoryUpgradePath;
+import fr.versefactory.template.storage.tables.Upgrade.UpgradePath;
 import fr.versefactory.template.storage.tables.records.FactoryRecord;
 
 import java.math.BigDecimal;
@@ -203,6 +205,19 @@ public class Factory extends TableImpl<FactoryRecord> {
         return _appUser;
     }
 
+    private transient FactoryUpgradePath _factoryUpgrade;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>versefactory.factory_upgrade</code> table
+     */
+    public FactoryUpgradePath factoryUpgrade() {
+        if (_factoryUpgrade == null)
+            _factoryUpgrade = new FactoryUpgradePath(this, null, Keys.FACTORY_UPGRADE__FACTORY_UPGRADE_FACTORY_FK.getInverseKey());
+
+        return _factoryUpgrade;
+    }
+
     private transient FactoryPetPath _factoryPet;
 
     /**
@@ -214,6 +229,14 @@ public class Factory extends TableImpl<FactoryRecord> {
             _factoryPet = new FactoryPetPath(this, null, Keys.FACTORY_PET__FK_FACTORY_PET_FACTORY.getInverseKey());
 
         return _factoryPet;
+    }
+
+    /**
+     * Get the implicit many-to-many join path to the
+     * <code>versefactory.upgrade</code> table
+     */
+    public UpgradePath upgrade() {
+        return factoryUpgrade().upgrade();
     }
 
     @Override

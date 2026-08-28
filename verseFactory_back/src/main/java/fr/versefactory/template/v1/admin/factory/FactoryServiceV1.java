@@ -9,7 +9,10 @@ import fr.versefactory.template.exception.ErrorMessages;
 import fr.versefactory.template.v1.admin.pet.PetRepositoryV1;
 import fr.versefactory.template.v1.admin.pet.PetMapperV1;
 import fr.versefactory.template.v1.admin.openapi.payload.FactoryPetDto;
+import fr.versefactory.template.v1.admin.openapi.payload.FactoryUpgradeDto;
 import fr.versefactory.template.v1.admin.openapi.payload.PetDto;
+import fr.versefactory.template.v1.admin.factory.config.UpgradeConfigService;
+import fr.versefactory.template.v1.admin.factory.representations.FactoryUpgradeRepresentationV1;
 import fr.versefactory.template.v1.admin.pet.representations.PetRepresentationV1;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,7 @@ public class FactoryServiceV1 extends TemplateServiceV1 {
     private final FactoryMapperV1 mapper;
     private final PetRepositoryV1 petRepository;
     private final PetMapperV1 petMapper;
+    private final UpgradeConfigService upgradeConfigService;
 
     public FactoryDto getFactoryByUserId(UUID userId) {
         FactoryRepresentationV1 representation = repository.findByUserId(userId)
@@ -39,6 +43,24 @@ public class FactoryServiceV1 extends TemplateServiceV1 {
         FactoryRepresentationV1 representation = repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
         return petRepository.findFactoryPetsByFactoryId(representation.getFactory().getId());
+    }
+
+    public List<FactoryUpgradeDto> getUpgradesByFactoryUserId(UUID userId) {
+        FactoryRepresentationV1 representation = repository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        List<FactoryUpgradeRepresentationV1> upgrades = repository
+                .findUpgradesByFactoryId(representation.getFactory().getId());
+
+        return upgrades.stream()
+                .map(upgradeRep -> {
+                    FactoryUpgradeDto dto = mapper.toDto(upgradeRep);
+                    BigDecimal nextLevelCost = upgradeConfigService.getNextLevelCost(dto.getUpgradeId(),
+                            dto.getLevel());
+                    dto.setCost(nextLevelCost);
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     public PetDto addPetToFactory(UUID userId, UUID petId) {
@@ -96,5 +118,53 @@ public class FactoryServiceV1 extends TemplateServiceV1 {
         if (!removed) {
             throw new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE);
         }
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    public FactoryUpgradeDto buyUpgrade(UUID userId, String upgradeId, BigDecimal price) {
+        FactoryRepresentationV1 factoryRepresentation = repository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        BigDecimal currentBalance = factoryRepresentation.getFactory().getBalance();
+        if (currentBalance == null) {
+            currentBalance = BigDecimal.ZERO;
+        }
+
+        BigDecimal priceToPay = price != null ? price : BigDecimal.ZERO;
+
+        if (currentBalance.compareTo(priceToPay) < 0) {
+            throw new BadRequestException(ErrorMessages.BAD_REQUEST_INSUFFICIENT_BALANCE);
+        }
+
+        FactoryUpgradeRepresentationV1 upgradeRep = repository.findUpgradeByFactoryIdAndUpgradeId(
+                factoryRepresentation.getFactory().getId(), upgradeId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        BigDecimal newBalance = currentBalance.subtract(priceToPay);
+        repository.updateBalance(factoryRepresentation.getFactory().getId(), newBalance);
+
+        repository.incrementUpgradeLevel(factoryRepresentation.getFactory().getId(), upgradeId);
+
+        FactoryUpgradeRepresentationV1 updatedUpgradeRep = repository.findUpgradeByFactoryIdAndUpgradeId(
+                factoryRepresentation.getFactory().getId(), upgradeId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND_RESOURCE));
+
+        FactoryUpgradeDto dto = mapper.toDto(updatedUpgradeRep);
+
+        if ("PET_STORAGE".equals(upgradeId)) {
+            BigDecimal effectValue = upgradeConfigService.getEffectValue(upgradeId, dto.getLevel());
+            if (effectValue != null) {
+                int currentMaxSize = factoryRepresentation.getFactory().getMaxSize() != null
+                        ? factoryRepresentation.getFactory().getMaxSize()
+                        : 6;
+                int newMaxSize = currentMaxSize + effectValue.intValue();
+                repository.updateMaxSize(factoryRepresentation.getFactory().getId(), newMaxSize);
+            }
+        }
+
+        BigDecimal nextLevelCost = upgradeConfigService.getNextLevelCost(dto.getUpgradeId(), dto.getLevel());
+        dto.setCost(nextLevelCost);
+
+        return dto;
     }
 }

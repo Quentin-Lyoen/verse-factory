@@ -26,8 +26,8 @@ INSERT INTO versefactory.factory_pet (id, factory_id, pet_id) VALUES
 
 --Insertion de données de démonstration (Exemples de boîtes avec 3 pets chacune et leurs pourcentages de chance)
 INSERT INTO versefactory.box (id, name, description, price) VALUES
-('80eebc99-9c0b-4ef8-bb6d-6bb9bd380a25', 'Boîte Débutant', 'Une boîte contenant principalement des pets communs.', 100.00),
-('90eebc99-9c0b-4ef8-bb6d-6bb9bd380a26', 'Boîte Épique', 'Une boîte premium avec une chance d’obtenir un dragon !', 1000.00);
+('80eebc99-9c0b-4ef8-bb6d-6bb9bd380a25', 'Boîte Débutant', 'Une boîte contenant principalement des pets communs.', 50.00),
+('90eebc99-9c0b-4ef8-bb6d-6bb9bd380a26', 'Boîte Épique', 'Une boîte premium avec une chance d’obtenir un dragon !', 100.00);
 
 -- Association des pets aux boîtes avec 3 pets par boîte et leurs pourcentages de chance (total = 100%)
 INSERT INTO versefactory.box_pet (id, box_id, pet_id, drop_chance) VALUES
@@ -36,7 +36,7 @@ INSERT INTO versefactory.box_pet (id, box_id, pet_id, drop_chance) VALUES
 ('a2eebc99-9c0b-4ef8-bb6d-6bb9bd380a28', '80eebc99-9c0b-4ef8-bb6d-6bb9bd380a25', '10eebc99-9c0b-4ef8-bb6d-6bb9bd380a18', 35.00),
 ('a3eebc99-9c0b-4ef8-bb6d-6bb9bd380a29', '80eebc99-9c0b-4ef8-bb6d-6bb9bd380a25', '30eebc99-9c0b-4ef8-bb6d-6bb9bd380a20', 5.00),
 
--- Boîte Épique (Chat: 40%, Licorne: 45%, Dragon: 15%)
-('a4eebc99-9c0b-4ef8-bb6d-6bb9bd380a30', '90eebc99-9c0b-4ef8-bb6d-6bb9bd380a26', '10eebc99-9c0b-4ef8-bb6d-6bb9bd380a18', 40.00),
-('a5eebc99-9c0b-4ef8-bb6d-6bb9bd380a31', '90eebc99-9c0b-4ef8-bb6d-6bb9bd380a26', '30eebc99-9c0b-4ef8-bb6d-6bb9bd380a20', 45.00),
-('a6eebc99-9c0b-4ef8-bb6d-6bb9bd380a32', '90eebc99-9c0b-4ef8-bb6d-6bb9bd380a26', '20eebc99-9c0b-4ef8-bb6d-6bb9bd380a19', 15.00);
+-- Boîte Épique (Chat: 55%, Licorne: 35%, Dragon: 10%)
+('a4eebc99-9c0b-4ef8-bb6d-6bb9bd380a30', '90eebc99-9c0b-4ef8-bb6d-6bb9bd380a26', '10eebc99-9c0b-4ef8-bb6d-6bb9bd380a18', 55.00),
+('a5eebc99-9c0b-4ef8-bb6d-6bb9bd380a31', '90eebc99-9c0b-4ef8-bb6d-6bb9bd380a26', '30eebc99-9c0b-4ef8-bb6d-6bb9bd380a20', 35.00),
+('a6eebc99-9c0b-4ef8-bb6d-6bb9bd380a32', '90eebc99-9c0b-4ef8-bb6d-6bb9bd380a26', '20eebc99-9c0b-4ef8-bb6d-6bb9bd380a19', 10.00);

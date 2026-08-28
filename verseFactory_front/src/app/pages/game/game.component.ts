@@ -3,7 +3,6 @@ import { toSignal } from "@angular/core/rxjs-interop";
 import { FactoryService } from "../../services/factory.service";
 import { PetCardComponent } from "./pages/pet-card/pet-card.component";
 import { Meta, Title } from "@angular/platform-browser";
-import { RouterLink, RouterLinkActive } from "@angular/router";
 import { GameMenuComponent } from "../../shared/game-menu/game-menu.component";
 
 @Component({
@@ -18,6 +17,8 @@ export class GameComponent implements OnInit {
     public factory = toSignal(this.factoryService.getCurrentFactory());
     public factoryPets = toSignal(this.factoryService.getCurrentFactoryPets());
 
+    public cooldownSeconds = this.factoryService.cooldownSeconds;
+
     public addPet(){
         this.factoryService.addPetInFactory("20eebc99-9c0b-4ef8-bb6d-6bb9bd380a19");
     }
@@ -27,7 +28,7 @@ export class GameComponent implements OnInit {
     }
 
     ngOnInit() {
-    this.titleService.setTitle('Jeu - VerseFactory');
-    this.metaService.updateTag({ name: 'description', content: 'Découvrez Verse Factory, l\'ultime plateforme pour gérer votre propre usine multidimensionnel.' });
-  }
+        this.titleService.setTitle('Jeu - VerseFactory');
+        this.metaService.updateTag({ name: 'description', content: 'Découvrez Verse Factory, l\'ultime plateforme pour gérer votre propre usine multidimensionnel.' });
+    }
 }

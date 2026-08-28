@@ -1,8 +1,7 @@
 import { DIALOG_DATA, DialogRef } from "@angular/cdk/dialog";
-import { Component, inject, input } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { Boxe } from "../../model/shop.model";
 import { ShopService } from "../../services/shop.service";
-import { Pet } from "../../model/factory.model";
 import { toSignal } from "@angular/core/rxjs-interop";
 
 @Component({
