@@ -4,11 +4,12 @@ import { FactoryService } from "../../services/factory.service";
 import { PetCardComponent } from "./pages/pet-card/pet-card.component";
 import { Meta, Title } from "@angular/platform-browser";
 import { GameMenuComponent } from "../../shared/game-menu/game-menu.component";
+import { HasRoleDirective } from "../../directives/has-role.directive";
 
 @Component({
     selector: "app-game",
     templateUrl: "./game.component.html",
-    imports: [PetCardComponent, GameMenuComponent],
+    imports: [PetCardComponent, GameMenuComponent, HasRoleDirective],
 })
 export class GameComponent implements OnInit {
     private factoryService = inject(FactoryService);
@@ -20,7 +21,7 @@ export class GameComponent implements OnInit {
     public cooldownSeconds = this.factoryService.cooldownSeconds;
 
     public addPet(){
-        this.factoryService.addPetInFactory("20eebc99-9c0b-4ef8-bb6d-6bb9bd380a19");
+        this.factoryService.addPetInFactory("54eebc99-9c0b-4ef8-bb6d-6bb9bd380a20");
     }
 
     public updateBalance(){
