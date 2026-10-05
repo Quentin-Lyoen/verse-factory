@@ -28,4 +28,15 @@ export class AuthService {
     public createAccount(account: CreateAccountRequest): Observable<void> {
         return this.http.post<void>(`${this.url}/accounts`, account);
     }
+
+    public hasRole(role: string): boolean {
+        if (!this.keycloakService || !this.keycloakService.isLoggedIn()) {
+            return false;
+        }
+        return this.keycloakService.keycloak!.hasRealmRole(role);
+    }
+
+    public getRoles(): string[] {
+        return this.keycloakService.keycloak!.realmAccess?.roles ?? [];
+    }
 }

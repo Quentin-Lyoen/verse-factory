@@ -86,4 +86,6 @@ export class KeycloakService {
   isLoggedIn(): boolean {
     return !!this.keycloakInstance?.authenticated;
   }
+
+  
 }

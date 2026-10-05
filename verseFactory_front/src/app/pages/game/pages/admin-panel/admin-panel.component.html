@@ -1,0 +1,18 @@
+<section class="flex flex-col items-center gap-4 p-4 w-full bg-white rounded-lg shadow-lg border-red-700 border-2">
+    <h1 class="text-4xl font-bold w-full text-center text-red-700">Admin Panel</h1>
+
+    <div class="flex flex-wrap justify-center w-full gap-4 lg:gap-8">
+        @for (pet of allPets(); track pet.id) {
+            <a (click)="addPetToFactory(pet.id)" class="hover:cursor-pointer">
+                <img src="/img/pets/{{ pet.name }}.png" [alt]="pet.name" class="w-24 h-24">
+            </a>
+        }
+    </div>
+
+    <button
+        class="px-4 py-2 rounded-lg border-2 border-(--bg-secondary) text-(--bg-secondary) font-semibold transition cursor-pointer hover:bg-(--bg-secondary) hover:text-white disabled:opacity-50 disabled:bg-gray-200 disabled:border-gray-400 disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-gray-500 flex items-center justify-center gap-2"
+        (click)="closeModal()">
+        Back to Game
+    </button>
+    
+</section>
