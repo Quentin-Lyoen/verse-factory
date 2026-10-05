@@ -5,6 +5,8 @@ import { PetCardComponent } from "./pages/pet-card/pet-card.component";
 import { Meta, Title } from "@angular/platform-browser";
 import { GameMenuComponent } from "../../shared/game-menu/game-menu.component";
 import { HasRoleDirective } from "../../directives/has-role.directive";
+import { Dialog } from "@angular/cdk/dialog";
+import { AdminPanelComponent } from "./pages/admin-panel/admin-panel.component";
 
 @Component({
     selector: "app-game",
@@ -15,6 +17,7 @@ export class GameComponent implements OnInit {
     private factoryService = inject(FactoryService);
     private titleService = inject(Title);
     private metaService = inject(Meta);
+    private dialog = inject(Dialog);
     public factory = toSignal(this.factoryService.getCurrentFactory());
     public factoryPets = toSignal(this.factoryService.getCurrentFactoryPets());
 
@@ -26,6 +29,10 @@ export class GameComponent implements OnInit {
 
     public updateBalance(){
         this.factoryService.updateFactoryBalance();
+    }
+
+    public openAdminPanel() {
+        this.dialog.open(AdminPanelComponent);
     }
 
     ngOnInit() {
