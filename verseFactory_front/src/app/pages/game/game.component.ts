@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from "@angular/core";
+import { Component, computed, inject, OnInit, signal } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { FactoryService } from "../../services/factory.service";
 import { PetCardComponent } from "./pages/pet-card/pet-card.component";
@@ -20,6 +20,22 @@ export class GameComponent implements OnInit {
     private dialog = inject(Dialog);
     public factory = toSignal(this.factoryService.getCurrentFactory());
     public factoryPets = toSignal(this.factoryService.getCurrentFactoryPets());
+
+    public isPetsExpanded = signal<boolean>(false);
+    public readonly initialVisiblePetsCount = 4;
+
+    public displayedPets = computed(() => {
+        const pets = this.factoryPets();
+        if (!pets) return [];
+        if (this.isPetsExpanded() || pets.length <= this.initialVisiblePetsCount) {
+            return pets;
+        }
+        return pets.slice(0, this.initialVisiblePetsCount);
+    });
+
+    public togglePetsExpanded(): void {
+        this.isPetsExpanded.update(expanded => !expanded);
+    }
 
     public cooldownSeconds = this.factoryService.cooldownSeconds;
 
