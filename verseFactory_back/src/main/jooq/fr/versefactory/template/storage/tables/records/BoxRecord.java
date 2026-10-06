@@ -111,6 +111,21 @@ public class BoxRecord extends UpdatableRecordImpl<BoxRecord> {
         return (LocalDateTime) get(4);
     }
 
+    /**
+     * Setter for <code>versefactory.box.event</code>.
+     */
+    public BoxRecord setEvent(Boolean value) {
+        set(5, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>versefactory.box.event</code>.
+     */
+    public Boolean getEvent() {
+        return (Boolean) get(5);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -134,7 +149,7 @@ public class BoxRecord extends UpdatableRecordImpl<BoxRecord> {
     /**
      * Create a detached, initialised BoxRecord
      */
-    public BoxRecord(UUID id, String name, String description, BigDecimal price, LocalDateTime createdAt) {
+    public BoxRecord(UUID id, String name, String description, BigDecimal price, LocalDateTime createdAt, Boolean event) {
         super(Box.BOX);
 
         setId(id);
@@ -142,6 +157,7 @@ public class BoxRecord extends UpdatableRecordImpl<BoxRecord> {
         setDescription(description);
         setPrice(price);
         setCreatedAt(createdAt);
+        setEvent(event);
         resetChangedOnNotNull();
     }
 }

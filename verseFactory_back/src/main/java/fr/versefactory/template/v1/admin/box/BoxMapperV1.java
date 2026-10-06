@@ -12,5 +12,6 @@ public interface BoxMapperV1 {
     @Mapping(target = "name", source = "box.name")
     @Mapping(target = "description", source = "box.description")
     @Mapping(target = "price", source = "box.price")
+    @Mapping(target = "event", source = "box.event")
     BoxDto toDto(BoxRepresentationV1 representation);
 }

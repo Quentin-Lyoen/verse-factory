@@ -36,6 +36,8 @@ public class BoxDto implements Serializable {
 
   private BigDecimal price;
 
+  private Boolean event;
+
   public BoxDto() {
     super();
   }
@@ -43,10 +45,11 @@ public class BoxDto implements Serializable {
   /**
    * Constructor with only required parameters
    */
-  public BoxDto(UUID id, String name, BigDecimal price) {
+  public BoxDto(UUID id, String name, BigDecimal price, Boolean event) {
     this.id = id;
     this.name = name;
     this.price = price;
+    this.event = event;
   }
 
   public BoxDto id(UUID id) {
@@ -129,6 +132,26 @@ public class BoxDto implements Serializable {
     this.price = price;
   }
 
+  public BoxDto event(Boolean event) {
+    this.event = event;
+    return this;
+  }
+
+  /**
+   * Get event
+   * @return event
+   */
+  @NotNull 
+  @Schema(name = "event", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("event")
+  public Boolean getEvent() {
+    return event;
+  }
+
+  public void setEvent(Boolean event) {
+    this.event = event;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -141,12 +164,13 @@ public class BoxDto implements Serializable {
     return Objects.equals(this.id, boxDto.id) &&
         Objects.equals(this.name, boxDto.name) &&
         Objects.equals(this.description, boxDto.description) &&
-        Objects.equals(this.price, boxDto.price);
+        Objects.equals(this.price, boxDto.price) &&
+        Objects.equals(this.event, boxDto.event);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, price);
+    return Objects.hash(id, name, description, price, event);
   }
 
   @Override
@@ -157,6 +181,7 @@ public class BoxDto implements Serializable {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    price: ").append(toIndentedString(price)).append("\n");
+    sb.append("    event: ").append(toIndentedString(event)).append("\n");
     sb.append("}");
     return sb.toString();
   }
