@@ -3,4 +3,5 @@ export interface Boxe {
     name: string;
     description: string;
     price: number;
+    event: boolean;
 }

@@ -92,6 +92,11 @@ public class Box extends TableImpl<BoxRecord> {
      */
     public final TableField<BoxRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "");
 
+    /**
+     * The column <code>versefactory.box.event</code>.
+     */
+    public final TableField<BoxRecord, Boolean> EVENT = createField(DSL.name("event"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
+
     private Box(Name alias, Table<BoxRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

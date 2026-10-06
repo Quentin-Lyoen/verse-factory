@@ -436,6 +436,7 @@ components:
         - id
         - name
         - price
+        - event
       properties:
         id:
           type: string
@@ -446,6 +447,8 @@ components:
           type: string
         price:
           type: number
+        event:
+          type: boolean
 
     ErrorResponse:
       type: object
