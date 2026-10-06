@@ -16,6 +16,30 @@ export class PatchNotesComponent implements OnInit {
 
     public patchNotes: PatchNote[] = [
       {
+        version: 'v0.2.1',
+        date: '07 Octobre 2026',
+        badge: 'Mise à jour',
+        title: 'Mise à jour d\'Halloween',
+        description: 'Les améliorations font leur arrivé dans votre factory ainsi que quelques ajustements de gameplay !',
+        categories: [
+          {
+            type: 'feature',
+            title: 'Nouveautés',
+            items: [
+              '- Ajout de la boite automne à durée limitée avec 3 pets : Citrouille (LEGENDARY), Feuille (EPIC), Champignon (RARE).',
+              '- Ajout de la boite halloween à durée limitée avec 3 pets : Sorcière (LEGENDARY), Fantôme (EPIC), Vampire (RARE).'
+            ]
+          },
+          {
+            type: 'fix',
+            title: 'Corrections',
+            items: [
+              '- Possibilité de dérouler et enrouler la liste de pets dans la factory ce qui permet de rendre l\'interface moins chargé sur mobile.'
+            ]
+          }
+        ]
+      },
+      {
         version: 'v0.2.0',
         date: '28 Août 2026',
         badge: 'Mise à jour',
